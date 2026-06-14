@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useRef, useState } from "react";
 import HTMLFlipBook from "react-pageflip";
@@ -330,6 +330,14 @@ export default function CatalogFlipbook({ catalogData }) {
               <p><Globe size={18} /> {brand.contact.website}</p>
               <p><MapPin size={18} /> {brand.contact.address}</p>
             </div>
+          </div>
+        </Page>
+
+        {/* PAGE 16: Back Cover (Required to make pages even) */}
+        <Page density="hard">
+          <div className={`${styles.coverPage} ${styles.backCover}`}>
+            <h2>{brand.name}</h2>
+            <p>Thank you for exploring our collection.</p>
           </div>
         </Page>
       </HTMLFlipBook>
