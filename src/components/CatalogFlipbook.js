@@ -307,7 +307,7 @@ export default function CatalogFlipbook({ catalogData }) {
             <div className={styles.logoWrapper}>
               <Image src="/images/logo.png" alt="Logo" width={180} height={100} style={{ objectFit: 'contain' }} />
             </div>
-            <h2>Let's Design Your Space</h2>
+            <h2>Let&apos;s Design Your Space</h2>
             
             {!formSubmitted ? (
               <form className={styles.consultationForm} onSubmit={handleConsultationSubmit}>
