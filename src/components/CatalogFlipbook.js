@@ -140,10 +140,9 @@ export default function CatalogFlipbook({ catalogData }) {
         </Page>
 
         {/* PRODUCT PAGES */}
-        {products.map((product) => (
-          <React.Fragment key={product.id}>
-            {/* Product Left Page: Visuals */}
-            <Page density="soft">
+        {products.map((product) => {
+          return [
+            <Page key={`${product.id}-visual`} density="soft">
               <div className={styles.productVisualPage}>
                 <div className={styles.lifestyleImageWrapper}>
                   <Image src={product.images.lifestyle} alt={product.name} fill className={styles.productImage} />
@@ -152,10 +151,9 @@ export default function CatalogFlipbook({ catalogData }) {
                   <Image src={product.images.isolated} alt={product.name} fill className={styles.productImageContain} />
                 </div>
               </div>
-            </Page>
+            </Page>,
 
-            {/* Product Right Page: Maximum Sales Specs */}
-            <Page density="soft">
+            <Page key={`${product.id}-details`} density="soft">
               <div className={styles.productSpecPage}>
                 <span className={styles.categoryBadge}>{product.category}</span>
                 <h2 className={styles.productTitle}>{product.name}</h2>
@@ -178,9 +176,9 @@ export default function CatalogFlipbook({ catalogData }) {
                 <div className={styles.compatibilityBox}>
                   <h3>Will it fit your room?</h3>
                   <ul className={styles.compatibilityList}>
-                    <li><X size={16} color="#d32f2f" /> <span><strong>Small:</strong> {product.compatibility.small.replace('âŒ ', '')}</span></li>
-                    <li><Check size={16} color="#388e3c" /> <span><strong>Medium:</strong> {product.compatibility.medium.replace('âœ… ', '')}</span></li>
-                    <li><Star size={16} color="#fbc02d" /> <span><strong>Large:</strong> {product.compatibility.large.replace('â­ ', '')}</span></li>
+                    <li><X size={16} color="#d32f2f" /> <span><strong>Small:</strong> {product.compatibility.small.replace('❌ ', '')}</span></li>
+                    <li><Check size={16} color="#388e3c" /> <span><strong>Medium:</strong> {product.compatibility.medium.replace('✅ ', '')}</span></li>
+                    <li><Star size={16} color="#fbc02d" /> <span><strong>Large:</strong> {product.compatibility.large.replace('⭐ ', '')}</span></li>
                   </ul>
                 </div>
 
@@ -212,95 +210,89 @@ export default function CatalogFlipbook({ catalogData }) {
                 </div>
               </div>
             </Page>
-          </React.Fragment>
-        ))}
+          ];
+        })}
 
         {/* TRANSFORMATIONS (Before & After) */}
-        {transformations && (
-          <React.Fragment>
-            <Page density="soft">
-              <div className={styles.fullPageImageWithText}>
-                <Image src={transformations.beforeImage} alt="Before" fill className={styles.bgImage} />
-                <div className={styles.textOverlayTop}>
-                  <h3>Before</h3>
-                  <p className={styles.taglineOverlay}>An Empty Canvas</p>
-                </div>
+        {transformations && [
+          <Page key="trans-1" density="soft">
+            <div className={styles.fullPageImageWithText}>
+              <Image src={transformations.beforeImage} alt="Before" fill className={styles.bgImage} />
+              <div className={styles.textOverlayTop}>
+                <h3>Before</h3>
+                <p className={styles.taglineOverlay}>An Empty Canvas</p>
               </div>
-            </Page>
-            <Page density="soft">
-              <div className={styles.splitPage}>
-                <div className={styles.textSectionHalf}>
-                  <h2 className={styles.sectionTitle}>{transformations.title}</h2>
-                  <div className={styles.divider}></div>
-                  <p className={styles.bodyText}>{transformations.description}</p>
-                </div>
-                <div className={styles.imageSectionHalf}>
-                  <Image src={transformations.afterImage} alt="After" fill className={styles.productImage} />
-                  <div className={styles.floatingLabel}>After: Perfectly Scaled</div>
-                </div>
+            </div>
+          </Page>,
+          <Page key="trans-2" density="soft">
+            <div className={styles.splitPage}>
+              <div className={styles.textSectionHalf}>
+                <h2 className={styles.sectionTitle}>{transformations.title}</h2>
+                <div className={styles.divider}></div>
+                <p className={styles.bodyText}>{transformations.description}</p>
               </div>
-            </Page>
-          </React.Fragment>
-        )}
+              <div className={styles.imageSectionHalf}>
+                <Image src={transformations.afterImage} alt="After" fill className={styles.productImage} />
+                <div className={styles.floatingLabel}>After: Perfectly Scaled</div>
+              </div>
+            </div>
+          </Page>
+        ]}
 
         {/* VISUALIZATION */}
-        {visualization && (
-          <React.Fragment>
-            <Page density="soft">
-              <div className={styles.textPage}>
-                <h2 className={styles.sectionTitle}>{visualization.title}</h2>
-                <div className={styles.divider}></div>
-                <p className={styles.bodyText}>{visualization.description}</p>
-                
-                <div className={styles.vizCard}>
-                  <h3>{visualization.apartment.title}</h3>
-                  <div className={styles.vizImageWrapper}>
-                    <Image src={visualization.apartment.image} alt="Apartment" fill className={styles.productImage} />
-                  </div>
-                  <p className={styles.vizNote}>{visualization.apartment.note}</p>
+        {visualization && [
+          <Page key="viz-1" density="soft">
+            <div className={styles.textPage}>
+              <h2 className={styles.sectionTitle}>{visualization.title}</h2>
+              <div className={styles.divider}></div>
+              <p className={styles.bodyText}>{visualization.description}</p>
+              
+              <div className={styles.vizCard}>
+                <h3>{visualization.apartment.title}</h3>
+                <div className={styles.vizImageWrapper}>
+                  <Image src={visualization.apartment.image} alt="Apartment" fill className={styles.productImage} />
                 </div>
+                <p className={styles.vizNote}>{visualization.apartment.note}</p>
               </div>
-            </Page>
-            <Page density="soft">
-              <div className={styles.textPage}>
-                <div className={styles.vizCard} style={{ marginTop: '0', height: '100%' }}>
-                  <h3>{visualization.villa.title}</h3>
-                  <div className={styles.vizImageWrapper} style={{ height: '70%' }}>
-                    <Image src={visualization.villa.image} alt="Villa" fill className={styles.productImage} />
-                  </div>
-                  <p className={styles.vizNote}>{visualization.villa.note}</p>
+            </div>
+          </Page>,
+          <Page key="viz-2" density="soft">
+            <div className={styles.textPage}>
+              <div className={styles.vizCard} style={{ marginTop: '0', height: '100%' }}>
+                <h3>{visualization.villa.title}</h3>
+                <div className={styles.vizImageWrapper} style={{ height: '70%' }}>
+                  <Image src={visualization.villa.image} alt="Villa" fill className={styles.productImage} />
                 </div>
+                <p className={styles.vizNote}>{visualization.villa.note}</p>
               </div>
-            </Page>
-          </React.Fragment>
-        )}
+            </div>
+          </Page>
+        ]}
 
         {/* CUSTOM FURNITURE */}
-        {customFurniture && (
-          <React.Fragment>
-            <Page density="soft">
-              <div className={styles.fullPageImageWithText}>
-                <Image src={customFurniture.image} alt="Workshop" fill className={styles.bgImage} />
+        {customFurniture && [
+          <Page key="custom-1" density="soft">
+            <div className={styles.fullPageImageWithText}>
+              <Image src={customFurniture.image} alt="Workshop" fill className={styles.bgImage} />
+            </div>
+          </Page>,
+          <Page key="custom-2" density="soft">
+            <div className={styles.textPage}>
+              <h2 className={styles.sectionTitle}>{customFurniture.title}</h2>
+              <div className={styles.divider}></div>
+              <p className={styles.bodyText}>{customFurniture.description}</p>
+              
+              <div className={styles.featuresList}>
+                <h3>The Custom Experience</h3>
+                <ul>
+                  {customFurniture.features.map((feat, idx) => (
+                    <li key={idx}><Check size={18} color="var(--color-accent)" /> {feat}</li>
+                  ))}
+                </ul>
               </div>
-            </Page>
-            <Page density="soft">
-              <div className={styles.textPage}>
-                <h2 className={styles.sectionTitle}>{customFurniture.title}</h2>
-                <div className={styles.divider}></div>
-                <p className={styles.bodyText}>{customFurniture.description}</p>
-                
-                <div className={styles.featuresList}>
-                  <h3>The Custom Experience</h3>
-                  <ul>
-                    {customFurniture.features.map((feat, idx) => (
-                      <li key={idx}><Check size={18} color="var(--color-accent)" /> {feat}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-            </Page>
-          </React.Fragment>
-        )}
+            </div>
+          </Page>
+        ]}
 
         {/* BACK COVER / CONSULTATION */}
         <Page density="hard">
