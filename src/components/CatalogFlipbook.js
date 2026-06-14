@@ -192,11 +192,12 @@ export default function CatalogFlipbook({ catalogData }) {
                 {/* AR View in Room Feature */}
                 <div className={styles.arSection}>
                   <div className={styles.qrCode}>
-                    <Image 
+                    <img 
                       src={`https://api.qrserver.com/v1/create-qr-code/?size=100x100&data=https://pvrmanufacturing.com/ar/${product.id}&color=2c2a29`} 
                       alt="QR Code" 
                       width={60} 
                       height={60} 
+                      style={{ objectFit: 'contain' }}
                     />
                   </div>
                   <div className={styles.arText}>
