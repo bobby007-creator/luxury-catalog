@@ -1,4 +1,4 @@
-import FlipbookWrapper from '@/components/FlipbookWrapper';
+﻿import FlipbookWrapper from '@/components/FlipbookWrapper';
 import catalogData from '../../data/catalogData.json';
 
 export default async function Home() {

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useState, useEffect } from "react";
 import styles from "./Admin.module.css";
@@ -160,7 +160,7 @@ export default function AdminPage() {
                   type="text" 
                   value={dimensions} 
                   onChange={e => setDimensions(e.target.value)} 
-                  placeholder="e.g. 9ft × 7ft"
+                  placeholder="e.g. 9ft Ã— 7ft"
                   required
                 />
               </div>
@@ -171,7 +171,7 @@ export default function AdminPage() {
                   type="text" 
                   value={bestRoomSize} 
                   onChange={e => setBestRoomSize(e.target.value)} 
-                  placeholder="e.g. 12ft × 15ft+"
+                  placeholder="e.g. 12ft Ã— 15ft+"
                   required
                 />
               </div>

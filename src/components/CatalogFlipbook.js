@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useRef, useState } from "react";
 import HTMLFlipBook from "react-pageflip";
@@ -178,9 +178,9 @@ export default function CatalogFlipbook({ catalogData }) {
                 <div className={styles.compatibilityBox}>
                   <h3>Will it fit your room?</h3>
                   <ul className={styles.compatibilityList}>
-                    <li><X size={16} color="#d32f2f" /> <span><strong>Small:</strong> {product.compatibility.small.replace('❌ ', '')}</span></li>
-                    <li><Check size={16} color="#388e3c" /> <span><strong>Medium:</strong> {product.compatibility.medium.replace('✅ ', '')}</span></li>
-                    <li><Star size={16} color="#fbc02d" /> <span><strong>Large:</strong> {product.compatibility.large.replace('⭐ ', '')}</span></li>
+                    <li><X size={16} color="#d32f2f" /> <span><strong>Small:</strong> {product.compatibility.small.replace('âŒ ', '')}</span></li>
+                    <li><Check size={16} color="#388e3c" /> <span><strong>Medium:</strong> {product.compatibility.medium.replace('âœ… ', '')}</span></li>
+                    <li><Star size={16} color="#fbc02d" /> <span><strong>Large:</strong> {product.compatibility.large.replace('â­ ', '')}</span></li>
                   </ul>
                 </div>
 

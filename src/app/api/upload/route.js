@@ -1,4 +1,4 @@
-import fs from 'fs';
+﻿import fs from 'fs';
 import path from 'path';
 import { NextResponse } from 'next/server';
 import sharp from 'sharp';
@@ -99,9 +99,9 @@ export async function POST(request) {
       seatingCapacity: "Varies",
       bestRoomSize: bestRoomSize,
       compatibility: {
-        small: "❌ (Check dimensions)",
-        medium: "✅ (Recommended)",
-        large: "⭐ (Perfect Fit)"
+        small: "âŒ (Check dimensions)",
+        medium: "âœ… (Recommended)",
+        large: "â­ (Perfect Fit)"
       },
       options: {
         colors: ["Custom Order"],
