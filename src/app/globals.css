@@ -1,0 +1,80 @@
+@import "tailwindcss";
+
+:root {
+  --color-bg: #fdfaf6;
+  --color-surface: #ffffff;
+  --color-text-main: #2c2a29;
+  --color-text-muted: #75706c;
+  --color-accent: #a38c75;
+  --color-accent-light: #dcd0c4;
+  --color-border: #eae3da;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #1a1918;
+    --color-surface: #242220;
+    --color-text-main: #f5f0eb;
+    --color-text-muted: #a39c96;
+    --color-accent: #c4ae97;
+    --color-accent-light: #52473c;
+    --color-border: #3b3734;
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Premium Button Styles */
+.btn-primary {
+  background-color: var(--color-text-main);
+  color: var(--color-bg);
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-accent);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-text-main);
+  border: 1px solid var(--color-text-main);
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background-color: var(--color-text-main);
+  color: var(--color-bg);
+}
