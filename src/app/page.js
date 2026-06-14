@@ -1,8 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import dynamic from 'next/dynamic';
-
-const CatalogFlipbook = dynamic(() => import('@/components/CatalogFlipbook'), { ssr: false });
+import FlipbookWrapper from '@/components/FlipbookWrapper';
 
 export default async function Home() {
   const filePath = path.join(process.cwd(), 'data', 'catalogData.json');
@@ -11,7 +9,7 @@ export default async function Home() {
 
   return (
     <main style={{ width: '100vw', height: '100vh', backgroundColor: '#fdfaf6' }}>
-      <CatalogFlipbook catalogData={catalogData} />
+      <FlipbookWrapper catalogData={catalogData} />
     </main>
   );
 }

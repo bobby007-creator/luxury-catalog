@@ -3,7 +3,7 @@
 import React, { useRef, useState } from "react";
 import HTMLFlipBook from "react-pageflip";
 import Image from "next/image";
-import styles from "./CatalogFlipbook.module.css";
+import styles from "./CatalogFlipbookStyles.module.css";
 import { Check, X, Star, MapPin, Phone, Globe, Smartphone } from "lucide-react";
 
 const Page = React.forwardRef((props, ref) => {
