@@ -1,6 +1,8 @@
 import fs from 'fs';
 import path from 'path';
-import CatalogFlipbook from '@/components/CatalogFlipbook';
+import dynamic from 'next/dynamic';
+
+const CatalogFlipbook = dynamic(() => import('@/components/CatalogFlipbook'), { ssr: false });
 
 export default async function Home() {
   const filePath = path.join(process.cwd(), 'data', 'catalogData.json');
