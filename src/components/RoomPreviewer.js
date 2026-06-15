@@ -84,8 +84,8 @@ export default function RoomPreviewer({ productImage, onClose }) {
     setIsDragging(false);
     setIsPainting(false);
     if (mode === 'pick') {
-      // Auto-switch to paint after picking a color
-      setMode('paint');
+      // Auto-switch to drag after picking a color so they can see it and move it
+      setMode('drag');
     }
   };
 
@@ -100,6 +100,7 @@ export default function RoomPreviewer({ productImage, onClose }) {
     if (mode === 'pick') {
       const pixel = ctx.getImageData(x, y, 1, 1).data;
       setColor(`rgba(${pixel[0]}, ${pixel[1]}, ${pixel[2]}, ${pixel[3] / 255})`);
+      setMode('drag'); // Switch back to drag so they can position the colored sofa
     } else if (mode === 'paint') {
       ctx.beginPath();
       ctx.arc(x, y, 20, 0, Math.PI * 2);
@@ -167,46 +168,63 @@ export default function RoomPreviewer({ productImage, onClose }) {
             </div>
           </div>
 
-          <div className={styles.workspace}>
-            <div className={styles.canvasContainer}>
-              <canvas 
-                ref={canvasRef}
-                className={styles.roomCanvas}
-                onPointerDown={handlePointerDown}
-                onPointerMove={handlePointerMove}
-                onPointerUp={handlePointerUp}
-                onPointerCancel={handlePointerUp}
-              />
-              
-              {mode === 'drag' && (
-                <img 
-                  src={productImage} 
-                  className={styles.productOverlay}
-                  style={{
-                    left: pos.x + 'px',
-                    top: pos.y + 'px',
-                    transform: `translate(-50%, -50%) scale(${scale})`,
-                    pointerEvents: 'none' // Let canvas handle pointer events to avoid dragging issues
-                  }}
-                  alt="Product Overlay"
+            <div className={styles.workspace}>
+              <div className={styles.canvasContainer}>
+                <canvas 
+                  ref={canvasRef} 
+                  className={styles.roomCanvas}
+                  onClick={handleCanvasAction}
+                  onPointerDown={handlePointerDown}
+                  onPointerMove={handlePointerMove}
+                  onPointerUp={handlePointerUp}
+                  onPointerCancel={handlePointerUp}
                 />
-              )}
-              {mode !== 'drag' && (
-                 <img 
-                 src={productImage} 
-                 className={styles.productOverlay}
-                 style={{
-                   left: pos.x + 'px',
-                   top: pos.y + 'px',
-                   transform: `translate(-50%, -50%) scale(${scale})`,
-                   opacity: 0.3, // make it ghosted while painting
-                   pointerEvents: 'none'
-                 }}
-                 alt="Product Overlay Ghost"
-               />
-              )}
+                
+                {mode === 'drag' && (
+                  <div 
+                    className={styles.productOverlay}
+                    style={{
+                      left: pos.x + 'px',
+                      top: pos.y + 'px',
+                      transform: `translate(-50%, -50%) scale(${scale})`,
+                      pointerEvents: 'none' // Let canvas handle pointer events to avoid dragging issues
+                    }}
+                  >
+                    <img 
+                      src={productImage} 
+                      style={{ display: 'block', width: '100%', height: 'auto' }}
+                      alt="Product Overlay"
+                    />
+                    {color !== '#aaaaaa' && (
+                      <div style={{
+                        position: 'absolute',
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        backgroundColor: color,
+                        mixBlendMode: 'multiply',
+                        WebkitMaskImage: `url(${productImage})`,
+                        WebkitMaskSize: '100% 100%',
+                        WebkitMaskRepeat: 'no-repeat',
+                        opacity: 0.85
+                      }} />
+                    )}
+                  </div>
+                )}
+                {mode !== 'drag' && (
+                   <img 
+                   src={productImage} 
+                   className={styles.productOverlay}
+                   style={{
+                     left: pos.x + 'px',
+                     top: pos.y + 'px',
+                     transform: `translate(-50%, -50%) scale(${scale})`,
+                     opacity: 0.3, // make it ghosted while painting
+                     pointerEvents: 'none'
+                   }}
+                   alt="Product Overlay Ghost"
+                 />
+                )}
+              </div>
             </div>
-          </div>
         </>
       )}
     </div>
