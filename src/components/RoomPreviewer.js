@@ -8,6 +8,7 @@ export default function RoomPreviewer({ productImage, onClose }) {
   const [texture, setTexture] = useState(null);
   const [showTextures, setShowTextures] = useState(false);
   const [scale, setScale] = useState(1);
+  const [rotation, setRotation] = useState(0);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [isPainting, setIsPainting] = useState(false);
@@ -178,7 +179,20 @@ export default function RoomPreviewer({ productImage, onClose }) {
                 step="0.05" 
                 value={scale} 
                 onChange={(e) => setScale(parseFloat(e.target.value))}
-                style={{ width: '80px' }}
+                style={{ width: '60px' }}
+              />
+            </div>
+            
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+              <span style={{ color: 'white', fontSize: '12px' }}>Tilt:</span>
+              <input 
+                type="range" 
+                min="-180" 
+                max="180" 
+                step="1" 
+                value={rotation} 
+                onChange={(e) => setRotation(parseFloat(e.target.value))}
+                style={{ width: '60px' }}
               />
             </div>
           </div>
@@ -224,7 +238,7 @@ export default function RoomPreviewer({ productImage, onClose }) {
                     style={{
                       left: pos.x + 'px',
                       top: pos.y + 'px',
-                      transform: `translate(-50%, -50%) scale(${scale})`,
+                      transform: `translate(-50%, -50%) scale(${scale}) rotate(${rotation}deg)`,
                       pointerEvents: 'none' // Let canvas handle pointer events to avoid dragging issues
                     }}
                   >
@@ -268,7 +282,7 @@ export default function RoomPreviewer({ productImage, onClose }) {
                    style={{
                      left: pos.x + 'px',
                      top: pos.y + 'px',
-                     transform: `translate(-50%, -50%) scale(${scale})`,
+                     transform: `translate(-50%, -50%) scale(${scale}) rotate(${rotation}deg)`,
                      opacity: 0.3, // make it ghosted while painting
                      pointerEvents: 'none'
                    }}
