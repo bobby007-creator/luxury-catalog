@@ -47,14 +47,17 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 60%);
-  z-index: 1;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .coverContent {
   position: relative;
-  z-index: 2;
-  text-align: center;
+  z-index: 10;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 4rem;
 }
 
 .logoWrapper {
@@ -62,19 +65,24 @@
   filter: brightness(0) invert(1);
 }
 
-.coverTitle {
+.coverTitles {
+  position: relative;
+  z-index: 10;
+}
+
+.brandName {
   font-size: 2.5rem;
   font-weight: 300;
   letter-spacing: 0.1em;
   margin: 0 0 1rem 0;
   text-transform: uppercase;
+  color: white;
 }
 
-.coverTagline {
-  font-size: 1rem;
-  font-weight: 300;
+.brandTagline {
+  font-size: 1.2rem;
   letter-spacing: 0.05em;
-  opacity: 0.8;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .textPage {
@@ -88,10 +96,28 @@
 .sectionTitle {
   font-size: 2rem;
   font-weight: 300;
-  color: var(--color-text-main);
-  margin: 0;
-  text-transform: uppercase;
   letter-spacing: 0.05em;
+  margin-bottom: 2rem;
+  color: #1a1a1a;
+  text-transform: uppercase;
+}
+
+.sectionDescription {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #666;
+  font-weight: 300;
+}
+
+.backCover {
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  background-color: #1c1c1c;
+  height: 100%;
 }
 
 .divider {
@@ -352,6 +378,24 @@
 .productCard:hover .viewSpecsBtn {
   background: #222;
   color: #fff;
+}
+
+.previewBtn {
+  background: #e43d30;
+  border: 1px solid #e43d30;
+  color: white;
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(228, 61, 48, 0.2);
+}
+
+.previewBtn:hover {
+  background: #c22b20;
+  border-color: #c22b20;
+  transform: translateY(-1px);
 }
 
 .emptyCard {

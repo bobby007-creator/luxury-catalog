@@ -14,14 +14,6 @@ export default function ProductModal({ product, onClose }) {
             <div className={styles.imageWrapper}>
               <img src={product.images?.isolated} alt={product.name} />
             </div>
-            
-            <div className={styles.arSection}>
-              <h3>View in your space</h3>
-              <p>Scan this QR code with your phone camera to see this piece in your room using Augmented Reality.</p>
-              <div className={styles.qrPlaceholder}>
-                <img src={`https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://pvrmfg.com/ar/${product.id}`} alt="AR QR Code" />
-              </div>
-            </div>
           </div>
 
           <div className={styles.infoColumn}>

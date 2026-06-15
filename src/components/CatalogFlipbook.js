@@ -119,7 +119,7 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
               />
               <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '15px' }}>
                 <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setSelectedProduct(product1); }}>View Details</button>
-                <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setPreviewingProductImage(product1.image?.startsWith('/') ? product1.image : (product1.images?.isolated?.startsWith('/') ? product1.images.isolated : `/images/products/${product1.image || product1.images?.isolated}`)); }}>Preview in Room</button>
+                <button className={styles.previewBtn} onClick={(e) => { e.stopPropagation(); setPreviewingProductImage(product1.image?.startsWith('/') ? product1.image : (product1.images?.isolated?.startsWith('/') ? product1.images.isolated : `/images/products/${product1.image || product1.images?.isolated}`)); }}>Preview in Room</button>
                 <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setZoomingProductImage(product1.image?.startsWith('/') ? product1.image : (product1.images?.isolated?.startsWith('/') ? product1.images.isolated : `/images/products/${product1.image || product1.images?.isolated}`)); }}>🔎 Zoom</button>
               </div>
             </div>
@@ -146,7 +146,7 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
                 />
                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '15px' }}>
                   <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setSelectedProduct(product2); }}>View Details</button>
-                  <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setPreviewingProductImage(product2.image?.startsWith('/') ? product2.image : (product2.images?.isolated?.startsWith('/') ? product2.images.isolated : `/images/products/${product2.image || product2.images?.isolated}`)); }}>Preview in Room</button>
+                  <button className={styles.previewBtn} onClick={(e) => { e.stopPropagation(); setPreviewingProductImage(product2.image?.startsWith('/') ? product2.image : (product2.images?.isolated?.startsWith('/') ? product2.images.isolated : `/images/products/${product2.image || product2.images?.isolated}`)); }}>Preview in Room</button>
                   <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setZoomingProductImage(product2.image?.startsWith('/') ? product2.image : (product2.images?.isolated?.startsWith('/') ? product2.images.isolated : `/images/products/${product2.image || product2.images?.isolated}`)); }}>🔎 Zoom</button>
                 </div>
               </div>
