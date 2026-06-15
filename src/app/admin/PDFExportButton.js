@@ -57,7 +57,8 @@ export default function PDFExportButton() {
       doc.text(catalogData.brand?.tagline || "Premium Collection", pageWidth / 2, pageHeight / 2 + 25, { align: "center" });
 
       // Products Pages
-      for (const product of catalogData.products) {
+      const products = catalogData.products || [];
+      for (let i = 0; i < products.length; i += 2) {
         doc.addPage();
         
         // Reset colors
@@ -65,43 +66,60 @@ export default function PDFExportButton() {
         doc.rect(0, 0, pageWidth, pageHeight, 'F');
         doc.setTextColor(30, 30, 30);
 
-        // Try to load and add image
-        if (product.image) {
-          try {
-            const imgUrl = `/images/products/${product.image}`;
-            // Use an invisible canvas to get base64
-            const imgData = await getBase64ImageFromUrl(imgUrl);
-            if (imgData) {
-              // Add image to the left side
-              doc.addImage(imgData, 'PNG', 20, 40, 120, 120, '', 'FAST');
+        // Helper function to render a single product on the page
+        const renderProduct = async (product, startY) => {
+          if (!product) return;
+
+          // Try to load and add image
+          if (product.image) {
+            try {
+              const imgUrl = `/images/products/${product.image}`;
+              const imgData = await getBase64ImageFromUrl(imgUrl);
+              if (imgData) {
+                doc.addImage(imgData, 'PNG', 20, startY, 80, 80, '', 'FAST');
+              }
+            } catch (e) {
+              console.error("Could not load image for PDF:", product.image);
             }
-          } catch (e) {
-            console.error("Could not load image for PDF:", product.image);
           }
-        }
 
-        // Product Info on the right side
-        doc.setFontSize(24);
-        doc.text(product.name, 150, 60);
-        
-        doc.setFontSize(14);
-        doc.setTextColor(100, 100, 100);
-        doc.text(product.category, 150, 75);
+          // Product Info on the right side
+          doc.setFontSize(22);
+          doc.setTextColor(30, 30, 30);
+          doc.text(product.name, 110, startY + 15);
+          
+          doc.setFontSize(12);
+          doc.setTextColor(100, 100, 100);
+          doc.text(product.category, 110, startY + 25);
 
-        doc.setFontSize(18);
-        doc.setTextColor(40, 40, 40);
-        doc.text(product.priceRange, 150, 95);
+          doc.setFontSize(16);
+          doc.setTextColor(40, 40, 40);
+          doc.text(product.priceRange, 110, startY + 40);
 
-        doc.setFontSize(12);
-        doc.setTextColor(60, 60, 60);
-        
-        // Split description to fit width
-        const splitDesc = doc.splitTextToSize(product.description || "", 120);
-        doc.text(splitDesc, 150, 115);
+          doc.setFontSize(11);
+          doc.setTextColor(60, 60, 60);
+          
+          // Split description to fit width
+          const splitDesc = doc.splitTextToSize(product.description || "", 170); // 297 - 110 - 17 margin = 170
+          doc.text(splitDesc, 110, startY + 55);
 
-        if (product.colors && product.colors.length > 0) {
-          doc.setFontSize(10);
-          doc.text(`Available in: ${product.colors.join(', ')}`, 150, 180);
+          if (product.colors && product.colors.length > 0 && product.colors[0] !== 'Custom Order') {
+            doc.setFontSize(10);
+            doc.setTextColor(100, 100, 100);
+            doc.text(`Available in: ${product.colors.join(', ')}`, 110, startY + 75);
+          }
+        };
+
+        // Render first product
+        await renderProduct(products[i], 15);
+
+        // Render second product if exists
+        if (i + 1 < products.length) {
+          // Draw a subtle divider line
+          doc.setDrawColor(220, 220, 220);
+          doc.line(20, 105, pageWidth - 20, 105);
+          
+          await renderProduct(products[i + 1], 115);
         }
       }
 
