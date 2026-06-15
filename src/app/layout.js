@@ -15,7 +15,6 @@ export const metadata = {
   title: "PVR Digital Catalog",
   description: "Premium Luxury Furniture Catalog",
   manifest: "/manifest.json",
-  themeColor: "#1a1a1a",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
@@ -25,6 +24,10 @@ export const metadata = {
     icon: '/icon.png',
     apple: '/icon.png',
   },
+};
+
+export const viewport = {
+  themeColor: "#1a1a1a",
 };
 
 export default function RootLayout({ children }) {
