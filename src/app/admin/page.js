@@ -20,6 +20,7 @@ export default function AdminPage() {
   const [tagline, setTagline] = useState("");
   const [colors, setColors] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+  const [products, setProducts] = useState([]);
 
   // Brand Settings State
   const [brandName, setBrandName] = useState("");
@@ -41,10 +42,12 @@ export default function AdminPage() {
       })
       .catch(err => console.error("Could not load config", err));
 
-    // Load existing brand data
+    // Load existing brand data and products
     fetch("/api/catalog")
       .then(res => res.json())
       .then(data => {
+        if (data.products) setProducts(data.products);
+        
         if (data.brand) {
           setBrandName(data.brand.name || "");
           setBrandTagline(data.brand.tagline || "");
@@ -113,6 +116,9 @@ export default function AdminPage() {
         setDescription("");
         setTagline("");
         setColors("");
+        
+        // Refresh product list
+        setProducts(prev => [...prev, data.product]);
       } else {
         setStatus(`Error: ${data.error}`);
       }
@@ -156,6 +162,26 @@ export default function AdminPage() {
     }
     
     setIsSavingBrand(false);
+  };
+
+  const handleDeleteProduct = async (id) => {
+    if (!confirm("Are you sure you want to delete this product?")) return;
+    
+    setStatus("Deleting product...");
+    try {
+      const res = await fetch(`/api/catalog?id=${id}`, {
+        method: "DELETE"
+      });
+      
+      if (res.ok) {
+        setStatus("Product deleted successfully!");
+        setProducts(prev => prev.filter(p => p.id !== id));
+      } else {
+        setStatus("Error deleting product.");
+      }
+    } catch (err) {
+      setStatus("Failed to delete product.");
+    }
   };
 
   return (
@@ -315,9 +341,44 @@ export default function AdminPage() {
               {isUploading ? "Processing Image with AI..." : "Upload & Process Image"}
             </button>
           </form>
-        </div>
+          </div>
 
-        <div className={styles.card}>
+          <div className={styles.card} style={{ marginTop: '20px' }}>
+            <h3>Manage Products</h3>
+            <p className={styles.helpText}>View and remove existing products from your catalog.</p>
+            {products.length === 0 ? (
+              <p>No products in catalog.</p>
+            ) : (
+              <ul style={{ listStyle: 'none', padding: 0 }}>
+                {products.map(p => (
+                  <li key={p.id} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px', borderBottom: '1px solid #ddd', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                      <div style={{ width: '50px', height: '50px', background: '#f5f5f5', borderRadius: '5px', overflow: 'hidden' }}>
+                        {(p.image || (p.images && p.images.isolated)) && (
+                          <img 
+                            src={p.image?.startsWith('/') ? p.image : (p.images?.isolated?.startsWith('/') ? p.images.isolated : `/images/products/${p.image || p.images?.isolated}`)} 
+                            style={{ width: '100%', height: '100%', objectFit: 'contain' }} 
+                            alt={p.name}
+                          />
+                        )}
+                      </div>
+                      <div>
+                        <strong>{p.name}</strong> <span style={{ color: '#888', fontSize: '0.9em' }}>({p.category})</span>
+                      </div>
+                    </div>
+                    <button 
+                      onClick={() => handleDeleteProduct(p.id)}
+                      style={{ background: '#ff4444', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '4px', cursor: 'pointer' }}
+                    >
+                      Delete
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+        <div className={styles.card} style={{ marginTop: '20px' }}>
           <h3>3. Brand Settings & Cover Page</h3>
           <p className={styles.helpText}>
             Update your catalog's cover page background, logo, and brand text.
