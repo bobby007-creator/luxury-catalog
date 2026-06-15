@@ -62,7 +62,7 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
               style={{ objectFit: 'contain', width: '180px', height: '100px' }} 
             />
           </div>
-          <div className={styles.coverTitles}>
+          <div className={styles.coverTitles} style={{ color: brand.coverTextColor || '#ffffff' }}>
             <h1 className={styles.brandName}>{brand.name}</h1>
             <p className={styles.brandTagline}>{brand.tagline}</p>
           </div>

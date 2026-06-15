@@ -12,6 +12,7 @@ export async function POST(request) {
     const website = formData.get('website');
     const address = formData.get('address');
     const qualityCommitment = formData.get('qualityCommitment');
+    const coverTextColor = formData.get('coverTextColor');
     
     const coverImage = formData.get('coverImage');
     const logoImage = formData.get('logoImage');
@@ -41,6 +42,8 @@ export async function POST(request) {
         console.error("Failed to parse qualityCommitment", e);
       }
     }
+    
+    if (coverTextColor) catalogData.brand.coverTextColor = coverTextColor;
 
     fs.writeFileSync(catalogPath, JSON.stringify(catalogData, null, 2));
 

@@ -28,6 +28,7 @@ export default function AdminPage() {
   const [brandTagline, setBrandTagline] = useState("");
   const [brandAbout, setBrandAbout] = useState("");
   const [brandQualityCommitment, setBrandQualityCommitment] = useState("");
+  const [coverTextColor, setCoverTextColor] = useState("#ffffff");
   const [phone, setPhone] = useState("");
   const [website, setWebsite] = useState("");
   const [address, setAddress] = useState("");
@@ -55,6 +56,7 @@ export default function AdminPage() {
           setBrandTagline(data.brand.tagline || "");
           setBrandAbout(data.brand.about || "");
           setBrandQualityCommitment(data.brand.qualityCommitment ? data.brand.qualityCommitment.join("\n") : "");
+          setCoverTextColor(data.brand.coverTextColor || "#ffffff");
           if (data.brand.contact) {
             setPhone(data.brand.contact.phone || "");
             setWebsite(data.brand.contact.website || "");
@@ -184,6 +186,7 @@ export default function AdminPage() {
     formData.append("tagline", brandTagline);
     formData.append("about", brandAbout);
     formData.append("qualityCommitment", JSON.stringify(brandQualityCommitment.split("\n").map(s => s.trim()).filter(Boolean)));
+    formData.append("coverTextColor", coverTextColor);
     formData.append("phone", phone);
     formData.append("website", website);
     formData.append("address", address);
@@ -492,6 +495,16 @@ export default function AdminPage() {
                 <label>Contact Phone</label>
                 <input type="text" value={phone} onChange={e => setPhone(e.target.value)} placeholder="e.g. +1 (555) 123-4567" />
               </div>
+              <div className={styles.formGroup}>
+                <label>Cover Text Color</label>
+                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+                  <input type="color" value={coverTextColor} onChange={e => setCoverTextColor(e.target.value)} style={{ width: '50px', height: '40px', padding: '0', cursor: 'pointer' }} />
+                  <span style={{ fontFamily: 'monospace' }}>{coverTextColor}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.formRow}>
               <div className={styles.formGroup}>
                 <label>Website</label>
                 <input type="text" value={website} onChange={e => setWebsite(e.target.value)} placeholder="e.g. www.gravityapp.com" />
