@@ -5,10 +5,21 @@ export default function RoomPreviewer({ productImage, onClose }) {
   const [bgImage, setBgImage] = useState(null);
   const [mode, setMode] = useState('drag'); // 'drag', 'pick', 'paint'
   const [color, setColor] = useState('#aaaaaa');
+  const [texture, setTexture] = useState(null);
+  const [showTextures, setShowTextures] = useState(false);
   const [scale, setScale] = useState(1);
   const [pos, setPos] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [isPainting, setIsPainting] = useState(false);
+  
+  const availableTextures = [
+    { name: 'Brown Leather', src: 'textures/leather_brown.png' },
+    { name: 'Tan Leather', src: 'textures/leather_tan.png' },
+    { name: 'Grey Velvet', src: 'textures/velvet_grey.png' },
+    { name: 'Blue Velvet', src: 'textures/velvet_blue.png' },
+    { name: 'Beige Linen', src: 'textures/linen_beige.png' },
+    { name: 'White Linen', src: 'textures/linen_white.png' },
+  ];
   
   const canvasRef = useRef(null);
   const imgRef = useRef(null); // original background image reference
@@ -146,10 +157,16 @@ export default function RoomPreviewer({ productImage, onClose }) {
               />
             </label>
             <button 
+              className={`${styles.toolBtn} ${showTextures ? styles.active : ''}`}
+              onClick={() => setShowTextures(!showTextures)}
+            >
+              🧵 Choose Fabric
+            </button>
+            <button 
               className={`${styles.toolBtn} ${mode === 'paint' ? styles.active : ''}`}
               onClick={() => setMode('paint')}
             >
-              🖌️ Paint Eraser
+              🧹 Paint Eraser
             </button>
             
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -165,6 +182,29 @@ export default function RoomPreviewer({ productImage, onClose }) {
               />
             </div>
           </div>
+
+            {showTextures && (
+              <div className={styles.texturePanel} style={{ display: 'flex', gap: '10px', padding: '10px', background: '#333', overflowX: 'auto' }}>
+                <div 
+                  onClick={() => { setTexture(null); setColor('#aaaaaa'); }}
+                  style={{ minWidth: '50px', height: '50px', borderRadius: '5px', cursor: 'pointer', border: !texture ? '2px solid white' : '2px solid transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#444', color: 'white', fontSize: '10px', textAlign: 'center' }}
+                >
+                  Clear
+                </div>
+                {availableTextures.map((tex, i) => (
+                  <div 
+                    key={i}
+                    onClick={() => { setTexture(tex.src); setMode('drag'); }}
+                    style={{
+                      minWidth: '50px', height: '50px', borderRadius: '5px', cursor: 'pointer',
+                      backgroundImage: `url(${tex.src})`, backgroundSize: 'cover',
+                      border: texture === tex.src ? '2px solid white' : '2px solid transparent'
+                    }}
+                    title={tex.name}
+                  />
+                ))}
+              </div>
+            )}
 
             <div className={styles.workspace}>
               <div className={styles.canvasContainer}>
@@ -193,6 +233,20 @@ export default function RoomPreviewer({ productImage, onClose }) {
                       style={{ display: 'block', width: '100%', height: 'auto' }}
                       alt="Product Overlay"
                     />
+                    {texture && (
+                      <div style={{
+                        position: 'absolute',
+                        top: 0, left: 0, right: 0, bottom: 0,
+                        backgroundImage: `url(${texture})`,
+                        backgroundSize: '150px',
+                        backgroundRepeat: 'repeat',
+                        mixBlendMode: 'multiply',
+                        WebkitMaskImage: `url(${productImage})`,
+                        WebkitMaskSize: '100% 100%',
+                        WebkitMaskRepeat: 'no-repeat',
+                        opacity: 1
+                      }} />
+                    )}
                     {color !== '#aaaaaa' && (
                       <div style={{
                         position: 'absolute',
@@ -202,7 +256,7 @@ export default function RoomPreviewer({ productImage, onClose }) {
                         WebkitMaskImage: `url(${productImage})`,
                         WebkitMaskSize: '100% 100%',
                         WebkitMaskRepeat: 'no-repeat',
-                        opacity: 0.85
+                        opacity: texture ? 0.6 : 0.85
                       }} />
                     )}
                   </div>
