@@ -25,7 +25,8 @@ filesToHide.forEach(file => {
 // Remove force-dynamic for static export
 if (fs.existsSync(pagePath)) {
   pageContentOriginal = fs.readFileSync(pagePath, 'utf8');
-  const modifiedContent = pageContentOriginal.replace("export const dynamic = 'force-dynamic';", "// export const dynamic = 'force-dynamic';");
+  let modifiedContent = pageContentOriginal.replace("export const dynamic = 'force-dynamic';", "// export const dynamic = 'force-dynamic';");
+  modifiedContent = modifiedContent.replace("export const revalidate = 0;", "// export const revalidate = 0;");
   fs.writeFileSync(pagePath, modifiedContent);
 }
 
