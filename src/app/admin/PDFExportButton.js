@@ -70,16 +70,23 @@ export default function PDFExportButton() {
         const renderProduct = async (product, startY) => {
           if (!product) return;
 
-          // Try to load and add image
+          // Resolve image URL
+          let finalImgUrl = null;
           if (product.image) {
+            finalImgUrl = product.image.startsWith('/') ? product.image : `/images/products/${product.image}`;
+          } else if (product.images && product.images.isolated) {
+            finalImgUrl = product.images.isolated.startsWith('/') ? product.images.isolated : `/images/products/${product.images.isolated}`;
+          }
+
+          // Try to load and add image
+          if (finalImgUrl) {
             try {
-              const imgUrl = `/images/products/${product.image}`;
-              const imgData = await getBase64ImageFromUrl(imgUrl);
+              const imgData = await getBase64ImageFromUrl(finalImgUrl);
               if (imgData) {
                 doc.addImage(imgData, 'PNG', 20, startY, 80, 80, '', 'FAST');
               }
             } catch (e) {
-              console.error("Could not load image for PDF:", product.image);
+              console.error("Could not load image for PDF:", finalImgUrl);
             }
           }
 
@@ -128,13 +135,29 @@ export default function PDFExportButton() {
       doc.setFillColor(30, 30, 30);
       doc.rect(0, 0, pageWidth, pageHeight, 'F');
       
+      // Draw background image if available
+      try {
+        const coverData = await getBase64ImageFromUrl('/images/cover_image.png');
+        if (coverData) {
+          doc.addImage(coverData, 'PNG', 0, 0, pageWidth, pageHeight, '', 'FAST');
+        }
+      } catch(e) {}
+
+      // Add logo
+      try {
+        const logoData = await getBase64ImageFromUrl('/images/logo.png');
+        if (logoData) {
+          doc.addImage(logoData, 'PNG', pageWidth / 2 - 30, 20, 60, 30, '', 'FAST');
+        }
+      } catch(e) {}
+
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(24);
-      doc.text("Contact Us", pageWidth / 2, 60, { align: "center" });
+      doc.text("Contact Us", pageWidth / 2, 70, { align: "center" });
 
       if (catalogData.brand?.contact) {
         doc.setFontSize(14);
-        let yPos = 100;
+        let yPos = 90;
         if (catalogData.brand.contact.phone) {
           doc.text(`Phone: ${catalogData.brand.contact.phone}`, pageWidth / 2, yPos, { align: "center" });
           yPos += 15;
