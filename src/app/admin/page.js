@@ -527,7 +527,7 @@ export default function AdminPage() {
         <div className={styles.card} style={{ marginTop: '20px' }}>
           <h3>3. Brand Settings & Cover Page</h3>
           <p className={styles.helpText}>
-            Update your catalog's cover page background, logo, and brand text.
+            Update your catalog&apos;s cover page background, logo, and brand text.
           </p>
           <form className={styles.uploadForm} onSubmit={(e) => e.preventDefault()} onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }}>
             <div className={styles.formRow}>
