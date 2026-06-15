@@ -11,6 +11,7 @@ export async function POST(request) {
     const phone = formData.get('phone');
     const website = formData.get('website');
     const address = formData.get('address');
+    const qualityCommitment = formData.get('qualityCommitment');
     
     const coverImage = formData.get('coverImage');
     const logoImage = formData.get('logoImage');
@@ -31,6 +32,15 @@ export async function POST(request) {
     if (phone) catalogData.brand.contact.phone = phone;
     if (website) catalogData.brand.contact.website = website;
     if (address) catalogData.brand.contact.address = address;
+    
+    if (qualityCommitment) {
+      try {
+        catalogData.brand.qualityCommitment = JSON.parse(qualityCommitment);
+      } catch (e) {
+        // If it fails to parse, maybe it's just a string, but it should be an array
+        console.error("Failed to parse qualityCommitment", e);
+      }
+    }
 
     fs.writeFileSync(catalogPath, JSON.stringify(catalogData, null, 2));
 

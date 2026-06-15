@@ -27,6 +27,7 @@ export default function AdminPage() {
   const [brandName, setBrandName] = useState("");
   const [brandTagline, setBrandTagline] = useState("");
   const [brandAbout, setBrandAbout] = useState("");
+  const [brandQualityCommitment, setBrandQualityCommitment] = useState("");
   const [phone, setPhone] = useState("");
   const [website, setWebsite] = useState("");
   const [address, setAddress] = useState("");
@@ -53,6 +54,7 @@ export default function AdminPage() {
           setBrandName(data.brand.name || "");
           setBrandTagline(data.brand.tagline || "");
           setBrandAbout(data.brand.about || "");
+          setBrandQualityCommitment(data.brand.qualityCommitment ? data.brand.qualityCommitment.join("\n") : "");
           if (data.brand.contact) {
             setPhone(data.brand.contact.phone || "");
             setWebsite(data.brand.contact.website || "");
@@ -181,6 +183,7 @@ export default function AdminPage() {
     formData.append("name", brandName);
     formData.append("tagline", brandTagline);
     formData.append("about", brandAbout);
+    formData.append("qualityCommitment", JSON.stringify(brandQualityCommitment.split("\n").map(s => s.trim()).filter(Boolean)));
     formData.append("phone", phone);
     formData.append("website", website);
     formData.append("address", address);
@@ -477,6 +480,11 @@ export default function AdminPage() {
             <div className={styles.formGroup}>
               <label>About Content (Back Cover)</label>
               <textarea value={brandAbout} onChange={e => setBrandAbout(e.target.value)} rows={3} placeholder="We believe that premium furniture..." />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label>Quality Commitment (About Page) - One per line</label>
+              <textarea value={brandQualityCommitment} onChange={e => setBrandQualityCommitment(e.target.value)} rows={4} placeholder="Custom-made solutions...&#10;Premium materials...&#10;Professional installation..." />
             </div>
 
             <div className={styles.formRow}>
