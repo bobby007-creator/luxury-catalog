@@ -33,6 +33,17 @@ try {
   console.log('Running Next.js build...');
   execSync('set OFFLINE_BUILD=true&& npx next build', { stdio: 'inherit', shell: true });
   console.log('\n✅ Offline build successfully generated in the "out" folder!');
+
+  // Copy to Desktop
+  const outPath = path.join(__dirname, '..', 'out');
+  const desktopPath = path.join(process.env.USERPROFILE, 'Desktop', 'LuxuryCatalogOffline');
+  
+  if (fs.existsSync(outPath)) {
+    console.log(`Copying offline app to Desktop: ${desktopPath}`);
+    fs.cpSync(outPath, desktopPath, { recursive: true });
+    console.log('✅ Successfully copied to Desktop!');
+  }
+
 } catch (err) {
   console.error('\n❌ Offline build failed!', err.message);
 } finally {

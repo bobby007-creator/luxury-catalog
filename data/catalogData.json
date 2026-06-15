@@ -1,8 +1,8 @@
 {
   "brand": {
-    "name": "Test Name",
-    "tagline": "Designed for Your Space, Crafted for Your Lifestyle",
-    "about": "We believe that premium furniture should not only look beautiful but fit perfectly into your daily life. Our mission is to provide luxury, custom-crafted solutions that maximize both aesthetics and space efficiency.",
+    "name": "PVR Digital-Catalog",
+    "tagline": "Designed your space and enhance the looks is our responsibility ",
+    "about": "CONTACT: PVR STYLE FURNITURES, ADDRESS: GT ROAD, SRIKAKULAM. CONTACT: 9876543210",
     "contact": {
       "phone": "+1 (800) 555-0199",
       "email": "hello@pvrmanufacturing.com",
@@ -123,6 +123,64 @@
         "fabric": "Premium Finish"
       },
       "priceRange": "Price on Request"
+    },
+    {
+      "id": "prod-1781516759673",
+      "category": "Sofas",
+      "name": "l Corner",
+      "tagline": "modern",
+      "description": "will update later",
+      "images": {
+        "isolated": "/images/products/l_corner_1781516759669.png",
+        "lifestyle": "/images/products/l_corner_1781516759669.png"
+      },
+      "dimensions": "demo",
+      "seatingCapacity": "Varies",
+      "bestRoomSize": "demo",
+      "compatibility": {
+        "small": "❌ (Check dimensions)",
+        "medium": "✅ (Recommended)",
+        "large": "⭐ (Perfect Fit)"
+      },
+      "options": {
+        "colors": [
+          "blue",
+          "beige",
+          "red",
+          "yellow"
+        ],
+        "fabric": "Premium Finish"
+      },
+      "priceRange": "15000-20000"
+    },
+    {
+      "id": "prod-1781516857538",
+      "category": "Sofas",
+      "name": "corner",
+      "tagline": "modern",
+      "description": "will update later",
+      "images": {
+        "isolated": "/images/products/corner_1781516857535.png",
+        "lifestyle": "/images/products/corner_1781516857535.png"
+      },
+      "dimensions": "demo",
+      "seatingCapacity": "Varies",
+      "bestRoomSize": "demo",
+      "compatibility": {
+        "small": "❌ (Check dimensions)",
+        "medium": "✅ (Recommended)",
+        "large": "⭐ (Perfect Fit)"
+      },
+      "options": {
+        "colors": [
+          "navy blue",
+          "orange",
+          "red",
+          "brown"
+        ],
+        "fabric": "Premium Finish"
+      },
+      "priceRange": "20000-25000"
     }
   ],
   "transformations": {

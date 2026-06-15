@@ -25,6 +25,9 @@ export default function AdminPage() {
   const [brandName, setBrandName] = useState("");
   const [brandTagline, setBrandTagline] = useState("");
   const [brandAbout, setBrandAbout] = useState("");
+  const [phone, setPhone] = useState("");
+  const [website, setWebsite] = useState("");
+  const [address, setAddress] = useState("");
   const [coverImage, setCoverImage] = useState(null);
   const [logoImage, setLogoImage] = useState(null);
   const [isSavingBrand, setIsSavingBrand] = useState(false);
@@ -37,6 +40,23 @@ export default function AdminPage() {
         if (data.removeBgApiKey) setApiKey(data.removeBgApiKey);
       })
       .catch(err => console.error("Could not load config", err));
+
+    // Load existing brand data
+    fetch("/api/catalog")
+      .then(res => res.json())
+      .then(data => {
+        if (data.brand) {
+          setBrandName(data.brand.name || "");
+          setBrandTagline(data.brand.tagline || "");
+          setBrandAbout(data.brand.about || "");
+          if (data.brand.contact) {
+            setPhone(data.brand.contact.phone || "");
+            setWebsite(data.brand.contact.website || "");
+            setAddress(data.brand.contact.address || "");
+          }
+        }
+      })
+      .catch(err => console.error("Could not load catalog data", err));
   }, []);
 
   const saveConfig = async () => {
@@ -112,6 +132,9 @@ export default function AdminPage() {
     formData.append("name", brandName);
     formData.append("tagline", brandTagline);
     formData.append("about", brandAbout);
+    formData.append("phone", phone);
+    formData.append("website", website);
+    formData.append("address", address);
     if (coverImage) formData.append("coverImage", coverImage);
     if (logoImage) formData.append("logoImage", logoImage);
 
@@ -314,6 +337,22 @@ export default function AdminPage() {
             <div className={styles.formGroup}>
               <label>About Content (Back Cover)</label>
               <textarea value={brandAbout} onChange={e => setBrandAbout(e.target.value)} rows={3} placeholder="We believe that premium furniture..." />
+            </div>
+
+            <div className={styles.formRow}>
+              <div className={styles.formGroup}>
+                <label>Contact Phone</label>
+                <input type="text" value={phone} onChange={e => setPhone(e.target.value)} placeholder="e.g. +1 (555) 123-4567" />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Website</label>
+                <input type="text" value={website} onChange={e => setWebsite(e.target.value)} placeholder="e.g. www.gravityapp.com" />
+              </div>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label>Address</label>
+              <input type="text" value={address} onChange={e => setAddress(e.target.value)} placeholder="e.g. 123 Luxury Ave, Design District" />
             </div>
 
             <div className={styles.formRow}>

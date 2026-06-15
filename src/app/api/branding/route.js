@@ -8,6 +8,9 @@ export async function POST(request) {
     const name = formData.get('name');
     const tagline = formData.get('tagline');
     const about = formData.get('about');
+    const phone = formData.get('phone');
+    const website = formData.get('website');
+    const address = formData.get('address');
     
     const coverImage = formData.get('coverImage');
     const logoImage = formData.get('logoImage');
@@ -20,10 +23,14 @@ export async function POST(request) {
     }
 
     if (!catalogData.brand) catalogData.brand = {};
+    if (!catalogData.brand.contact) catalogData.brand.contact = {};
     
     if (name) catalogData.brand.name = name;
     if (tagline) catalogData.brand.tagline = tagline;
     if (about) catalogData.brand.about = about;
+    if (phone) catalogData.brand.contact.phone = phone;
+    if (website) catalogData.brand.contact.website = website;
+    if (address) catalogData.brand.contact.address = address;
 
     fs.writeFileSync(catalogPath, JSON.stringify(catalogData, null, 2));
 

@@ -124,13 +124,23 @@ export default function PDFExportButton() {
   };
 
   const getBase64ImageFromUrl = async (imageUrl) => {
-    const res = await fetch(imageUrl);
-    const blob = await res.blob();
     return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(blob);
+      const img = new Image();
+      img.crossOrigin = 'Anonymous';
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+        const dataURL = canvas.toDataURL('image/png');
+        resolve(dataURL);
+      };
+      img.onerror = () => {
+        console.error("Failed to load image for PDF:", imageUrl);
+        resolve(null);
+      };
+      img.src = imageUrl;
     });
   };
 
