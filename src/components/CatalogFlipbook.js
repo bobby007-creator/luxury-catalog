@@ -283,7 +283,7 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
             />
           </div>
         )}
-        <h2>Let's Design Your Space</h2>
+        <h2>Let&apos;s Design Your Space</h2>
         
         {!formSubmitted ? (
           <form className={styles.consultationForm} onSubmit={handleConsultationSubmit}>

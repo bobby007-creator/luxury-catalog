@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styles from './RoomPreviewer.module.css';
 
 export default function RoomPreviewer({ productImage, onClose }) {
@@ -38,13 +38,7 @@ export default function RoomPreviewer({ productImage, onClose }) {
     }
   };
 
-  useEffect(() => {
-    if (bgImage && imgRef.current) {
-      drawBackground(imgRef.current);
-    }
-  }, [bgImage]);
-
-  const drawBackground = (img) => {
+  const drawBackground = useCallback((img) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -69,7 +63,13 @@ export default function RoomPreviewer({ productImage, onClose }) {
     if (pos.x === 0 && pos.y === 0) {
       setPos({ x: width / 2, y: height / 2 });
     }
-  };
+  }, [pos.x, pos.y]);
+
+  useEffect(() => {
+    if (bgImage && imgRef.current) {
+      drawBackground(imgRef.current);
+    }
+  }, [bgImage, drawBackground]);
 
   const handlePointerDown = (e) => {
     if (mode === 'drag') {
@@ -130,7 +130,7 @@ export default function RoomPreviewer({ productImage, onClose }) {
       {!bgImage ? (
         <div className={styles.uploadContainer}>
           <h2>Take a Photo of the Room</h2>
-          <p>We'll drop the sofa directly into the customer's space!</p>
+          <p>We&apos;ll drop the sofa directly into the customer&apos;s space!</p>
           <label className={styles.uploadBtn}>
             Open Camera
             <input type="file" accept="image/*" capture="environment" onChange={handleFileUpload} />
