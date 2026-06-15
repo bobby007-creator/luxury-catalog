@@ -31,7 +31,9 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
   padding: 3rem;
   color: white;
 }
@@ -73,6 +75,10 @@
 .coverTitles {
   position: relative;
   z-index: 10;
+  background: rgba(0, 0, 0, 0.4);
+  padding: 2rem;
+  border-radius: 12px;
+  backdrop-filter: blur(5px);
 }
 
 .brandName {
@@ -352,7 +358,7 @@
   padding: 15px 20px;
   background: #fff;
   border-top: 1px solid #eee;
-  text-align: center;
+  text-align: left;
 }
 
 .cardCategory {
@@ -380,14 +386,13 @@
 
 .viewSpecsBtn {
   background: transparent;
-  border: 1px solid #222;
-  color: #222;
-  padding: 6px 12px;
+  border: 1px solid #ddd;
+  color: #333;
+  padding: 6px 10px;
   font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
   cursor: pointer;
   transition: all 0.2s;
+  letter-spacing: 1px;
 }
 
 .productCard:hover .viewSpecsBtn {
@@ -399,7 +404,7 @@
   background: #e43d30;
   border: 1px solid #e43d30;
   color: white;
-  padding: 6px 12px;
+  padding: 6px 10px;
   font-size: 11px;
   font-weight: bold;
   cursor: pointer;
@@ -418,11 +423,12 @@
 }
 
 .indexPage {
-  padding: 4rem;
+  padding: 3rem;
   height: 100%;
   background-color: #fcfbf9;
   display: flex;
   flex-direction: column;
+  justify-content: center;
 }
 
 .indexTitle {

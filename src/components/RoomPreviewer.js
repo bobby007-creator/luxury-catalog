@@ -16,19 +16,21 @@ export default function RoomPreviewer({ productImage, onClose }) {
   const handleFileUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const img = new Image();
-        img.onload = () => {
-          setBgImage(img);
-          imgRef.current = img;
-          drawBackground(img);
-        };
-        img.src = ev.target.result;
+      const url = URL.createObjectURL(file);
+      const img = new Image();
+      img.onload = () => {
+        imgRef.current = img;
+        setBgImage(url); // This triggers a re-render
       };
-      reader.readAsDataURL(file);
+      img.src = url;
     }
   };
+
+  useEffect(() => {
+    if (bgImage && imgRef.current) {
+      drawBackground(imgRef.current);
+    }
+  }, [bgImage]);
 
   const drawBackground = (img) => {
     const canvas = canvasRef.current;
@@ -51,8 +53,10 @@ export default function RoomPreviewer({ productImage, onClose }) {
     canvas.height = height;
     ctx.drawImage(img, 0, 0, width, height);
     
-    // Center product overlay initially
-    setPos({ x: width / 2, y: height / 2 });
+    // Only set Pos if it's the first time drawing
+    if (pos.x === 0 && pos.y === 0) {
+      setPos({ x: width / 2, y: height / 2 });
+    }
   };
 
   const handlePointerDown = (e) => {
