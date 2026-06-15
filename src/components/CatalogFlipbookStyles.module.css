@@ -1,4 +1,4 @@
-﻿.container {
+.container {
   width: 100%;
   height: 100vh;
   display: flex;
@@ -261,6 +261,101 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--color-accent);
+}
+.twoProductGrid {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 30px;
+  gap: 20px;
+}
+
+.productCard {
+  flex: 1;
+  background: white;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+}
+
+.productCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.isolatedImageWrapper {
+  flex: 1;
+  position: relative;
+  width: 100%;
+  min-height: 150px;
+  background: #f8f9fa;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.productImageContain {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
+}
+
+.cardDetails {
+  padding: 15px 20px;
+  background: #fff;
+  border-top: 1px solid #eee;
+  text-align: center;
+}
+
+.cardCategory {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #999;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.cardTitle {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  color: #222;
+  margin: 0 0 5px 0;
+}
+
+.cardPrice {
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+  margin: 0 0 10px 0;
+}
+
+.viewSpecsBtn {
+  background: transparent;
+  border: 1px solid #222;
+  color: #222;
+  padding: 6px 12px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.productCard:hover .viewSpecsBtn {
+  background: #222;
+  color: #fff;
+}
+
+.emptyCard {
+  flex: 1;
 }
 
 .productTitle {

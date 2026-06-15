@@ -1,7 +1,9 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import styles from "./Admin.module.css";
+
+import PDFExportButton from "./PDFExportButton";
 
 export default function AdminPage() {
   const [apiKey, setApiKey] = useState("");
@@ -13,7 +15,19 @@ export default function AdminPage() {
   const [category, setCategory] = useState("Sofas");
   const [dimensions, setDimensions] = useState("");
   const [bestRoomSize, setBestRoomSize] = useState("");
+  const [priceRange, setPriceRange] = useState("");
+  const [description, setDescription] = useState("");
+  const [tagline, setTagline] = useState("");
+  const [colors, setColors] = useState("");
   const [isUploading, setIsUploading] = useState(false);
+
+  // Brand Settings State
+  const [brandName, setBrandName] = useState("");
+  const [brandTagline, setBrandTagline] = useState("");
+  const [brandAbout, setBrandAbout] = useState("");
+  const [coverImage, setCoverImage] = useState(null);
+  const [logoImage, setLogoImage] = useState(null);
+  const [isSavingBrand, setIsSavingBrand] = useState(false);
 
   useEffect(() => {
     // Load config on mount
@@ -56,6 +70,10 @@ export default function AdminPage() {
     formData.append("category", category);
     formData.append("dimensions", dimensions);
     formData.append("bestRoomSize", bestRoomSize);
+    formData.append("priceRange", priceRange);
+    formData.append("description", description);
+    formData.append("tagline", tagline);
+    formData.append("colors", colors);
 
     try {
       const res = await fetch("/api/upload", {
@@ -71,6 +89,10 @@ export default function AdminPage() {
         setProductName("");
         setDimensions("");
         setBestRoomSize("");
+        setPriceRange("");
+        setDescription("");
+        setTagline("");
+        setColors("");
       } else {
         setStatus(`Error: ${data.error}`);
       }
@@ -79,6 +101,38 @@ export default function AdminPage() {
     }
     
     setIsUploading(false);
+  };
+
+  const handleBrandUpload = async (e) => {
+    e.preventDefault();
+    setIsSavingBrand(true);
+    setStatus("Saving brand settings...");
+
+    const formData = new FormData();
+    formData.append("name", brandName);
+    formData.append("tagline", brandTagline);
+    formData.append("about", brandAbout);
+    if (coverImage) formData.append("coverImage", coverImage);
+    if (logoImage) formData.append("logoImage", logoImage);
+
+    try {
+      const res = await fetch("/api/branding", {
+        method: "POST",
+        body: formData
+      });
+
+      if (res.ok) {
+        setStatus("Success! Brand settings updated.");
+        setCoverImage(null);
+        setLogoImage(null);
+      } else {
+        setStatus("Error updating brand settings.");
+      }
+    } catch (err) {
+      setStatus("Failed to save brand settings.");
+    }
+    
+    setIsSavingBrand(false);
   };
 
   return (
@@ -92,7 +146,10 @@ export default function AdminPage() {
       </div>
 
       <div className={styles.mainContent}>
-        <h1>Catalog Management</h1>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h1>Catalog Management</h1>
+          <PDFExportButton />
+        </div>
         
         {status && <div className={styles.statusBox}>{status}</div>}
 
@@ -119,14 +176,14 @@ export default function AdminPage() {
             Upload a raw photo of your furniture. Our AI will automatically strip the background, auto-crop it, enhance the lighting, and scale it perfectly to 1000x1000 pixels for the catalog.
           </p>
           
-          <form onSubmit={handleUpload} className={styles.uploadForm}>
+          <form className={styles.uploadForm} onSubmit={(e) => e.preventDefault()} onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }}>
             <div className={styles.formGroup}>
-              <label>Raw Photo</label>
+              <label htmlFor="rawPhoto">Raw Photo</label>
               <input 
+                id="rawPhoto"
                 type="file" 
                 accept="image/*" 
                 onChange={e => setFile(e.target.files[0])} 
-                required
               />
             </div>
 
@@ -177,8 +234,109 @@ export default function AdminPage() {
               </div>
             </div>
 
-            <button type="submit" className="btn-primary" disabled={isUploading}>
+            <div className={styles.formRow}>
+              <div className={styles.formGroup}>
+                <label>Price Range</label>
+                <input 
+                  type="text" 
+                  value={priceRange} 
+                  onChange={e => setPriceRange(e.target.value)} 
+                  placeholder="e.g. $4,000 - $6,500"
+                  required
+                />
+              </div>
+
+              <div className={styles.formGroup}>
+                <label>Tagline</label>
+                <input 
+                  type="text" 
+                  value={tagline} 
+                  onChange={e => setTagline(e.target.value)} 
+                  placeholder="e.g. Modern Luxury"
+                  required
+                />
+              </div>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label>Available Colors (comma separated)</label>
+              <input 
+                type="text" 
+                value={colors} 
+                onChange={e => setColors(e.target.value)} 
+                placeholder="e.g. Emerald Green, Navy Blue, Ivory"
+                required
+              />
+            </div>
+
+            <div className={styles.formGroup}>
+              <label>Description</label>
+              <textarea 
+                value={description} 
+                onChange={e => setDescription(e.target.value)} 
+                placeholder="Enter a detailed description of the product..."
+                rows={4}
+                required
+              />
+            </div>
+
+            <button 
+              type="button" 
+              onClick={(e) => {
+                console.log("Upload button clicked!");
+                handleUpload(e);
+              }} 
+              className="btn-primary" 
+              disabled={isUploading}
+            >
               {isUploading ? "Processing Image with AI..." : "Upload & Process Image"}
+            </button>
+          </form>
+        </div>
+
+        <div className={styles.card}>
+          <h3>3. Brand Settings & Cover Page</h3>
+          <p className={styles.helpText}>
+            Update your catalog's cover page background, logo, and brand text.
+          </p>
+          <form className={styles.uploadForm} onSubmit={(e) => e.preventDefault()} onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }}>
+            <div className={styles.formRow}>
+              <div className={styles.formGroup}>
+                <label>Brand Name</label>
+                <input type="text" value={brandName} onChange={e => setBrandName(e.target.value)} placeholder="e.g. PVR Manufacturing" />
+              </div>
+              <div className={styles.formGroup}>
+                <label>Tagline</label>
+                <input type="text" value={brandTagline} onChange={e => setBrandTagline(e.target.value)} placeholder="e.g. Designed for Your Space" />
+              </div>
+            </div>
+
+            <div className={styles.formGroup}>
+              <label>About Content (Back Cover)</label>
+              <textarea value={brandAbout} onChange={e => setBrandAbout(e.target.value)} rows={3} placeholder="We believe that premium furniture..." />
+            </div>
+
+            <div className={styles.formRow}>
+              <div className={styles.formGroup}>
+                <label htmlFor="coverImage">Cover Page Background Image</label>
+                <input id="coverImage" type="file" accept="image/*" onChange={e => setCoverImage(e.target.files[0])} />
+              </div>
+              <div className={styles.formGroup}>
+                <label htmlFor="logoImage">Company Logo</label>
+                <input id="logoImage" type="file" accept="image/*" onChange={e => setLogoImage(e.target.files[0])} />
+              </div>
+            </div>
+
+            <button 
+              type="button" 
+              onClick={(e) => {
+                console.log("Save Brand Settings clicked!");
+                handleBrandUpload(e);
+              }} 
+              className="btn-primary" 
+              disabled={isSavingBrand}
+            >
+              {isSavingBrand ? "Saving Brand Settings..." : "Save Brand Settings"}
             </button>
           </form>
         </div>

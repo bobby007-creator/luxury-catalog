@@ -1,4 +1,4 @@
-﻿import fs from 'fs';
+import fs from 'fs';
 import path from 'path';
 import { NextResponse } from 'next/server';
 import sharp from 'sharp';
@@ -11,6 +11,10 @@ export async function POST(request) {
     const category = formData.get('category');
     const dimensions = formData.get('dimensions');
     const bestRoomSize = formData.get('bestRoomSize');
+    const priceRange = formData.get('priceRange') || "Price on Request";
+    const description = formData.get('description') || "A gorgeous new addition to our premium luxury lineup.";
+    const tagline = formData.get('tagline') || "Premium Collection";
+    const colors = formData.get('colors') ? formData.get('colors').split(',') : ["Custom Order"];
 
     if (!imageFile || !name) {
       return NextResponse.json({ error: 'Missing image or name' }, { status: 400 });
@@ -89,8 +93,8 @@ export async function POST(request) {
       id: `prod-${Date.now()}`,
       category: category,
       name: name,
-      tagline: "Premium Collection",
-      description: "A gorgeous new addition to our premium luxury lineup.",
+      tagline: tagline,
+      description: description,
       images: {
         isolated: publicUrl,
         lifestyle: publicUrl // Using same image for now since we lack a lifestyle generator
@@ -99,15 +103,15 @@ export async function POST(request) {
       seatingCapacity: "Varies",
       bestRoomSize: bestRoomSize,
       compatibility: {
-        small: "âŒ (Check dimensions)",
-        medium: "âœ… (Recommended)",
-        large: "â­ (Perfect Fit)"
+        small: "❌ (Check dimensions)",
+        medium: "✅ (Recommended)",
+        large: "⭐ (Perfect Fit)"
       },
       options: {
-        colors: ["Custom Order"],
+        colors: colors.map(c => c.trim()),
         fabric: "Premium Finish"
       },
-      priceRange: "Price on Request"
+      priceRange: priceRange
     };
 
     catalogData.products.push(newProduct);

@@ -1,6 +1,6 @@
 {
   "brand": {
-    "name": "PVR Manufacturing",
+    "name": "Test Name",
     "tagline": "Designed for Your Space, Crafted for Your Lifestyle",
     "about": "We believe that premium furniture should not only look beautiful but fit perfectly into your daily life. Our mission is to provide luxury, custom-crafted solutions that maximize both aesthetics and space efficiency.",
     "contact": {
@@ -97,6 +97,32 @@
         "fabric": "Stain-resistant linen weave"
       },
       "priceRange": "₹1,800 - ₹2,400"
+    },
+    {
+      "id": "prod-1781502334867",
+      "category": "Sofas",
+      "name": "Lounger Model",
+      "tagline": "Premium Collection",
+      "description": "A gorgeous new addition to our premium luxury lineup.",
+      "images": {
+        "isolated": "/images/products/lounger_model_1781502334864.png",
+        "lifestyle": "/images/products/lounger_model_1781502334864.png"
+      },
+      "dimensions": "Size 9*7 ",
+      "seatingCapacity": "Varies",
+      "bestRoomSize": "12 ft * 12 ft",
+      "compatibility": {
+        "small": "âŒ (Check dimensions)",
+        "medium": "âœ… (Recommended)",
+        "large": "â­ (Perfect Fit)"
+      },
+      "options": {
+        "colors": [
+          "Custom Order"
+        ],
+        "fabric": "Premium Finish"
+      },
+      "priceRange": "Price on Request"
     }
   ],
   "transformations": {
