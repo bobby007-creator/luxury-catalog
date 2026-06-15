@@ -47,7 +47,7 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
     <Page key="cover" density="hard">
       <div className={styles.coverPage}>
         <img 
-          src={`/images/cover_image.png?v=${cacheBuster}`} 
+          src={`/images/cover_image.png`} 
           onError={(e) => { e.target.onerror = null; e.target.src = "/images/hero_cover.png"; }}
           alt="Luxury Living Room" 
           className={styles.coverBgImage}
@@ -56,14 +56,16 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
         <div className={styles.coverContent}>
           <div className={styles.logoWrapper}>
             <img 
-              src={`/images/logo.png?v=${cacheBuster}`} 
+              src={`/images/logo.png`} 
               onError={(e) => { e.target.onerror = null; e.target.src = "/images/hero_cover.png"; }}
               alt="Logo" 
               style={{ objectFit: 'contain', width: '180px', height: '100px' }} 
             />
           </div>
-          <h1 className={styles.coverTitle}>{brand.name}</h1>
-          <p className={styles.coverTagline}>{brand.tagline}</p>
+          <div className={styles.coverTitles}>
+            <h1 className={styles.brandName}>{brand.name}</h1>
+            <p className={styles.brandTagline}>{brand.tagline}</p>
+          </div>
         </div>
       </div>
     </Page>
@@ -89,10 +91,10 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
     </Page>
   );
 
-  // PRODUCT PAGES (2 products per page)
+  // Render Product Pages
   for (let i = 0; i < products.length; i += 2) {
     const product1 = products[i];
-    const product2 = products[i + 1]; // might be undefined
+    const product2 = products[i + 1];
 
     pages.push(
       <Page key={`products-${i}`} density="soft">
@@ -102,7 +104,7 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
             <div className={styles.imageContainer}>
               <img 
                 id={`product-img-${product1.id || product1.name.replace(/\s+/g, '')}`}
-                src={`/images/products/${product1.image}`} 
+                src={product1.image?.startsWith('/') ? product1.image : (product1.images?.isolated?.startsWith('/') ? product1.images.isolated : `/images/products/${product1.image || product1.images?.isolated}`)}
                 alt={product1.name} 
                 className={styles.cardImage} 
               />
@@ -116,9 +118,9 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
                 imageId={`product-img-${product1.id || product1.name.replace(/\s+/g, '')}`} 
               />
               <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '15px' }}>
-                <button className={styles.viewSpecsBtn} onClick={() => setSelectedProduct(product1)}>View Details</button>
-                <button className={styles.viewSpecsBtn} onClick={() => setPreviewingProductImage(`/images/products/${product1.image}`)}>Preview in Room</button>
-                <button className={styles.viewSpecsBtn} onClick={() => setZoomingProductImage(`/images/products/${product1.image}`)}>🔍 Zoom</button>
+                <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setSelectedProduct(product1); }}>View Details</button>
+                <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setPreviewingProductImage(product1.image?.startsWith('/') ? product1.image : (product1.images?.isolated?.startsWith('/') ? product1.images.isolated : `/images/products/${product1.image || product1.images?.isolated}`)); }}>Preview in Room</button>
+                <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setZoomingProductImage(product1.image?.startsWith('/') ? product1.image : (product1.images?.isolated?.startsWith('/') ? product1.images.isolated : `/images/products/${product1.image || product1.images?.isolated}`)); }}>🔎 Zoom</button>
               </div>
             </div>
           </div>
@@ -129,7 +131,7 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
               <div className={styles.imageContainer}>
                 <img 
                   id={`product-img-${product2.id || product2.name.replace(/\s+/g, '')}`}
-                  src={`/images/products/${product2.image}`} 
+                  src={product2.image?.startsWith('/') ? product2.image : (product2.images?.isolated?.startsWith('/') ? product2.images.isolated : `/images/products/${product2.image || product2.images?.isolated}`)}
                   alt={product2.name} 
                   className={styles.cardImage} 
                 />
@@ -143,9 +145,9 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
                   imageId={`product-img-${product2.id || product2.name.replace(/\s+/g, '')}`} 
                 />
                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '15px' }}>
-                  <button className={styles.viewSpecsBtn} onClick={() => setSelectedProduct(product2)}>View Details</button>
-                  <button className={styles.viewSpecsBtn} onClick={() => setPreviewingProductImage(`/images/products/${product2.image}`)}>Preview in Room</button>
-                  <button className={styles.viewSpecsBtn} onClick={() => setZoomingProductImage(`/images/products/${product2.image}`)}>🔍 Zoom</button>
+                  <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setSelectedProduct(product2); }}>View Details</button>
+                  <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setPreviewingProductImage(product2.image?.startsWith('/') ? product2.image : (product2.images?.isolated?.startsWith('/') ? product2.images.isolated : `/images/products/${product2.image || product2.images?.isolated}`)); }}>Preview in Room</button>
+                  <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setZoomingProductImage(product2.image?.startsWith('/') ? product2.image : (product2.images?.isolated?.startsWith('/') ? product2.images.isolated : `/images/products/${product2.image || product2.images?.isolated}`)); }}>🔎 Zoom</button>
                 </div>
               </div>
             </div>
@@ -245,14 +247,14 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
 
       {previewingProductImage && (
         <RoomPreviewer 
-          productImage={`${previewingProductImage}?v=${cacheBuster}`}
+          productImage={`${previewingProductImage}`}
           onClose={() => setPreviewingProductImage(null)} 
         />
       )}
 
       {zoomingProductImage && (
         <ZoomGallery 
-          imageSrc={`${zoomingProductImage}?v=${cacheBuster}`}
+          imageSrc={`${zoomingProductImage}`}
           onClose={() => setZoomingProductImage(null)} 
         />
       )}
