@@ -122,9 +122,11 @@ export default function PDFExportButton() {
 
         // Render second product if exists
         if (i + 1 < products.length) {
-          // Draw a subtle divider line
-          doc.setDrawColor(220, 220, 220);
+          // Draw a bold divider line
+          doc.setDrawColor(150, 150, 150); // Darker grey
+          doc.setLineWidth(1.5); // Thicker line
           doc.line(20, 105, pageWidth - 20, 105);
+          doc.setLineWidth(0.2); // Reset to default line width
           
           await renderProduct(products[i + 1], 115);
         }
