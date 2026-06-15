@@ -83,10 +83,6 @@ export default function RoomPreviewer({ productImage, onClose }) {
   const handlePointerUp = (e) => {
     setIsDragging(false);
     setIsPainting(false);
-    if (mode === 'pick') {
-      // Auto-switch to drag after picking a color so they can see it and move it
-      setMode('drag');
-    }
   };
 
   const handleCanvasAction = (e) => {
@@ -97,11 +93,7 @@ export default function RoomPreviewer({ productImage, onClose }) {
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
 
-    if (mode === 'pick') {
-      const pixel = ctx.getImageData(x, y, 1, 1).data;
-      setColor(`rgba(${pixel[0]}, ${pixel[1]}, ${pixel[2]}, ${pixel[3] / 255})`);
-      setMode('drag'); // Switch back to drag so they can position the colored sofa
-    } else if (mode === 'paint') {
+    if (mode === 'paint') {
       ctx.beginPath();
       ctx.arc(x, y, 20, 0, Math.PI * 2);
       ctx.fillStyle = color;
@@ -141,12 +133,18 @@ export default function RoomPreviewer({ productImage, onClose }) {
             >
               🖐️ Drag Sofa
             </button>
-            <button 
-              className={`${styles.toolBtn} ${mode === 'pick' ? styles.active : ''}`}
-              onClick={() => setMode('pick')}
-            >
-              💧 Pick Color
-            </button>
+            <label className={styles.toolBtn} style={{ position: 'relative', overflow: 'hidden', cursor: 'pointer' }}>
+              🎨 Choose Color
+              <input 
+                type="color" 
+                value={color === '#aaaaaa' ? '#ffffff' : color} 
+                onChange={(e) => {
+                  setColor(e.target.value);
+                  setMode('drag');
+                }}
+                style={{ position: 'absolute', opacity: 0, width: '100%', height: '100%', left: 0, top: 0, cursor: 'pointer' }}
+              />
+            </label>
             <button 
               className={`${styles.toolBtn} ${mode === 'paint' ? styles.active : ''}`}
               onClick={() => setMode('paint')}
