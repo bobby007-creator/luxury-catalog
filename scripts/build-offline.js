@@ -8,6 +8,7 @@ const filesToHide = [
   path.join(__dirname, '..', 'src', 'app', 'api', 'branding', 'route.js'),
   path.join(__dirname, '..', 'src', 'app', 'api', 'config', 'route.js'),
   path.join(__dirname, '..', 'src', 'app', 'api', 'upload', 'route.js'),
+  path.join(__dirname, '..', 'src', 'app', 'api', 'catalog', 'route.js'),
   path.join(__dirname, '..', 'src', 'app', 'admin', 'page.js')
 ];
 
@@ -39,6 +40,27 @@ try {
   const desktopPath = path.join(process.env.USERPROFILE, 'Desktop', 'LuxuryCatalogOffline');
   
   if (fs.existsSync(outPath)) {
+    console.log(`Fixing absolute paths for Android file:// support...`);
+    function replaceAbsolutePaths(dir) {
+      const files = fs.readdirSync(dir);
+      for (const file of files) {
+        const fullPath = path.join(dir, file);
+        if (fs.statSync(fullPath).isDirectory()) {
+          replaceAbsolutePaths(fullPath);
+        } else {
+          if (['.html', '.js', '.css'].includes(path.extname(fullPath))) {
+            let content = fs.readFileSync(fullPath, 'utf8');
+            content = content.replace(/(href|src)="\//g, '$1="./');
+            content = content.replace(/url\(\//g, 'url(./');
+            content = content.replace(/"\/_next\//g, '"./_next/');
+            content = content.replace(/"\/images\//g, '"./images/');
+            fs.writeFileSync(fullPath, content);
+          }
+        }
+      }
+    }
+    replaceAbsolutePaths(outPath);
+
     console.log(`Copying offline app to Desktop: ${desktopPath}`);
     fs.cpSync(outPath, desktopPath, { recursive: true });
     console.log('✅ Successfully copied to Desktop!');
