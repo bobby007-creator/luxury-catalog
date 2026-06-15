@@ -13,6 +13,8 @@ export async function POST(request) {
     const address = formData.get('address');
     const qualityCommitment = formData.get('qualityCommitment');
     const coverTextColor = formData.get('coverTextColor');
+    const logoPosition = formData.get('logoPosition');
+    const textPosition = formData.get('textPosition');
     
     const coverImage = formData.get('coverImage');
     const logoImage = formData.get('logoImage');
@@ -26,6 +28,7 @@ export async function POST(request) {
 
     if (!catalogData.brand) catalogData.brand = {};
     if (!catalogData.brand.contact) catalogData.brand.contact = {};
+    if (!catalogData.brand.layout) catalogData.brand.layout = {};
     
     if (name) catalogData.brand.name = name;
     if (tagline) catalogData.brand.tagline = tagline;
@@ -38,12 +41,23 @@ export async function POST(request) {
       try {
         catalogData.brand.qualityCommitment = JSON.parse(qualityCommitment);
       } catch (e) {
-        // If it fails to parse, maybe it's just a string, but it should be an array
         console.error("Failed to parse qualityCommitment", e);
       }
     }
     
     if (coverTextColor) catalogData.brand.coverTextColor = coverTextColor;
+    
+    if (logoPosition) {
+      try {
+        catalogData.brand.layout.logoPosition = JSON.parse(logoPosition);
+      } catch (e) {}
+    }
+    
+    if (textPosition) {
+      try {
+        catalogData.brand.layout.textPosition = JSON.parse(textPosition);
+      } catch (e) {}
+    }
 
     fs.writeFileSync(catalogPath, JSON.stringify(catalogData, null, 2));
 

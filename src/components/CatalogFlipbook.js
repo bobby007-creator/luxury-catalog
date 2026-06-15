@@ -54,7 +54,16 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
         />
         <div className={styles.coverOverlay}></div>
         <div className={styles.coverContent}>
-          <div className={styles.logoWrapper}>
+          <div 
+            className={styles.logoWrapper}
+            style={{
+              position: brand.layout?.logoPosition ? 'absolute' : 'relative',
+              top: brand.layout?.logoPosition ? `${brand.layout.logoPosition.top}%` : 'auto',
+              left: brand.layout?.logoPosition ? `${brand.layout.logoPosition.left}%` : 'auto',
+              transform: brand.layout?.logoPosition ? 'translate(-50%, -50%)' : 'none',
+              margin: brand.layout?.logoPosition ? '0' : undefined
+            }}
+          >
             <img 
               src={`/images/logo.png`} 
               onError={(e) => { e.target.onerror = null; e.target.src = "/images/hero_cover.png"; }}
@@ -62,7 +71,18 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
               style={{ objectFit: 'contain', width: '180px', height: '100px' }} 
             />
           </div>
-          <div className={styles.coverTitles} style={{ color: brand.coverTextColor || '#ffffff' }}>
+          <div 
+            className={styles.coverTitles} 
+            style={{ 
+              color: brand.coverTextColor || '#ffffff',
+              position: brand.layout?.textPosition ? 'absolute' : 'relative',
+              top: brand.layout?.textPosition ? `${brand.layout.textPosition.top}%` : 'auto',
+              left: brand.layout?.textPosition ? `${brand.layout.textPosition.left}%` : 'auto',
+              transform: brand.layout?.textPosition ? 'translate(-50%, -50%)' : 'none',
+              textAlign: brand.layout?.textPosition ? 'center' : 'left',
+              margin: brand.layout?.textPosition ? '0' : 'auto'
+            }}
+          >
             <h1 className={styles.brandName}>{brand.name}</h1>
             <p className={styles.brandTagline}>{brand.tagline}</p>
           </div>

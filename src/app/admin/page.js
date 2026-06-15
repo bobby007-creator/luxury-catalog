@@ -35,6 +35,10 @@ export default function AdminPage() {
   const [coverImage, setCoverImage] = useState(null);
   const [logoImage, setLogoImage] = useState(null);
   const [isSavingBrand, setIsSavingBrand] = useState(false);
+  const [logoPosition, setLogoPosition] = useState({ top: 10, left: 10 });
+  const [textPosition, setTextPosition] = useState({ top: 50, left: 50 });
+  const [previewCoverUrl, setPreviewCoverUrl] = useState("/images/brand/cover.jpg");
+  const [previewLogoUrl, setPreviewLogoUrl] = useState("/images/brand/logo.png");
 
   useEffect(() => {
     // Load config on mount
@@ -61,6 +65,10 @@ export default function AdminPage() {
             setPhone(data.brand.contact.phone || "");
             setWebsite(data.brand.contact.website || "");
             setAddress(data.brand.contact.address || "");
+          }
+          if (data.brand.layout) {
+            if (data.brand.layout.logoPosition) setLogoPosition(data.brand.layout.logoPosition);
+            if (data.brand.layout.textPosition) setTextPosition(data.brand.layout.textPosition);
           }
         }
       })
@@ -190,6 +198,8 @@ export default function AdminPage() {
     formData.append("phone", phone);
     formData.append("website", website);
     formData.append("address", address);
+    formData.append("logoPosition", JSON.stringify(logoPosition));
+    formData.append("textPosition", JSON.stringify(textPosition));
     if (coverImage) formData.append("coverImage", coverImage);
     if (logoImage) formData.append("logoImage", logoImage);
 
@@ -519,11 +529,94 @@ export default function AdminPage() {
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
                 <label htmlFor="coverImage">Cover Page Background Image</label>
-                <input id="coverImage" type="file" accept="image/*" onChange={e => setCoverImage(e.target.files[0])} />
+                <input id="coverImage" type="file" accept="image/*" onChange={e => {
+                  setCoverImage(e.target.files[0]);
+                  if (e.target.files[0]) setPreviewCoverUrl(URL.createObjectURL(e.target.files[0]));
+                }} />
               </div>
               <div className={styles.formGroup}>
                 <label htmlFor="logoImage">Company Logo</label>
-                <input id="logoImage" type="file" accept="image/*" onChange={e => setLogoImage(e.target.files[0])} />
+                <input id="logoImage" type="file" accept="image/*" onChange={e => {
+                  setLogoImage(e.target.files[0]);
+                  if (e.target.files[0]) setPreviewLogoUrl(URL.createObjectURL(e.target.files[0]));
+                }} />
+              </div>
+            </div>
+
+            <div className={styles.formGroup} style={{ marginTop: '20px', borderTop: '1px solid #eee', paddingTop: '20px' }}>
+              <h4>Cover Page Layout Editor</h4>
+              <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                
+                {/* The Preview Window */}
+                <div style={{
+                  width: '300px', 
+                  height: '420px', 
+                  position: 'relative', 
+                  backgroundColor: '#333',
+                  backgroundImage: `url(${previewCoverUrl})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  border: '2px solid #ccc',
+                  borderRadius: '4px',
+                  overflow: 'hidden'
+                }}>
+                  {/* Logo Preview */}
+                  <div style={{
+                    position: 'absolute',
+                    top: `${logoPosition.top}%`,
+                    left: `${logoPosition.left}%`,
+                    transform: 'translate(-50%, -50%)',
+                    width: '60px',
+                    height: 'auto'
+                  }}>
+                    <img src={previewLogoUrl} alt="Logo" style={{ width: '100%', height: 'auto' }} onError={(e) => e.target.style.display='none'} />
+                  </div>
+
+                  {/* Text Preview */}
+                  <div style={{
+                    position: 'absolute',
+                    top: `${textPosition.top}%`,
+                    left: `${textPosition.left}%`,
+                    transform: 'translate(-50%, -50%)',
+                    textAlign: 'center',
+                    color: coverTextColor,
+                    width: '100%'
+                  }}>
+                    <h1 style={{ fontSize: '24px', margin: '0', textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>{brandName || "Brand Name"}</h1>
+                    <p style={{ fontSize: '12px', margin: '5px 0 0 0', textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>{brandTagline || "Brand Tagline"}</p>
+                  </div>
+                </div>
+
+                {/* The Sliders */}
+                <div style={{ flex: 1, minWidth: '250px', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                  <div style={{ background: '#f9f9f9', padding: '15px', borderRadius: '8px' }}>
+                    <strong>Logo Position</strong>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
+                      <span style={{ width: '20px' }}>Y:</span>
+                      <input type="range" min="0" max="100" value={logoPosition.top} onChange={e => setLogoPosition({...logoPosition, top: parseInt(e.target.value)})} style={{ flex: 1 }} />
+                      <span>{logoPosition.top}%</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
+                      <span style={{ width: '20px' }}>X:</span>
+                      <input type="range" min="0" max="100" value={logoPosition.left} onChange={e => setLogoPosition({...logoPosition, left: parseInt(e.target.value)})} style={{ flex: 1 }} />
+                      <span>{logoPosition.left}%</span>
+                    </div>
+                  </div>
+
+                  <div style={{ background: '#f9f9f9', padding: '15px', borderRadius: '8px' }}>
+                    <strong>Text Position</strong>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
+                      <span style={{ width: '20px' }}>Y:</span>
+                      <input type="range" min="0" max="100" value={textPosition.top} onChange={e => setTextPosition({...textPosition, top: parseInt(e.target.value)})} style={{ flex: 1 }} />
+                      <span>{textPosition.top}%</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '10px' }}>
+                      <span style={{ width: '20px' }}>X:</span>
+                      <input type="range" min="0" max="100" value={textPosition.left} onChange={e => setTextPosition({...textPosition, left: parseInt(e.target.value)})} style={{ flex: 1 }} />
+                      <span>{textPosition.left}%</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
