@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './ProductModal.module.css';
 
-export default function ProductModal({ product, onClose }) {
+export default function ProductModal({ product, onClose, onPreview }) {
   if (!product) return null;
 
   return (
@@ -53,9 +53,20 @@ export default function ProductModal({ product, onClose }) {
               </div>
             </div>
             
-            <button className={styles.inquireButton} onClick={() => alert("Sales representative has been notified.")}>
-              Inquire About This Piece
-            </button>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+              <button className={styles.inquireButton} onClick={() => alert("Sales representative has been notified.")}>
+                Inquire About This Piece
+              </button>
+              {onPreview && (
+                <button 
+                  className={styles.previewButton} 
+                  onClick={onPreview}
+                  style={{ background: '#e43d30', color: 'white', border: 'none', padding: '15px 30px', fontSize: '16px', fontWeight: 'bold', borderRadius: '4px', cursor: 'pointer', flex: 1 }}
+                >
+                  Preview in Room
+                </button>
+              )}
+            </div>
           </div>
         </div>
       </div>

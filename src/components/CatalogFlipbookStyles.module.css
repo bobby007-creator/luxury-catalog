@@ -319,6 +319,16 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
+.imageContainer {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f8f9fa;
+  min-height: 100px;
+}
+
 .isolatedImageWrapper {
   flex: 1;
   position: relative;

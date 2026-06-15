@@ -332,6 +332,11 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
         <ProductModal 
           product={selectedProduct} 
           onClose={() => setSelectedProduct(null)} 
+          onPreview={() => {
+            const img = selectedProduct.image?.startsWith('/') ? selectedProduct.image : (selectedProduct.images?.isolated?.startsWith('/') ? selectedProduct.images.isolated : `/images/products/${selectedProduct.image || selectedProduct.images?.isolated}`);
+            setSelectedProduct(null);
+            setPreviewingProductImage(img);
+          }}
         />
       )}
     </div>
