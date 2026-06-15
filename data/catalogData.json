@@ -44,61 +44,6 @@
   },
   "products": [
     {
-      "id": "sofa-verona",
-      "category": "Sofas",
-      "name": "Verona L-Shape Sofa",
-      "tagline": "The Ultimate Lounging Experience",
-      "description": "A stunning modern L-shape sectional offering deep, sink-in comfort with a tailored European silhouette.",
-      "images": {
-        "isolated": "/images/products/verona_isolated.png",
-        "lifestyle": "/images/products/verona_lifestyle.png"
-      },
-      "dimensions": "9ft × 7ft (108\" × 84\")",
-      "seatingCapacity": "5-6 Persons",
-      "bestRoomSize": "12ft × 15ft+",
-      "compatibility": {
-        "small": "❌ (Too cramped, limits walking path)",
-        "medium": "✅ (Fits well against corner walls)",
-        "large": "⭐ (Perfect for floating in open floor plans)"
-      },
-      "options": {
-        "colors": [
-          "Ivory Boucle",
-          "Charcoal Velvet",
-          "Cognac Leather"
-        ],
-        "fabric": "Premium Italian performance fabrics"
-      },
-      "priceRange": "₹3,200 - ₹4,500"
-    },
-    {
-      "id": "bed-luna",
-      "category": "Beds",
-      "name": "Luna Storage Bed",
-      "tagline": "Serenity Meets Functionality",
-      "description": "An elegant, low-profile upholstered bed featuring a seamlessly integrated hydraulic storage system underneath.",
-      "images": {
-        "isolated": "/images/products/luna_isolated.png",
-        "lifestyle": "/images/products/luna_lifestyle.png"
-      },
-      "dimensions": "Queen: 64\" × 86\" | King: 80\" × 86\"",
-      "bestRoomSize": "10ft × 12ft+",
-      "compatibility": {
-        "small": "✅ (Excellent choice due to hidden storage)",
-        "medium": "⭐ (Perfectly balanced in standard bedrooms)",
-        "large": "✅ (Consider King size for grander scale)"
-      },
-      "options": {
-        "colors": [
-          "Sand Linen",
-          "Slate Grey",
-          "Midnight Blue"
-        ],
-        "fabric": "Stain-resistant linen weave"
-      },
-      "priceRange": "₹1,800 - ₹2,400"
-    },
-    {
       "id": "prod-1781502334867",
       "category": "Sofas",
       "name": "Lounger Model",
@@ -181,6 +126,87 @@
         "fabric": "Premium Finish"
       },
       "priceRange": "20000-25000"
+    },
+    {
+      "id": "prod-1781520237741",
+      "category": "Sofas",
+      "name": "demo",
+      "tagline": "budget",
+      "description": "will update it later",
+      "images": {
+        "isolated": "/images/products/demo_1781520237734.png",
+        "lifestyle": "/images/products/demo_1781520237734.png"
+      },
+      "dimensions": "demo",
+      "seatingCapacity": "Varies",
+      "bestRoomSize": "demo",
+      "compatibility": {
+        "small": "❌ (Check dimensions)",
+        "medium": "✅ (Recommended)",
+        "large": "⭐ (Perfect Fit)"
+      },
+      "options": {
+        "colors": [
+          "All the colors"
+        ],
+        "fabric": "Premium Finish"
+      },
+      "priceRange": "25000-30000"
+    },
+    {
+      "id": "prod-1781520341072",
+      "category": "Sofas",
+      "name": "3+1+1",
+      "tagline": "luxury model",
+      "description": "will update later",
+      "images": {
+        "isolated": "/images/products/3_1_1_1781520341069.png",
+        "lifestyle": "/images/products/3_1_1_1781520341069.png"
+      },
+      "dimensions": "demo",
+      "seatingCapacity": "Varies",
+      "bestRoomSize": "demo",
+      "compatibility": {
+        "small": "❌ (Check dimensions)",
+        "medium": "✅ (Recommended)",
+        "large": "⭐ (Perfect Fit)"
+      },
+      "options": {
+        "colors": [
+          "all colors"
+        ],
+        "fabric": "Premium Finish"
+      },
+      "priceRange": "35000-50000"
+    },
+    {
+      "id": "prod-1781520446782",
+      "category": "Sofas",
+      "name": "sofas",
+      "tagline": "modern",
+      "description": "will update later",
+      "images": {
+        "isolated": "/images/products/sofas_1781520446780.png",
+        "lifestyle": "/images/products/sofas_1781520446780.png"
+      },
+      "dimensions": "demo",
+      "seatingCapacity": "Varies",
+      "bestRoomSize": "demo",
+      "compatibility": {
+        "small": "❌ (Check dimensions)",
+        "medium": "✅ (Recommended)",
+        "large": "⭐ (Perfect Fit)"
+      },
+      "options": {
+        "colors": [
+          "navy blue",
+          "grey",
+          "red",
+          "ivory"
+        ],
+        "fabric": "Premium Finish"
+      },
+      "priceRange": "30000-40000"
     }
   ],
   "transformations": {

@@ -99,9 +99,15 @@ export default function PDFExportButton() {
           doc.setTextColor(100, 100, 100);
           doc.text(product.category, 110, startY + 25);
 
+          const formatPrice = (priceStr) => {
+            if (!priceStr) return "";
+            if (/[a-zA-Z]/.test(priceStr) || priceStr.includes('Rs.')) return priceStr;
+            return `Rs. ${priceStr}`;
+          };
+
           doc.setFontSize(16);
           doc.setTextColor(40, 40, 40);
-          doc.text(product.priceRange, 110, startY + 40);
+          doc.text(formatPrice(product.priceRange), 110, startY + 40);
 
           doc.setFontSize(11);
           doc.setTextColor(60, 60, 60);

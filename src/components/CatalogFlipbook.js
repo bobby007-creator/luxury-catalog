@@ -25,7 +25,13 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [previewingProductImage, setPreviewingProductImage] = useState(null);
   const [zoomingProductImage, setZoomingProductImage] = useState(null);
-  
+
+  const formatPrice = (priceStr) => {
+    if (!priceStr) return "";
+    if (/[a-zA-Z]/.test(priceStr) || priceStr.includes('₹')) return priceStr;
+    return `₹ ${priceStr}`;
+  };
+
   const { brand, products } = catalogData;
 
   const handleConsultationSubmit = (e) => {
@@ -104,7 +110,7 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
             <div className={styles.cardDetails}>
               <span className={styles.cardCategory}>{product1.category}</span>
               <h3 className={styles.cardTitle}>{product1.name}</h3>
-              <p className={styles.cardPrice}>{product1.priceRange}</p>
+              <p className={styles.cardPrice}>{formatPrice(product1.priceRange)}</p>
               <ProductColors 
                 colors={product1.colors} 
                 imageId={`product-img-${product1.id || product1.name.replace(/\s+/g, '')}`} 
@@ -131,7 +137,7 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
               <div className={styles.cardDetails}>
                 <span className={styles.cardCategory}>{product2.category}</span>
                 <h3 className={styles.cardTitle}>{product2.name}</h3>
-                <p className={styles.cardPrice}>{product2.priceRange}</p>
+                <p className={styles.cardPrice}>{formatPrice(product2.priceRange)}</p>
                 <ProductColors 
                   colors={product2.colors} 
                   imageId={`product-img-${product2.id || product2.name.replace(/\s+/g, '')}`} 
