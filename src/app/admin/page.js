@@ -21,6 +21,7 @@ export default function AdminPage() {
   const [colors, setColors] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [products, setProducts] = useState([]);
+  const [editingProductId, setEditingProductId] = useState(null);
 
   // Brand Settings State
   const [brandName, setBrandName] = useState("");
@@ -81,6 +82,48 @@ export default function AdminPage() {
 
   const handleUpload = async (e) => {
     e.preventDefault();
+    if (!productName) return;
+
+    if (editingProductId) {
+      setIsUploading(true);
+      setStatus("Updating product...");
+      try {
+        const res = await fetch("/api/catalog", {
+          method: "PUT",
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            id: editingProductId,
+            name: productName,
+            category: category,
+            tagline: tagline,
+            description: description,
+            priceRange: priceRange,
+            dimensions: dimensions,
+            colors: colors.split(',').map(c => c.trim()).filter(Boolean)
+          })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setStatus(`Success! Updated ${data.product.name}.`);
+          setEditingProductId(null);
+          setProductName("");
+          setDescription("");
+          setTagline("");
+          setColors("");
+          setPriceRange("");
+          setDimensions("");
+          
+          setProducts(prev => prev.map(p => p.id === data.product.id ? data.product : p));
+        } else {
+          setStatus(`Error: ${data.error}`);
+        }
+      } catch (err) {
+        setStatus("Failed to update product.");
+      }
+      setIsUploading(false);
+      return;
+    }
+
     if (!file) return alert("Please select a file!");
     if (!apiKey) return alert("Please save your Remove.bg API key first!");
 
@@ -184,6 +227,29 @@ export default function AdminPage() {
     }
   };
 
+  const handleEditProduct = (p) => {
+    setEditingProductId(p.id);
+    setProductName(p.name);
+    setCategory(p.category);
+    setDescription(p.description || "");
+    setTagline(p.tagline || "");
+    setPriceRange(p.priceRange || "");
+    setDimensions(p.dimensions || "");
+    setColors(p.options?.colors ? p.options.colors.join(", ") : "");
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const cancelEdit = () => {
+    setEditingProductId(null);
+    setProductName("");
+    setDescription("");
+    setTagline("");
+    setColors("");
+    setPriceRange("");
+    setDimensions("");
+    setFile(null);
+  };
+
   return (
     <div className={styles.adminContainer}>
       <div className={styles.sidebar}>
@@ -220,21 +286,23 @@ export default function AdminPage() {
         </div>
 
         <div className={styles.card}>
-          <h3>2. Upload New Product</h3>
-          <p className={styles.helpText}>
-            Upload a raw photo of your furniture. Our AI will automatically strip the background, auto-crop it, enhance the lighting, and scale it perfectly to 1000x1000 pixels for the catalog.
-          </p>
-          
-          <form className={styles.uploadForm} onSubmit={(e) => e.preventDefault()} onKeyDown={(e) => { if (e.key === 'Enter') e.preventDefault(); }}>
-            <div className={styles.formGroup}>
-              <label htmlFor="rawPhoto">Raw Photo</label>
-              <input 
-                id="rawPhoto"
-                type="file" 
-                accept="image/*" 
-                onChange={e => setFile(e.target.files[0])} 
-              />
-            </div>
+            <h3>{editingProductId ? `Editing: ${productName}` : "2. Add New Furniture"}</h3>
+            <p className={styles.helpText}>
+              {editingProductId ? "Update details for this product." : "Upload a raw photo of your furniture. Our AI will automatically remove the background and generate a transparent PNG."}
+            </p>
+            <form className={styles.uploadForm} onSubmit={handleUpload}>
+              
+              {!editingProductId && (
+                <div className={styles.formGroup}>
+                  <label htmlFor="rawPhoto">Raw Photo</label>
+                  <input 
+                    id="rawPhoto"
+                    type="file" 
+                    accept="image/*" 
+                    onChange={e => setFile(e.target.files[0])} 
+                  />
+                </div>
+              )}
 
             <div className={styles.formRow}>
               <div className={styles.formGroup}>
@@ -329,17 +397,18 @@ export default function AdminPage() {
               />
             </div>
 
-            <button 
-              type="button" 
-              onClick={(e) => {
-                console.log("Upload button clicked!");
-                handleUpload(e);
-              }} 
-              className="btn-primary" 
-              disabled={isUploading}
-            >
-              {isUploading ? "Processing Image with AI..." : "Upload & Process Image"}
-            </button>
+            <div style={{ display: 'flex', gap: '10px' }}>
+                <button type="submit" className="btn-primary" disabled={isUploading}>
+                  {isUploading 
+                    ? (editingProductId ? "Updating..." : "Processing Image with AI...") 
+                    : (editingProductId ? "Update Product" : "Upload & Process Image")}
+                </button>
+                {editingProductId && (
+                  <button type="button" onClick={cancelEdit} className="btn-secondary">
+                    Cancel Edit
+                  </button>
+                )}
+            </div>
           </form>
           </div>
 
@@ -366,12 +435,20 @@ export default function AdminPage() {
                         <strong>{p.name}</strong> <span style={{ color: '#888', fontSize: '0.9em' }}>({p.category})</span>
                       </div>
                     </div>
-                    <button 
-                      onClick={() => handleDeleteProduct(p.id)}
-                      style={{ background: '#ff4444', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '4px', cursor: 'pointer' }}
-                    >
-                      Delete
-                    </button>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                      <button 
+                        onClick={() => handleEditProduct(p)}
+                        style={{ background: '#f0f0f0', color: '#333', border: '1px solid #ccc', padding: '8px 12px', borderRadius: '4px', cursor: 'pointer' }}
+                      >
+                        Edit
+                      </button>
+                      <button 
+                        onClick={() => handleDeleteProduct(p.id)}
+                        style={{ background: '#ff4444', color: 'white', border: 'none', padding: '8px 12px', borderRadius: '4px', cursor: 'pointer' }}
+                      >
+                        Delete
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>
