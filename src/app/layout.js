@@ -14,8 +14,16 @@ const geistMono = Geist_Mono({
 export const metadata = {
   title: "PVR Digital Catalog",
   description: "Premium Luxury Furniture Catalog",
+  manifest: "/manifest.json",
+  themeColor: "#1a1a1a",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "PVR Catalog",
+  },
   icons: {
     icon: '/icon.png',
+    apple: '/icon.png',
   },
 };
 

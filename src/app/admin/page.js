@@ -35,6 +35,7 @@ export default function AdminPage() {
   const [coverImage, setCoverImage] = useState(null);
   const [logoImage, setLogoImage] = useState(null);
   const [isSavingBrand, setIsSavingBrand] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
   const [logoPosition, setLogoPosition] = useState({ top: 10, left: 10 });
   const [textPosition, setTextPosition] = useState({ top: 50, left: 50 });
   const [previewCoverUrl, setPreviewCoverUrl] = useState("/images/brand/cover.jpg");
@@ -229,6 +230,28 @@ export default function AdminPage() {
     setIsSavingBrand(false);
   };
 
+  const handleCloudSync = async () => {
+    setIsSyncing(true);
+    setStatus("Syncing to cloud tablets... This may take a minute.");
+    
+    try {
+      const res = await fetch("/api/sync", {
+        method: "POST"
+      });
+      const data = await res.json();
+      
+      if (res.ok) {
+        setStatus("Success! Tablets will update automatically on Wi-Fi.");
+      } else {
+        setStatus("Cloud sync error: " + (data.error || "Unknown error"));
+      }
+    } catch (err) {
+      setStatus("Failed to trigger cloud sync. Ensure you are on the host PC.");
+    }
+    
+    setIsSyncing(false);
+  };
+
   const handleDeleteProduct = async (id) => {
     if (!confirm("Are you sure you want to delete this product?")) return;
     
@@ -289,6 +312,28 @@ export default function AdminPage() {
         </div>
         
         {status && <div className={styles.statusBox}>{status}</div>}
+
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '30px' }}>
+          <button 
+            onClick={handleCloudSync}
+            disabled={isSyncing}
+            style={{ 
+                padding: '15px 30px', 
+                fontSize: '18px', 
+                backgroundColor: isSyncing ? '#aaa' : '#28a745', 
+                color: 'white', 
+                border: 'none', 
+                borderRadius: '5px', 
+                cursor: isSyncing ? 'not-allowed' : 'pointer',
+                boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px'
+            }}
+          >
+            {isSyncing ? "Syncing to Cloud..." : "📱 Sync to Cloud Tablets"}
+          </button>
+        </div>
 
         <div className={styles.card}>
           <h3>1. API Configuration</h3>
