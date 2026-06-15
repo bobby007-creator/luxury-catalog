@@ -39,6 +39,7 @@ export default function AdminPage() {
   const [textPosition, setTextPosition] = useState({ top: 50, left: 50 });
   const [previewCoverUrl, setPreviewCoverUrl] = useState("/images/brand/cover.jpg");
   const [previewLogoUrl, setPreviewLogoUrl] = useState("/images/brand/logo.png");
+  const [removeLogo, setRemoveLogo] = useState(false);
 
   useEffect(() => {
     // Load config on mount
@@ -69,6 +70,10 @@ export default function AdminPage() {
           if (data.brand.layout) {
             if (data.brand.layout.logoPosition) setLogoPosition(data.brand.layout.logoPosition);
             if (data.brand.layout.textPosition) setTextPosition(data.brand.layout.textPosition);
+          }
+          if (data.brand.hideLogo) {
+            setRemoveLogo(true);
+            setPreviewLogoUrl("");
           }
         }
       })
@@ -200,6 +205,7 @@ export default function AdminPage() {
     formData.append("address", address);
     formData.append("logoPosition", JSON.stringify(logoPosition));
     formData.append("textPosition", JSON.stringify(textPosition));
+    if (removeLogo) formData.append("hideLogo", "true");
     if (coverImage) formData.append("coverImage", coverImage);
     if (logoImage) formData.append("logoImage", logoImage);
 
@@ -538,8 +544,17 @@ export default function AdminPage() {
                 <label htmlFor="logoImage">Company Logo</label>
                 <input id="logoImage" type="file" accept="image/*" onChange={e => {
                   setLogoImage(e.target.files[0]);
+                  setRemoveLogo(false);
                   if (e.target.files[0]) setPreviewLogoUrl(URL.createObjectURL(e.target.files[0]));
                 }} />
+                <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <input type="checkbox" id="removeLogo" checked={removeLogo} onChange={e => {
+                    setRemoveLogo(e.target.checked);
+                    if (e.target.checked) setPreviewLogoUrl("");
+                    else setPreviewLogoUrl("/images/logo.png?v=" + new Date().getTime());
+                  }} />
+                  <label htmlFor="removeLogo" style={{ margin: 0, fontWeight: 'normal' }}>Hide logo on cover</label>
+                </div>
               </div>
             </div>
 
@@ -561,16 +576,18 @@ export default function AdminPage() {
                   overflow: 'hidden'
                 }}>
                   {/* Logo Preview */}
-                  <div style={{
-                    position: 'absolute',
-                    top: `${logoPosition.top}%`,
-                    left: `${logoPosition.left}%`,
-                    transform: 'translate(-50%, -50%)',
-                    width: '60px',
-                    height: 'auto'
-                  }}>
-                    <img src={previewLogoUrl} alt="Logo" style={{ width: '100%', height: 'auto' }} onError={(e) => e.target.style.display='none'} />
-                  </div>
+                  {!removeLogo && (
+                    <div style={{
+                      position: 'absolute',
+                      top: `${logoPosition.top}%`,
+                      left: `${logoPosition.left}%`,
+                      transform: 'translate(-50%, -50%)',
+                      width: '60px',
+                      height: 'auto'
+                    }}>
+                      <img src={previewLogoUrl} alt="Logo" style={{ width: '100%', height: 'auto' }} onError={(e) => e.target.style.display='none'} />
+                    </div>
+                  )}
 
                   {/* Text Preview */}
                   <div style={{

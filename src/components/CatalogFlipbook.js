@@ -54,23 +54,25 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
         />
         <div className={styles.coverOverlay}></div>
         <div className={styles.coverContent}>
-          <div 
-            className={styles.logoWrapper}
-            style={{
-              position: brand.layout?.logoPosition ? 'absolute' : 'relative',
-              top: brand.layout?.logoPosition ? `${brand.layout.logoPosition.top}%` : 'auto',
-              left: brand.layout?.logoPosition ? `${brand.layout.logoPosition.left}%` : 'auto',
-              transform: brand.layout?.logoPosition ? 'translate(-50%, -50%)' : 'none',
-              margin: brand.layout?.logoPosition ? '0' : undefined
-            }}
-          >
-            <img 
-              src={`/images/logo.png`} 
-              onError={(e) => { e.target.onerror = null; e.target.src = "/images/hero_cover.png"; }}
-              alt="Logo" 
-              style={{ objectFit: 'contain', width: '180px', height: '100px' }} 
-            />
-          </div>
+          {!brand.hideLogo && (
+            <div 
+              className={styles.logoWrapper}
+              style={{
+                position: brand.layout?.logoPosition ? 'absolute' : 'relative',
+                top: brand.layout?.logoPosition ? `${brand.layout.logoPosition.top}%` : 'auto',
+                left: brand.layout?.logoPosition ? `${brand.layout.logoPosition.left}%` : 'auto',
+                transform: brand.layout?.logoPosition ? 'translate(-50%, -50%)' : 'none',
+                margin: brand.layout?.logoPosition ? '0' : undefined
+              }}
+            >
+              <img 
+                src={`/images/logo.png`} 
+                onError={(e) => { e.target.onerror = null; e.target.src = "/images/hero_cover.png"; }}
+                alt="Logo" 
+                style={{ objectFit: 'contain', width: '180px', height: '100px' }} 
+              />
+            </div>
+          )}
           <div 
             className={styles.coverTitles} 
             style={{ 
@@ -252,14 +254,16 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
      pages.push(
       <Page key="padding-page" density="soft">
         <div className={styles.textPage}>
-          <div className={styles.logoWrapper} style={{opacity: 0.3, marginTop: 'auto', marginBottom: 'auto'}}>
-            <img 
-              src={`/images/logo.png?v=${cacheBuster}`} 
-              onError={(e) => { e.target.onerror = null; e.target.src = "/images/hero_cover.png"; }}
-              alt="Logo" 
-              style={{ objectFit: 'contain', width: '150px' }} 
-            />
-          </div>
+          {!brand.hideLogo && (
+            <div className={styles.logoWrapper} style={{opacity: 0.3, marginTop: 'auto', marginBottom: 'auto'}}>
+              <img 
+                src={`/images/logo.png?v=${cacheBuster}`} 
+                onError={(e) => { e.target.onerror = null; e.target.src = "/images/hero_cover.png"; }}
+                alt="Logo" 
+                style={{ objectFit: 'contain', width: '150px' }} 
+              />
+            </div>
+          )}
         </div>
       </Page>
     );
@@ -269,14 +273,16 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
   pages.push(
     <Page key="back-cover-front" density="hard">
       <div className={styles.backCover}>
-        <div className={styles.logoWrapper}>
-          <img 
-              src={`/images/logo.png?v=${cacheBuster}`} 
-              onError={(e) => { e.target.onerror = null; e.target.src = "/images/hero_cover.png"; }}
-              alt="Logo" 
-              style={{ objectFit: 'contain', width: '180px', height: '100px' }} 
-          />
-        </div>
+        {!brand.hideLogo && (
+          <div className={styles.logoWrapper}>
+            <img 
+                src={`/images/logo.png?v=${cacheBuster}`} 
+                onError={(e) => { e.target.onerror = null; e.target.src = "/images/hero_cover.png"; }}
+                alt="Logo" 
+                style={{ objectFit: 'contain', width: '180px', height: '100px' }} 
+            />
+          </div>
+        )}
         <h2>Let's Design Your Space</h2>
         
         {!formSubmitted ? (

@@ -15,6 +15,7 @@ export async function POST(request) {
     const coverTextColor = formData.get('coverTextColor');
     const logoPosition = formData.get('logoPosition');
     const textPosition = formData.get('textPosition');
+    const hideLogo = formData.get('hideLogo') === 'true';
     
     const coverImage = formData.get('coverImage');
     const logoImage = formData.get('logoImage');
@@ -46,6 +47,8 @@ export async function POST(request) {
     }
     
     if (coverTextColor) catalogData.brand.coverTextColor = coverTextColor;
+    
+    catalogData.brand.hideLogo = hideLogo;
     
     if (logoPosition) {
       try {
