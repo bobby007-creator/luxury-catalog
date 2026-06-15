@@ -91,73 +91,134 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
     </Page>
   );
 
-  // Render Product Pages
-  for (let i = 0; i < products.length; i += 2) {
-    const product1 = products[i];
-    const product2 = products[i + 1];
+  // Group Products by Category
+  const groupedProducts = {};
+  products.forEach(p => {
+    const cat = p.category || 'Other';
+    if (!groupedProducts[cat]) groupedProducts[cat] = [];
+    groupedProducts[cat].push(p);
+  });
+  const categories = Object.keys(groupedProducts);
 
+  // Calculate Page Indexes
+  // Page 0 = Cover, Page 1 = About, Page 2 = Index
+  let currentPageIndex = 3;
+  const categoryStartPages = {};
+  
+  categories.forEach(cat => {
+    categoryStartPages[cat] = currentPageIndex;
+    currentPageIndex += 1; // Divider Page
+    const productCount = groupedProducts[cat].length;
+    currentPageIndex += Math.ceil(productCount / 2); // Product Pages
+  });
+
+  // PAGE 3: Index
+  pages.push(
+    <Page key="index" density="soft">
+      <div className={styles.indexPage}>
+        <h2 className={styles.indexTitle}>Index</h2>
+        <ul className={styles.indexList}>
+          {categories.map((cat) => (
+            <li 
+              key={cat} 
+              className={styles.indexItem}
+              onClick={() => {
+                if (flipBookRef.current) {
+                  flipBookRef.current.pageFlip().turnToPage(categoryStartPages[cat]);
+                }
+              }}
+            >
+              <span className={styles.indexItemName}>{cat}</span>
+              <span className={styles.indexItemPage}>Page {categoryStartPages[cat] + 1}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </Page>
+  );
+
+  // Render Category Dividers and Products
+  categories.forEach((cat) => {
+    // Divider
     pages.push(
-      <Page key={`products-${i}`} density="soft">
-        <div className={styles.twoProductGrid}>
-          {/* Top Product */}
-          <div className={styles.productCard} onClick={() => setSelectedProduct(product1)}>
-            <div className={styles.imageContainer}>
-              <img 
-                id={`product-img-${product1.id || product1.name.replace(/\s+/g, '')}`}
-                src={product1.image?.startsWith('/') ? product1.image : (product1.images?.isolated?.startsWith('/') ? product1.images.isolated : `/images/products/${product1.image || product1.images?.isolated}`)}
-                alt={product1.name} 
-                className={styles.cardImage} 
-              />
-            </div>
-            <div className={styles.cardDetails}>
-              <span className={styles.cardCategory}>{product1.category}</span>
-              <h3 className={styles.cardTitle}>{product1.name}</h3>
-              <p className={styles.cardPrice}>{formatPrice(product1.priceRange)}</p>
-              <ProductColors 
-                colors={product1.colors} 
-                imageId={`product-img-${product1.id || product1.name.replace(/\s+/g, '')}`} 
-              />
-              <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '15px' }}>
-                <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setSelectedProduct(product1); }}>View Details</button>
-                <button className={styles.previewBtn} onClick={(e) => { e.stopPropagation(); setPreviewingProductImage(product1.image?.startsWith('/') ? product1.image : (product1.images?.isolated?.startsWith('/') ? product1.images.isolated : `/images/products/${product1.image || product1.images?.isolated}`)); }}>Preview in Room</button>
-                <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setZoomingProductImage(product1.image?.startsWith('/') ? product1.image : (product1.images?.isolated?.startsWith('/') ? product1.images.isolated : `/images/products/${product1.image || product1.images?.isolated}`)); }}>🔎 Zoom</button>
-              </div>
-            </div>
-          </div>
+      <Page key={`divider-${cat}`} density="hard">
+        <div className={styles.sectionDivider}>
+          <h2 className={styles.sectionDividerTitle}>{cat}</h2>
+          <div className={styles.sectionDividerLine}></div>
+          <p>Premium Collection</p>
+        </div>
+      </Page>
+    );
 
-          {/* Bottom Product (if exists) */}
-          {product2 ? (
-            <div className={styles.productCard} onClick={() => setSelectedProduct(product2)}>
+    // Products
+    const catProducts = groupedProducts[cat];
+    for (let i = 0; i < catProducts.length; i += 2) {
+      const product1 = catProducts[i];
+      const product2 = catProducts[i + 1];
+
+      pages.push(
+        <Page key={`products-${cat}-${i}`} density="soft">
+          <div className={styles.twoProductGrid}>
+            {/* Top Product */}
+            <div className={styles.productCard} onClick={() => setSelectedProduct(product1)}>
               <div className={styles.imageContainer}>
                 <img 
-                  id={`product-img-${product2.id || product2.name.replace(/\s+/g, '')}`}
-                  src={product2.image?.startsWith('/') ? product2.image : (product2.images?.isolated?.startsWith('/') ? product2.images.isolated : `/images/products/${product2.image || product2.images?.isolated}`)}
-                  alt={product2.name} 
+                  id={`product-img-${product1.id || product1.name.replace(/\s+/g, '')}`}
+                  src={product1.image?.startsWith('/') ? product1.image : (product1.images?.isolated?.startsWith('/') ? product1.images.isolated : `/images/products/${product1.image || product1.images?.isolated}`)}
+                  alt={product1.name} 
                   className={styles.cardImage} 
                 />
               </div>
               <div className={styles.cardDetails}>
-                <span className={styles.cardCategory}>{product2.category}</span>
-                <h3 className={styles.cardTitle}>{product2.name}</h3>
-                <p className={styles.cardPrice}>{formatPrice(product2.priceRange)}</p>
+                <span className={styles.cardCategory}>{product1.category}</span>
+                <h3 className={styles.cardTitle}>{product1.name}</h3>
+                <p className={styles.cardPrice}>{formatPrice(product1.priceRange)}</p>
                 <ProductColors 
-                  colors={product2.colors} 
-                  imageId={`product-img-${product2.id || product2.name.replace(/\s+/g, '')}`} 
+                  colors={product1.colors} 
+                  imageId={`product-img-${product1.id || product1.name.replace(/\s+/g, '')}`} 
                 />
                 <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '15px' }}>
-                  <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setSelectedProduct(product2); }}>View Details</button>
-                  <button className={styles.previewBtn} onClick={(e) => { e.stopPropagation(); setPreviewingProductImage(product2.image?.startsWith('/') ? product2.image : (product2.images?.isolated?.startsWith('/') ? product2.images.isolated : `/images/products/${product2.image || product2.images?.isolated}`)); }}>Preview in Room</button>
-                  <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setZoomingProductImage(product2.image?.startsWith('/') ? product2.image : (product2.images?.isolated?.startsWith('/') ? product2.images.isolated : `/images/products/${product2.image || product2.images?.isolated}`)); }}>🔎 Zoom</button>
+                  <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setSelectedProduct(product1); }}>View Details</button>
+                  <button className={styles.previewBtn} onClick={(e) => { e.stopPropagation(); setPreviewingProductImage(product1.image?.startsWith('/') ? product1.image : (product1.images?.isolated?.startsWith('/') ? product1.images.isolated : `/images/products/${product1.image || product1.images?.isolated}`)); }}>Preview in Room</button>
+                  <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setZoomingProductImage(product1.image?.startsWith('/') ? product1.image : (product1.images?.isolated?.startsWith('/') ? product1.images.isolated : `/images/products/${product1.image || product1.images?.isolated}`)); }}>🔎 Zoom</button>
                 </div>
               </div>
             </div>
-          ) : (
-             <div className={styles.emptyCard}></div>
-          )}
-        </div>
-      </Page>
-    );
-  }
+
+            {/* Bottom Product (if exists) */}
+            {product2 ? (
+              <div className={styles.productCard} onClick={() => setSelectedProduct(product2)}>
+                <div className={styles.imageContainer}>
+                  <img 
+                    id={`product-img-${product2.id || product2.name.replace(/\s+/g, '')}`}
+                    src={product2.image?.startsWith('/') ? product2.image : (product2.images?.isolated?.startsWith('/') ? product2.images.isolated : `/images/products/${product2.image || product2.images?.isolated}`)}
+                    alt={product2.name} 
+                    className={styles.cardImage} 
+                  />
+                </div>
+                <div className={styles.cardDetails}>
+                  <span className={styles.cardCategory}>{product2.category}</span>
+                  <h3 className={styles.cardTitle}>{product2.name}</h3>
+                  <p className={styles.cardPrice}>{formatPrice(product2.priceRange)}</p>
+                  <ProductColors 
+                    colors={product2.colors} 
+                    imageId={`product-img-${product2.id || product2.name.replace(/\s+/g, '')}`} 
+                  />
+                  <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center', marginTop: '15px' }}>
+                    <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setSelectedProduct(product2); }}>View Details</button>
+                    <button className={styles.previewBtn} onClick={(e) => { e.stopPropagation(); setPreviewingProductImage(product2.image?.startsWith('/') ? product2.image : (product2.images?.isolated?.startsWith('/') ? product2.images.isolated : `/images/products/${product2.image || product2.images?.isolated}`)); }}>Preview in Room</button>
+                    <button className={styles.viewSpecsBtn} onClick={(e) => { e.stopPropagation(); setZoomingProductImage(product2.image?.startsWith('/') ? product2.image : (product2.images?.isolated?.startsWith('/') ? product2.images.isolated : `/images/products/${product2.image || product2.images?.isolated}`)); }}>🔎 Zoom</button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+               <div className={styles.emptyCard}></div>
+            )}
+          </div>
+        </Page>
+      );
+    }
+  });
 
   // Ensure pages count is even (Flipbook requires even number of pages to avoid crash)
   if (pages.length % 2 !== 0) {

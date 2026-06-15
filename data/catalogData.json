@@ -1,243 +1,243 @@
 {
-  "brand": {
-    "name": "PVR Digital-Catalog",
-    "tagline": "Designed your space and enhance the looks is our responsibility ",
-    "about": "CONTACT: PVR STYLE FURNITURES, ADDRESS: GT ROAD, SRIKAKULAM. CONTACT: 9876543210",
-    "contact": {
-      "phone": "+91 9876543210",
-      "email": "hello@pvrmanufacturing.com",
-      "address": "G T ROAD, OPP: HP PETROL BUNK",
-      "website": "www.        .com"
-    }
-  },
-  "spacePlanning": {
-    "small": {
-      "title": "Small Spaces",
-      "sizeRange": "8x10 ft to 10x12 ft",
-      "recommended": [
-        "Compact 2-seater sofas",
-        "Storage beds",
-        "Space-saving furniture"
-      ],
-      "image": "/images/spaces/small_room.png"
-    },
-    "medium": {
-      "title": "Medium Spaces",
-      "sizeRange": "10x12 ft to 14x16 ft",
-      "recommended": [
-        "3-seater sofas",
-        "Queen beds",
-        "Standard entertainment units"
-      ],
-      "image": "/images/spaces/medium_room.png"
-    },
-    "large": {
-      "title": "Large Spaces",
-      "sizeRange": "14x16 ft and above",
-      "recommended": [
-        "L-shaped sofas",
-        "King-size beds",
-        "Premium living room collections"
-      ],
-      "image": "/images/spaces/large_room.png"
-    }
-  },
-  "products": [
-    {
-      "id": "prod-1781502334867",
-      "category": "Sofas",
-      "name": "Lounger Model",
-      "tagline": "Premium Collection",
-      "description": "A gorgeous new addition to our premium luxury lineup.",
-      "images": {
-        "isolated": "/images/products/lounger_model_1781502334864.png",
-        "lifestyle": "/images/products/lounger_model_1781502334864.png"
-      },
-      "dimensions": "Size 9*7 ",
-      "seatingCapacity": "Varies",
-      "bestRoomSize": "12 ft * 12 ft",
-      "compatibility": {
-        "small": "âŒ (Check dimensions)",
-        "medium": "âœ… (Recommended)",
-        "large": "â­ (Perfect Fit)"
-      },
-      "options": {
-        "colors": [
-          "Custom Order"
-        ],
-        "fabric": "Premium Finish"
-      },
-      "priceRange": "Price on Request"
-    },
-    {
-      "id": "prod-1781516759673",
-      "category": "Sofas",
-      "name": "l Corner",
-      "tagline": "modern",
-      "description": "will update later",
-      "images": {
-        "isolated": "/images/products/l_corner_1781516759669.png",
-        "lifestyle": "/images/products/l_corner_1781516759669.png"
-      },
-      "dimensions": "demo",
-      "seatingCapacity": "Varies",
-      "bestRoomSize": "demo",
-      "compatibility": {
-        "small": "❌ (Check dimensions)",
-        "medium": "✅ (Recommended)",
-        "large": "⭐ (Perfect Fit)"
-      },
-      "options": {
-        "colors": [
-          "blue",
-          "beige",
-          "red",
-          "yellow"
-        ],
-        "fabric": "Premium Finish"
-      },
-      "priceRange": "15000-20000"
-    },
-    {
-      "id": "prod-1781516857538",
-      "category": "Sofas",
-      "name": "corner",
-      "tagline": "modern",
-      "description": "will update later",
-      "images": {
-        "isolated": "/images/products/corner_1781516857535.png",
-        "lifestyle": "/images/products/corner_1781516857535.png"
-      },
-      "dimensions": "demo",
-      "seatingCapacity": "Varies",
-      "bestRoomSize": "demo",
-      "compatibility": {
-        "small": "❌ (Check dimensions)",
-        "medium": "✅ (Recommended)",
-        "large": "⭐ (Perfect Fit)"
-      },
-      "options": {
-        "colors": [
-          "navy blue",
-          "orange",
-          "red",
-          "brown"
-        ],
-        "fabric": "Premium Finish"
-      },
-      "priceRange": "20000-25000"
-    },
-    {
-      "id": "prod-1781520237741",
-      "category": "Sofas",
-      "name": "demo",
-      "tagline": "budget",
-      "description": "will update it later",
-      "images": {
-        "isolated": "/images/products/demo_1781520237734.png",
-        "lifestyle": "/images/products/demo_1781520237734.png"
-      },
-      "dimensions": "demo",
-      "seatingCapacity": "Varies",
-      "bestRoomSize": "demo",
-      "compatibility": {
-        "small": "❌ (Check dimensions)",
-        "medium": "✅ (Recommended)",
-        "large": "⭐ (Perfect Fit)"
-      },
-      "options": {
-        "colors": [
-          "All the colors"
-        ],
-        "fabric": "Premium Finish"
-      },
-      "priceRange": "25000-30000"
-    },
-    {
-      "id": "prod-1781520341072",
-      "category": "Sofas",
-      "name": "3+1+1",
-      "tagline": "luxury model",
-      "description": "will update later",
-      "images": {
-        "isolated": "/images/products/3_1_1_1781520341069.png",
-        "lifestyle": "/images/products/3_1_1_1781520341069.png"
-      },
-      "dimensions": "demo",
-      "seatingCapacity": "Varies",
-      "bestRoomSize": "demo",
-      "compatibility": {
-        "small": "❌ (Check dimensions)",
-        "medium": "✅ (Recommended)",
-        "large": "⭐ (Perfect Fit)"
-      },
-      "options": {
-        "colors": [
-          "all colors"
-        ],
-        "fabric": "Premium Finish"
-      },
-      "priceRange": "35000-50000"
-    },
-    {
-      "id": "prod-1781520446782",
-      "category": "Sofas",
-      "name": "sofas",
-      "tagline": "modern",
-      "description": "will update later",
-      "images": {
-        "isolated": "/images/products/sofas_1781520446780.png",
-        "lifestyle": "/images/products/sofas_1781520446780.png"
-      },
-      "dimensions": "demo",
-      "seatingCapacity": "Varies",
-      "bestRoomSize": "demo",
-      "compatibility": {
-        "small": "❌ (Check dimensions)",
-        "medium": "✅ (Recommended)",
-        "large": "⭐ (Perfect Fit)"
-      },
-      "options": {
-        "colors": [
-          "navy blue",
-          "grey",
-          "red",
-          "ivory"
-        ],
-        "fabric": "Premium Finish"
-      },
-      "priceRange": "30000-40000"
-    }
-  ],
-  "transformations": {
-    "title": "Before & After: The Power of Scale",
-    "description": "See how the right proportions can completely transform a space. A room is just an empty box until it is furnished with precision.",
-    "beforeImage": "/images/features/before_empty.png",
-    "afterImage": "/images/features/after_furnished.png"
-  },
-  "visualization": {
-    "title": "Scaled for Your Life",
-    "description": "Whether you are outfitting a compact urban apartment or an expansive luxury villa, our collections are modular and adaptable.",
-    "apartment": {
-      "title": "Urban Apartment",
-      "image": "/images/features/viz_apartment.png",
-      "note": "Compact footprints with maximum comfort."
-    },
-    "villa": {
-      "title": "Luxury Villa",
-      "image": "/images/features/viz_villa.png",
-      "note": "Grand scale for expansive spaces."
-    }
-  },
-  "customFurniture": {
-    "title": "Bespoke Custom Furniture",
-    "description": "Do not see exactly what you need? Our master craftsmen can build it. We specialize in custom-tailored solutions designed down to the millimeter for your unique floor plan.",
-    "image": "/images/features/custom_workshop.png",
-    "features": [
-      "Precision Measurements",
-      "Custom Fabric Selection",
-      "Tailored Configurations",
-      "White-Glove Delivery"
-    ]
-  }
+    "brand":  {
+                  "name":  "PVR Digital-Catalog",
+                  "tagline":  "Designed your space and enhance the looks is our responsibility ",
+                  "about":  "CONTACT: PVR STYLE FURNITURES, ADDRESS: GT ROAD, SRIKAKULAM. CONTACT: 9876543210",
+                  "contact":  {
+                                  "phone":  "+91 9876543210",
+                                  "email":  "hello@pvrmanufacturing.com",
+                                  "address":  "G T ROAD, OPP: HP PETROL BUNK",
+                                  "website":  "www.        .com"
+                              }
+              },
+    "spacePlanning":  {
+                          "small":  {
+                                        "title":  "Small Spaces",
+                                        "sizeRange":  "8x10 ft to 10x12 ft",
+                                        "recommended":  [
+                                                            "Compact 2-seater sofas",
+                                                            "Storage beds",
+                                                            "Space-saving furniture"
+                                                        ],
+                                        "image":  "/images/spaces/small_room.png"
+                                    },
+                          "medium":  {
+                                         "title":  "Medium Spaces",
+                                         "sizeRange":  "10x12 ft to 14x16 ft",
+                                         "recommended":  [
+                                                             "3-seater sofas",
+                                                             "Queen beds",
+                                                             "Standard entertainment units"
+                                                         ],
+                                         "image":  "/images/spaces/medium_room.png"
+                                     },
+                          "large":  {
+                                        "title":  "Large Spaces",
+                                        "sizeRange":  "14x16 ft and above",
+                                        "recommended":  [
+                                                            "L-shaped sofas",
+                                                            "King-size beds",
+                                                            "Premium living room collections"
+                                                        ],
+                                        "image":  "/images/spaces/large_room.png"
+                                    }
+                      },
+    "products":  [
+                     {
+                         "id":  "prod-1781502334867",
+                         "category":  "L Corner Sofas",
+                         "name":  "Lounger Model",
+                         "tagline":  "Premium Collection",
+                         "description":  "A gorgeous new addition to our premium luxury lineup.",
+                         "images":  {
+                                        "isolated":  "/images/products/lounger_model_1781502334864.png",
+                                        "lifestyle":  "/images/products/lounger_model_1781502334864.png"
+                                    },
+                         "dimensions":  "Size 9*7 ",
+                         "seatingCapacity":  "Varies",
+                         "bestRoomSize":  "12 ft * 12 ft",
+                         "compatibility":  {
+                                               "small":  "âŒ (Check dimensions)",
+                                               "medium":  "âœ… (Recommended)",
+                                               "large":  "â­ (Perfect Fit)"
+                                           },
+                         "options":  {
+                                         "colors":  [
+                                                        "Custom Order"
+                                                    ],
+                                         "fabric":  "Premium Finish"
+                                     },
+                         "priceRange":  "Price on Request"
+                     },
+                     {
+                         "id":  "prod-1781516759673",
+                         "category":  "Lounger Model Sofas",
+                         "name":  "l Corner",
+                         "tagline":  "modern",
+                         "description":  "will update later",
+                         "images":  {
+                                        "isolated":  "/images/products/l_corner_1781516759669.png",
+                                        "lifestyle":  "/images/products/l_corner_1781516759669.png"
+                                    },
+                         "dimensions":  "demo",
+                         "seatingCapacity":  "Varies",
+                         "bestRoomSize":  "demo",
+                         "compatibility":  {
+                                               "small":  "❌ (Check dimensions)",
+                                               "medium":  "✅ (Recommended)",
+                                               "large":  "⭐ (Perfect Fit)"
+                                           },
+                         "options":  {
+                                         "colors":  [
+                                                        "blue",
+                                                        "beige",
+                                                        "red",
+                                                        "yellow"
+                                                    ],
+                                         "fabric":  "Premium Finish"
+                                     },
+                         "priceRange":  "15000-20000"
+                     },
+                     {
+                         "id":  "prod-1781516857538",
+                         "category":  "3+1+1 Sofa Sets",
+                         "name":  "corner",
+                         "tagline":  "modern",
+                         "description":  "will update later",
+                         "images":  {
+                                        "isolated":  "/images/products/corner_1781516857535.png",
+                                        "lifestyle":  "/images/products/corner_1781516857535.png"
+                                    },
+                         "dimensions":  "demo",
+                         "seatingCapacity":  "Varies",
+                         "bestRoomSize":  "demo",
+                         "compatibility":  {
+                                               "small":  "❌ (Check dimensions)",
+                                               "medium":  "✅ (Recommended)",
+                                               "large":  "⭐ (Perfect Fit)"
+                                           },
+                         "options":  {
+                                         "colors":  [
+                                                        "navy blue",
+                                                        "orange",
+                                                        "red",
+                                                        "brown"
+                                                    ],
+                                         "fabric":  "Premium Finish"
+                                     },
+                         "priceRange":  "20000-25000"
+                     },
+                     {
+                         "id":  "prod-1781520237741",
+                         "category":  "Beds",
+                         "name":  "demo",
+                         "tagline":  "budget",
+                         "description":  "will update it later",
+                         "images":  {
+                                        "isolated":  "/images/products/demo_1781520237734.png",
+                                        "lifestyle":  "/images/products/demo_1781520237734.png"
+                                    },
+                         "dimensions":  "demo",
+                         "seatingCapacity":  "Varies",
+                         "bestRoomSize":  "demo",
+                         "compatibility":  {
+                                               "small":  "❌ (Check dimensions)",
+                                               "medium":  "✅ (Recommended)",
+                                               "large":  "⭐ (Perfect Fit)"
+                                           },
+                         "options":  {
+                                         "colors":  [
+                                                        "All the colors"
+                                                    ],
+                                         "fabric":  "Premium Finish"
+                                     },
+                         "priceRange":  "25000-30000"
+                     },
+                     {
+                         "id":  "prod-1781520341072",
+                         "category":  "L Corner Sofas",
+                         "name":  "3+1+1",
+                         "tagline":  "luxury model",
+                         "description":  "will update later",
+                         "images":  {
+                                        "isolated":  "/images/products/3_1_1_1781520341069.png",
+                                        "lifestyle":  "/images/products/3_1_1_1781520341069.png"
+                                    },
+                         "dimensions":  "demo",
+                         "seatingCapacity":  "Varies",
+                         "bestRoomSize":  "demo",
+                         "compatibility":  {
+                                               "small":  "❌ (Check dimensions)",
+                                               "medium":  "✅ (Recommended)",
+                                               "large":  "⭐ (Perfect Fit)"
+                                           },
+                         "options":  {
+                                         "colors":  [
+                                                        "all colors"
+                                                    ],
+                                         "fabric":  "Premium Finish"
+                                     },
+                         "priceRange":  "35000-50000"
+                     },
+                     {
+                         "id":  "prod-1781520446782",
+                         "category":  "L Corner Sofas",
+                         "name":  "sofas",
+                         "tagline":  "modern",
+                         "description":  "will update later",
+                         "images":  {
+                                        "isolated":  "/images/products/sofas_1781520446780.png",
+                                        "lifestyle":  "/images/products/sofas_1781520446780.png"
+                                    },
+                         "dimensions":  "demo",
+                         "seatingCapacity":  "Varies",
+                         "bestRoomSize":  "demo",
+                         "compatibility":  {
+                                               "small":  "❌ (Check dimensions)",
+                                               "medium":  "✅ (Recommended)",
+                                               "large":  "⭐ (Perfect Fit)"
+                                           },
+                         "options":  {
+                                         "colors":  [
+                                                        "navy blue",
+                                                        "grey",
+                                                        "red",
+                                                        "ivory"
+                                                    ],
+                                         "fabric":  "Premium Finish"
+                                     },
+                         "priceRange":  "30000-40000"
+                     }
+                 ],
+    "transformations":  {
+                            "title":  "Before \u0026 After: The Power of Scale",
+                            "description":  "See how the right proportions can completely transform a space. A room is just an empty box until it is furnished with precision.",
+                            "beforeImage":  "/images/features/before_empty.png",
+                            "afterImage":  "/images/features/after_furnished.png"
+                        },
+    "visualization":  {
+                          "title":  "Scaled for Your Life",
+                          "description":  "Whether you are outfitting a compact urban apartment or an expansive luxury villa, our collections are modular and adaptable.",
+                          "apartment":  {
+                                            "title":  "Urban Apartment",
+                                            "image":  "/images/features/viz_apartment.png",
+                                            "note":  "Compact footprints with maximum comfort."
+                                        },
+                          "villa":  {
+                                        "title":  "Luxury Villa",
+                                        "image":  "/images/features/viz_villa.png",
+                                        "note":  "Grand scale for expansive spaces."
+                                    }
+                      },
+    "customFurniture":  {
+                            "title":  "Bespoke Custom Furniture",
+                            "description":  "Do not see exactly what you need? Our master craftsmen can build it. We specialize in custom-tailored solutions designed down to the millimeter for your unique floor plan.",
+                            "image":  "/images/features/custom_workshop.png",
+                            "features":  [
+                                             "Precision Measurements",
+                                             "Custom Fabric Selection",
+                                             "Tailored Configurations",
+                                             "White-Glove Delivery"
+                                         ]
+                        }
 }

@@ -12,7 +12,7 @@ export default function AdminPage() {
   // Product Upload State
   const [file, setFile] = useState(null);
   const [productName, setProductName] = useState("");
-  const [category, setCategory] = useState("Sofas");
+  const [category, setCategory] = useState("L Corner Sofas");
   const [dimensions, setDimensions] = useState("");
   const [bestRoomSize, setBestRoomSize] = useState("");
   const [priceRange, setPriceRange] = useState("");
@@ -318,12 +318,14 @@ export default function AdminPage() {
 
               <div className={styles.formGroup}>
                 <label>Category</label>
-                <select value={category} onChange={e => setCategory(e.target.value)}>
-                  <option value="Sofas">Sofas</option>
-                  <option value="Beds">Beds</option>
-                  <option value="Dining">Dining</option>
-                  <option value="Wardrobes">Wardrobes</option>
-                </select>
+                  <select value={category} onChange={e => setCategory(e.target.value)}>
+                    <option value="L Corner Sofas">L Corner Sofas</option>
+                    <option value="Lounger Model Sofas">Lounger Model Sofas</option>
+                    <option value="3+1+1 Sofa Sets">3+1+1 Sofa Sets</option>
+                    <option value="Beds">Beds</option>
+                    <option value="Dining">Dining</option>
+                    <option value="Wardrobes">Wardrobes</option>
+                  </select>
               </div>
             </div>
 

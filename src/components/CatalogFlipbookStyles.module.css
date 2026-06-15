@@ -402,6 +402,87 @@
   flex: 1;
 }
 
+.indexPage {
+  padding: 4rem;
+  height: 100%;
+  background-color: #fcfbf9;
+  display: flex;
+  flex-direction: column;
+}
+
+.indexTitle {
+  font-size: 2.5rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  margin-bottom: 3rem;
+  text-transform: uppercase;
+  color: #1a1a1a;
+  border-bottom: 2px solid #eaeaea;
+  padding-bottom: 1rem;
+}
+
+.indexList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.indexItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eaeaea;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.indexItem:hover {
+  transform: translateX(10px);
+}
+
+.indexItemName {
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #333;
+}
+
+.indexItemPage {
+  font-size: 1rem;
+  color: #888;
+  font-family: monospace;
+}
+
+.sectionDivider {
+  height: 100%;
+  background-color: #1a1a1a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem;
+  text-align: center;
+}
+
+.sectionDividerTitle {
+  font-size: 3rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+}
+
+.sectionDividerLine {
+  width: 60px;
+  height: 2px;
+  background-color: #e43d30;
+  margin: 2rem auto;
+}
+
 .productTitle {
   font-size: 2rem;
   font-weight: 300;
