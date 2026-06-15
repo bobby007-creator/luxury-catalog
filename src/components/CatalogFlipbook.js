@@ -300,13 +300,14 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
         width={550}
         height={750}
         size="stretch"
-        minWidth={200}
+        minWidth={300}
         maxWidth={1000}
-        minHeight={200}
+        minHeight={400}
         maxHeight={1533}
         maxShadowOpacity={0.5}
         showCover={true}
         mobileScrollSupport={true}
+        usePortrait={true}
         className={styles.flipbook}
         ref={flipBookRef}
       >
