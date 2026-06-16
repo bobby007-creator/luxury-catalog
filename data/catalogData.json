@@ -237,6 +237,84 @@
         "fabric": "Premium Finish"
       },
       "priceRange": "40,000.00 - 60,000.00"
+    },
+    {
+      "id": "prod-1781632140838",
+      "category": "3+1+1 Sofa Sets",
+      "name": "seater",
+      "tagline": "modern",
+      "description": "demo",
+      "images": {
+        "isolated": "/images/products/seater_1781632140834.png",
+        "lifestyle": "/images/products/seater_1781632140834.png"
+      },
+      "dimensions": "demo",
+      "seatingCapacity": "Varies",
+      "bestRoomSize": "demo",
+      "compatibility": {
+        "small": "❌ (Check dimensions)",
+        "medium": "✅ (Recommended)",
+        "large": "⭐ (Perfect Fit)"
+      },
+      "options": {
+        "colors": [
+          "demo"
+        ],
+        "fabric": "Premium Finish"
+      },
+      "priceRange": "as per size"
+    },
+    {
+      "id": "prod-1781632190301",
+      "category": "3+1+1 Sofa Sets",
+      "name": "2 seater",
+      "tagline": "demo",
+      "description": "demo",
+      "images": {
+        "isolated": "/images/products/2_seater_1781632190298.png",
+        "lifestyle": "/images/products/2_seater_1781632190298.png"
+      },
+      "dimensions": "demo",
+      "seatingCapacity": "Varies",
+      "bestRoomSize": "demo",
+      "compatibility": {
+        "small": "❌ (Check dimensions)",
+        "medium": "✅ (Recommended)",
+        "large": "⭐ (Perfect Fit)"
+      },
+      "options": {
+        "colors": [
+          "demo"
+        ],
+        "fabric": "Premium Finish"
+      },
+      "priceRange": "price on request"
+    },
+    {
+      "id": "prod-1781632260100",
+      "category": "3+1+1 Sofa Sets",
+      "name": "demo",
+      "tagline": "modern",
+      "description": "demo",
+      "images": {
+        "isolated": "/images/products/demo_1781632260097.png",
+        "lifestyle": "/images/products/demo_1781632260097.png"
+      },
+      "dimensions": "demo",
+      "seatingCapacity": "Varies",
+      "bestRoomSize": "demo",
+      "compatibility": {
+        "small": "❌ (Check dimensions)",
+        "medium": "✅ (Recommended)",
+        "large": "⭐ (Perfect Fit)"
+      },
+      "options": {
+        "colors": [
+          "demo"
+        ],
+        "fabric": "Premium Finish"
+      },
+      "priceRange": "price on request"
     }
   ],
   "transformations": {
