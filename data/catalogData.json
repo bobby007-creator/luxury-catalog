@@ -211,6 +211,32 @@
         "fabric": "Premium Finish"
       },
       "priceRange": "30000-40000"
+    },
+    {
+      "id": "prod-1781593208446",
+      "category": "L Corner Sofas",
+      "name": "L Corner Soa Set",
+      "tagline": "Modern Luxury",
+      "description": "will update it later",
+      "images": {
+        "isolated": "/images/products/l_corner_soa_set_1781593208440.png",
+        "lifestyle": "/images/products/l_corner_soa_set_1781593208440.png"
+      },
+      "dimensions": "6ft-7ft",
+      "seatingCapacity": "Varies",
+      "bestRoomSize": "Any Kind Of Small Room",
+      "compatibility": {
+        "small": "❌ (Check dimensions)",
+        "medium": "✅ (Recommended)",
+        "large": "⭐ (Perfect Fit)"
+      },
+      "options": {
+        "colors": [
+          "As Per Yor Request"
+        ],
+        "fabric": "Premium Finish"
+      },
+      "priceRange": "40,000.00 - 60,000.00"
     }
   ],
   "transformations": {
