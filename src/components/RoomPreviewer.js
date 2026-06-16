@@ -266,14 +266,14 @@ export default function RoomPreviewer({ productImage, onClose }) {
                         position: 'absolute',
                         top: 0, left: 0, right: 0, bottom: 0,
                         backgroundColor: color,
-                        mixBlendMode: 'color',
+                        mixBlendMode: 'multiply',
                         WebkitMaskImage: `url("${productImage}")`,
                         WebkitMaskSize: '100% 100%',
                         WebkitMaskRepeat: 'no-repeat',
                         maskImage: `url("${productImage}")`,
                         maskSize: '100% 100%',
                         maskRepeat: 'no-repeat',
-                        opacity: texture ? 0.6 : 1
+                        opacity: texture ? 0.6 : 0.9
                       }} />
                     )}
                   </div>
