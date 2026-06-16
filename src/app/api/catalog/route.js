@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import { NextResponse } from 'next/server';
 
+export const dynamic = 'force-dynamic';
 export async function GET() {
   const catalogPath = path.join(process.cwd(), 'data', 'catalogData.json');
   if (fs.existsSync(catalogPath)) {
