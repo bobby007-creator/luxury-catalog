@@ -248,13 +248,16 @@ export default function RoomPreviewer({ productImage, onClose }) {
                       <div style={{
                         position: 'absolute',
                         top: 0, left: 0, right: 0, bottom: 0,
-                        backgroundImage: `url(${texture})`,
+                        backgroundImage: `url("${texture}")`,
                         backgroundSize: '150px',
                         backgroundRepeat: 'repeat',
                         mixBlendMode: 'multiply',
-                        WebkitMaskImage: `url(${productImage})`,
+                        WebkitMaskImage: `url("${productImage}")`,
                         WebkitMaskSize: '100% 100%',
                         WebkitMaskRepeat: 'no-repeat',
+                        maskImage: `url("${productImage}")`,
+                        maskSize: '100% 100%',
+                        maskRepeat: 'no-repeat',
                         opacity: 1
                       }} />
                     )}
@@ -263,11 +266,14 @@ export default function RoomPreviewer({ productImage, onClose }) {
                         position: 'absolute',
                         top: 0, left: 0, right: 0, bottom: 0,
                         backgroundColor: color,
-                        mixBlendMode: 'multiply',
-                        WebkitMaskImage: `url(${productImage})`,
+                        mixBlendMode: 'color',
+                        WebkitMaskImage: `url("${productImage}")`,
                         WebkitMaskSize: '100% 100%',
                         WebkitMaskRepeat: 'no-repeat',
-                        opacity: texture ? 0.6 : 0.85
+                        maskImage: `url("${productImage}")`,
+                        maskSize: '100% 100%',
+                        maskRepeat: 'no-repeat',
+                        opacity: texture ? 0.6 : 1
                       }} />
                     )}
                   </div>
