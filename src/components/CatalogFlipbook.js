@@ -95,7 +95,7 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
 
   // PAGE 2: About Us
   pages.push(
-    <Page key="about" density="soft">
+    <Page key="about" density="hard">
       <div className={styles.textPage}>
         <h2 className={styles.sectionTitle}>About Us</h2>
         <div className={styles.divider}></div>
@@ -143,7 +143,7 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
 
   // PAGE 3: Index
   pages.push(
-    <Page key="index" density="soft">
+    <Page key="index" density="hard">
       <div className={styles.indexPage}>
         <h2 className={styles.indexTitle}>Index</h2>
         <ul className={styles.indexList}>
@@ -186,7 +186,7 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
       const product2 = catProducts[i + 1];
 
       pages.push(
-        <Page key={`products-${cat}-${i}`} density="soft">
+        <Page key={`products-${cat}-${i}`} density="hard">
           <div className={styles.twoProductGrid}>
             {/* Top Product */}
             <div className={styles.productCard} onClick={() => setSelectedProduct(product1)}>
@@ -252,7 +252,7 @@ export default function CatalogFlipbook({ catalogData, cacheBuster }) {
   // Ensure pages count is even (Flipbook requires even number of pages to avoid crash)
   if (pages.length % 2 !== 0) {
      pages.push(
-      <Page key="padding-page" density="soft">
+      <Page key="padding-page" density="hard">
         <div className={styles.textPage}>
           {!brand.hideLogo && (
             <div className={styles.logoWrapper} style={{opacity: 0.3, marginTop: 'auto', marginBottom: 'auto'}}>
