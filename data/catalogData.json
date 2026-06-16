@@ -12,7 +12,18 @@
     "qualityCommitment": [
       "We are using High Quality Material and no matter what without compromise we built the products. Customer satisfaction is our prime priority."
     ],
-    "coverTextColor": "#ffffff"
+    "coverTextColor": "#ffffff",
+    "layout": {
+      "logoPosition": {
+        "top": 10,
+        "left": 10
+      },
+      "textPosition": {
+        "top": 80,
+        "left": 50
+      }
+    },
+    "hideLogo": true
   },
   "spacePlanning": {
     "small": {
