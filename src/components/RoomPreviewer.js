@@ -46,14 +46,11 @@ export default function RoomPreviewer({ productImage, onClose }) {
     // Scale canvas to fit window
     const maxWidth = window.innerWidth;
     const maxHeight = window.innerHeight - 180; // account for header and toolbar
-    let width = img.width;
-    let height = img.height;
     
-    if (width > maxWidth || height > maxHeight) {
-      const ratio = Math.min(maxWidth / width, maxHeight / height);
-      width = width * ratio;
-      height = height * ratio;
-    }
+    // Unconditionally scale to fit maximum available window space
+    const ratio = Math.min(maxWidth / img.width, maxHeight / img.height);
+    const width = img.width * ratio;
+    const height = img.height * ratio;
     
     canvas.width = width;
     canvas.height = height;
