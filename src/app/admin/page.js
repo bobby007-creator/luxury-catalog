@@ -11,6 +11,7 @@ export default function AdminPage() {
   
   // Product Upload State
   const [file, setFile] = useState(null);
+  const [skipBgRemoval, setSkipBgRemoval] = useState(false);
   const [productName, setProductName] = useState("");
   const [category, setCategory] = useState("L Corner Sofas");
   const [dimensions, setDimensions] = useState("");
@@ -158,6 +159,9 @@ export default function AdminPage() {
     formData.append("description", description);
     formData.append("tagline", tagline);
     formData.append("colors", colors);
+    if (skipBgRemoval) {
+      formData.append("skipBgRemoval", "true");
+    }
 
     try {
       const res = await fetch("/api/upload", {
@@ -170,6 +174,7 @@ export default function AdminPage() {
       if (res.ok) {
         setStatus(`Success! Added ${data.product.name} to the catalog.`);
         setFile(null);
+        setSkipBgRemoval(false);
         setProductName("");
         setDimensions("");
         setBestRoomSize("");
@@ -293,6 +298,7 @@ export default function AdminPage() {
     setPriceRange("");
     setDimensions("");
     setFile(null);
+    setSkipBgRemoval(false);
   };
 
   return (
@@ -368,6 +374,17 @@ export default function AdminPage() {
                     accept="image/*" 
                     onChange={e => setFile(e.target.files[0])} 
                   />
+                  <div style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <input 
+                      type="checkbox" 
+                      id="skipBgRemoval"
+                      checked={skipBgRemoval}
+                      onChange={e => setSkipBgRemoval(e.target.checked)}
+                    />
+                    <label htmlFor="skipBgRemoval" style={{ fontWeight: 'normal', margin: 0, fontSize: '14px', color: '#666' }}>
+                      Image is already transparent (Skip background removal)
+                    </label>
+                  </div>
                 </div>
               )}
 

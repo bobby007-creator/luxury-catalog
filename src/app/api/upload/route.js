@@ -15,6 +15,7 @@ export async function POST(request) {
     const description = formData.get('description') || "A gorgeous new addition to our premium luxury lineup.";
     const tagline = formData.get('tagline') || "Premium Collection";
     const colors = formData.get('colors') ? formData.get('colors').split(',') : ["Custom Order"];
+    const skipBgRemoval = formData.get('skipBgRemoval') === 'true';
 
     if (!imageFile || !name) {
       return NextResponse.json({ error: 'Missing image or name' }, { status: 400 });
@@ -28,34 +29,38 @@ export async function POST(request) {
       apiKey = configData.removeBgApiKey;
     }
 
-    if (!apiKey) {
-      return NextResponse.json({ error: 'Remove.bg API Key is missing. Please save it in settings.' }, { status: 400 });
-    }
-
     // Convert uploaded file to Buffer
     const arrayBuffer = await imageFile.arrayBuffer();
     const imageBuffer = Buffer.from(arrayBuffer);
 
-    // Call Remove.bg API
-    const removeBgFormData = new FormData();
-    removeBgFormData.append('size', 'auto');
-    removeBgFormData.append('image_file', new Blob([imageBuffer], { type: imageFile.type }));
+    let transparentBuffer = imageBuffer;
 
-    const removeBgResponse = await fetch('https://api.remove.bg/v1.0/removebg', {
-      method: 'POST',
-      headers: {
-        'X-Api-Key': apiKey,
-      },
-      body: removeBgFormData,
-    });
+    if (!skipBgRemoval) {
+      if (!apiKey) {
+        return NextResponse.json({ error: 'Remove.bg API Key is missing. Please save it in settings.' }, { status: 400 });
+      }
 
-    if (!removeBgResponse.ok) {
-      const errorText = await removeBgResponse.text();
-      console.error("Remove.bg error:", errorText);
-      return NextResponse.json({ error: 'Background removal failed. Check your API key.' }, { status: 500 });
+      // Call Remove.bg API
+      const removeBgFormData = new FormData();
+      removeBgFormData.append('size', 'auto');
+      removeBgFormData.append('image_file', new Blob([imageBuffer], { type: imageFile.type }));
+
+      const removeBgResponse = await fetch('https://api.remove.bg/v1.0/removebg', {
+        method: 'POST',
+        headers: {
+          'X-Api-Key': apiKey,
+        },
+        body: removeBgFormData,
+      });
+
+      if (!removeBgResponse.ok) {
+        const errorText = await removeBgResponse.text();
+        console.error("Remove.bg error:", errorText);
+        return NextResponse.json({ error: 'Background removal failed. Check your API key.' }, { status: 500 });
+      }
+
+      transparentBuffer = Buffer.from(await removeBgResponse.arrayBuffer());
     }
-
-    const transparentBuffer = Buffer.from(await removeBgResponse.arrayBuffer());
 
     // Process image with Sharp:
     // 1. Trim away empty transparent space.
