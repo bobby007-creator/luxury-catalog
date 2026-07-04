@@ -57,6 +57,7 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
         const pY = p.placement?.y !== undefined ? p.placement.y : 15;
         const pRot = p.placement?.rotation || 0;
         const pTilt = p.placement?.tilt || 0;
+        const customBg = p.placement?.bgUrl || '/images/brand/room-bg.png';
 
         return (
           <div key={p.id} style={{
@@ -67,7 +68,7 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
             backgroundColor: '#0a0a0a',
             backgroundImage: `
               radial-gradient(circle at center, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%),
-              url('/images/brand/room-bg.png?v=${cacheBuster}')
+              url('${customBg}?v=${cacheBuster}')
             `,
             backgroundSize: 'cover',
             backgroundPosition: 'center',

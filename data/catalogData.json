@@ -117,7 +117,14 @@
         ],
         "fabric": "Premium Finish"
       },
-      "priceRange": "15000-20000"
+      "priceRange": "15000-20000",
+      "placement": {
+        "scale": 1,
+        "x": 0,
+        "y": 15,
+        "rotation": 0,
+        "tilt": 0
+      }
     },
     {
       "id": "prod-1781516857538",

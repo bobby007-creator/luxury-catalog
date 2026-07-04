@@ -6,6 +6,8 @@ export default function CatalogPositioner({ product, onSave, onClose }) {
   const [posY, setPosY] = useState(product.placement?.y || 15);
   const [rotation, setRotation] = useState(product.placement?.rotation || 0);
   const [tilt, setTilt] = useState(product.placement?.tilt || 0);
+  const [bgUrl, setBgUrl] = useState(product.placement?.bgUrl || '');
+  const [isUploadingBg, setIsUploadingBg] = useState(false);
 
   // Touch and drag state
   const isDragging = useRef(false);
@@ -16,7 +18,32 @@ export default function CatalogPositioner({ product, onSave, onClose }) {
   const imageUrl = product.image?.startsWith('/') ? product.image : (product.images?.isolated?.startsWith('/') ? product.images.isolated : '/images/products/' + (product.image || product.images?.isolated));
 
   const handleSave = () => {
-    onSave({ scale, x: posX, y: posY, rotation, tilt });
+    onSave({ scale, x: posX, y: posY, rotation, tilt, bgUrl });
+  };
+
+  const handleBgUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setIsUploadingBg(true);
+    const formData = new FormData();
+    formData.append('image', file);
+
+    try {
+      const res = await fetch('/api/upload-bg', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      if (res.ok && data.url) {
+        setBgUrl(data.url);
+      } else {
+        alert('Upload failed: ' + (data.error || 'Unknown error'));
+      }
+    } catch (err) {
+      alert('Upload failed');
+    }
+    setIsUploadingBg(false);
   };
 
   const handlePointerDown = (e) => {
@@ -99,6 +126,12 @@ export default function CatalogPositioner({ product, onSave, onClose }) {
           <input type="range" min="-60" max="60" step="1" value={tilt} onChange={e => setTilt(parseFloat(e.target.value))} />
         </label>
 
+        <label style={{ display: 'flex', alignItems: 'center', gap: '5px', background: '#333', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}>
+          {isUploadingBg ? "Uploading..." : (bgUrl ? "Change Background" : "Upload Custom BG")}
+          <input type="file" accept="image/*" style={{ display: 'none' }} onChange={handleBgUpload} disabled={isUploadingBg} />
+        </label>
+        {bgUrl && <button onClick={() => setBgUrl('')} style={{ background: 'transparent', color: '#ff4444', border: '1px solid #ff4444', padding: '5px 10px', borderRadius: '5px', cursor: 'pointer' }}>Clear BG</button>}
+
         <button onClick={handleSave} style={{ padding: '8px 15px', background: '#cca77b', color: '#000', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>Save</button>
         <button onClick={onClose} style={{ padding: '8px 15px', background: '#444', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Cancel</button>
       </div>
@@ -108,7 +141,7 @@ export default function CatalogPositioner({ product, onSave, onClose }) {
           flex: 1,
           position: 'relative',
           backgroundColor: '#0a0a0a',
-          backgroundImage: 'radial-gradient(circle at center, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%), url(/images/brand/room-bg.png)',
+          backgroundImage: `radial-gradient(circle at center, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%), url(${bgUrl || '/images/brand/room-bg.png'})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           overflow: 'hidden',
