@@ -7,6 +7,9 @@ export default function RoomPreviewer({ productImage, onClose }) {
   const [color, setColor] = useState('#aaaaaa');
   const [texture, setTexture] = useState(null);
   const [showTextures, setShowTextures] = useState(false);
+  const [showColors, setShowColors] = useState(false);
+  
+  // Controls
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
   const [pos, setPos] = useState({ x: 0, y: 0 });
@@ -25,6 +28,22 @@ export default function RoomPreviewer({ productImage, onClose }) {
     { name: 'Blue Velvet', src: 'textures/velvet_blue.png' },
     { name: 'Beige Linen', src: 'textures/linen_beige.png' },
     { name: 'White Linen', src: 'textures/linen_white.png' },
+  ];
+
+  const presetColors = [
+    { name: 'White', hex: '#ffffff' },
+    { name: 'Ivory', hex: '#fffff0' },
+    { name: 'Cream', hex: '#fffdd0' },
+    { name: 'Beige', hex: '#f5f5dc' },
+    { name: 'Tan', hex: '#d2b48c' },
+    { name: 'Light Grey', hex: '#d3d3d3' },
+    { name: 'Charcoal', hex: '#36454f' },
+    { name: 'Black', hex: '#111111' },
+    { name: 'Navy Blue', hex: '#000080' },
+    { name: 'Emerald', hex: '#046307' },
+    { name: 'Burgundy', hex: '#800020' },
+    { name: 'Gold', hex: '#d4af37' },
+    { name: 'Blush Pink', hex: '#de5d83' },
   ];
   
   const canvasRef = useRef(null);
@@ -186,31 +205,31 @@ export default function RoomPreviewer({ productImage, onClose }) {
               className={`${styles.toolBtn} ${mode === 'drag' ? styles.active : ''}`}
               onClick={() => setMode('drag')}
             >
-              🖐️ Drag Sofa
+              🖐 Drag
             </button>
-            <label className={styles.toolBtn} style={{ position: 'relative', overflow: 'hidden', cursor: 'pointer' }}>
-              🎨 Choose Color
-              <input 
-                type="color" 
-                value={color === '#aaaaaa' ? '#ffffff' : color} 
-                onChange={(e) => {
-                  setColor(e.target.value);
-                  setMode('drag');
-                }}
-                style={{ position: 'absolute', opacity: 0, width: '100%', height: '100%', left: 0, top: 0, cursor: 'pointer' }}
-              />
-            </label>
+            <button 
+              className={`${styles.toolBtn} ${showColors ? styles.active : ''}`}
+              onClick={() => {
+                setShowColors(!showColors);
+                if (!showColors) setShowTextures(false);
+              }}
+            >
+              🎨 Colors
+            </button>
             <button 
               className={`${styles.toolBtn} ${showTextures ? styles.active : ''}`}
-              onClick={() => setShowTextures(!showTextures)}
+              onClick={() => {
+                setShowTextures(!showTextures);
+                if (!showTextures) setShowColors(false);
+              }}
             >
-              🧵 Choose Fabric
+              🧵 Fabrics
             </button>
             <button 
               className={`${styles.toolBtn} ${mode === 'paint' ? styles.active : ''}`}
               onClick={() => setMode('paint')}
             >
-              🧹 Paint Eraser
+              🖌 Paint Eraser
             </button>
             
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -239,6 +258,48 @@ export default function RoomPreviewer({ productImage, onClose }) {
               />
             </div>
           </div>
+
+            {showColors && (
+              <div className={styles.texturePanel} style={{ display: 'flex', gap: '15px', padding: '15px', background: '#222', overflowX: 'auto', alignItems: 'center' }}>
+                <div 
+                  onClick={() => { setColor('#aaaaaa'); setTexture(null); }}
+                  style={{ minWidth: '40px', height: '40px', borderRadius: '20px', cursor: 'pointer', border: color === '#aaaaaa' ? '2px solid white' : '2px solid transparent', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#444', color: 'white', fontSize: '10px' }}
+                >
+                  Reset
+                </div>
+                {presetColors.map(c => (
+                  <div 
+                    key={c.name}
+                    onClick={() => { setColor(c.hex); setTexture(null); }}
+                    title={c.name}
+                    style={{
+                      minWidth: '40px', height: '40px', borderRadius: '20px',
+                      backgroundColor: c.hex,
+                      cursor: 'pointer',
+                      border: color === c.hex ? '3px solid white' : '1px solid rgba(255,255,255,0.2)',
+                      boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+                      transition: 'transform 0.2s'
+                    }}
+                    onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                    onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                  />
+                ))}
+                
+                {/* Custom Color Picker */}
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginLeft: '10px', borderLeft: '1px solid #444', paddingLeft: '15px' }}>
+                  <label style={{ fontSize: '10px', color: '#ccc', marginBottom: '5px' }}>Custom</label>
+                  <input 
+                    type="color" 
+                    value={color === '#aaaaaa' ? '#ffffff' : color} 
+                    onChange={(e) => {
+                      setColor(e.target.value);
+                      setTexture(null);
+                    }}
+                    style={{ width: '40px', height: '40px', padding: 0, border: 'none', borderRadius: '20px', cursor: 'pointer', background: 'transparent' }}
+                  />
+                </div>
+              </div>
+            )}
 
             {showTextures && (
               <div className={styles.texturePanel} style={{ display: 'flex', gap: '10px', padding: '10px', background: '#333', overflowX: 'auto' }}>
