@@ -56,6 +56,7 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
         const pX = p.placement?.x || 0;
         const pY = p.placement?.y !== undefined ? p.placement.y : 15;
         const pRot = p.placement?.rotation || 0;
+        const pTilt = p.placement?.tilt || 0;
 
         return (
           <div key={p.id} style={{
@@ -76,7 +77,8 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
             boxShadow: '0 -20px 50px rgba(0,0,0,0.8)',
             overflow: 'hidden',
             borderTop: '4px solid rgba(204, 167, 123, 0.8)', // very prominent gold top border
-            boxSizing: 'border-box'
+            boxSizing: 'border-box',
+            perspective: '1000px' // For 3D tilt
           }}>
             
             {/* Elegant Inner Frame */}
@@ -111,16 +113,16 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
                  objectFit: 'contain',
                  filter: 'drop-shadow(0 50px 30px rgba(0,0,0,0.8)) brightness(1.05) contrast(1.1) saturate(1.1)',
                  transformOrigin: 'bottom center', // Scale from the floor
-                 transform: `translate(${pX}%, ${pY - 15}vh) scale(${pScale}) rotate(${pRot}deg)`,
+                 transform: `translate(${pX}%, ${pY - 15}vh) scale(${pScale}) rotate(${pRot}deg) rotateX(${pTilt}deg)`,
                  transition: 'transform 0.5s ease, filter 0.5s ease',
                  cursor: 'pointer'
                }} 
                onMouseOver={(e) => {
-                 e.currentTarget.style.transform = `translate(${pX}%, ${pY - 15}vh) scale(${pScale * 1.05}) rotate(${pRot}deg)`;
+                 e.currentTarget.style.transform = `translate(${pX}%, ${pY - 15}vh) scale(${pScale * 1.05}) rotate(${pRot}deg) rotateX(${pTilt}deg)`;
                  e.currentTarget.style.filter = 'drop-shadow(0 70px 40px rgba(0,0,0,0.6)) brightness(1.1) contrast(1.15) saturate(1.1)';
                }}
                onMouseOut={(e) => {
-                 e.currentTarget.style.transform = `translate(${pX}%, ${pY - 15}vh) scale(${pScale}) rotate(${pRot}deg)`;
+                 e.currentTarget.style.transform = `translate(${pX}%, ${pY - 15}vh) scale(${pScale}) rotate(${pRot}deg) rotateX(${pTilt}deg)`;
                  e.currentTarget.style.filter = 'drop-shadow(0 50px 30px rgba(0,0,0,0.8)) brightness(1.05) contrast(1.1) saturate(1.1)';
                }}
                onClick={() => setActivePreview(imageUrl)}
