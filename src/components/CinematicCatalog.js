@@ -95,26 +95,27 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
               height: '100%',
               position: 'absolute',
               display: 'flex',
-              alignItems: 'center',
+              alignItems: 'flex-end', // Anchor to the bottom (floor)
               justifyContent: 'center',
-              padding: '10%'
+              paddingBottom: '15vh' // Perfect distance from bottom to look like it's on the floor
             }}>
                <img src={`${imageUrl}?v=${cacheBuster}`} alt={p.name} style={{
-                 maxWidth: '95%',
-                 maxHeight: '95%',
+                 maxWidth: '85%',
+                 maxHeight: '55vh', // Keep it proportionally sized to the room
                  objectFit: 'contain',
-                 filter: 'drop-shadow(0 100px 50px rgba(0,0,0,0.7)) brightness(1.05) contrast(1.1) saturate(1.1)',
-                 transform: 'translateY(15%) scale(1)', // Move down to simulate resting on the floor
+                 filter: 'drop-shadow(0 50px 30px rgba(0,0,0,0.8)) brightness(1.05) contrast(1.1) saturate(1.1)',
+                 transformOrigin: 'bottom center', // Scale from the floor
+                 transform: 'scale(1)',
                  transition: 'transform 0.5s ease, filter 0.5s ease',
                  cursor: 'pointer'
                }} 
                onMouseOver={(e) => {
-                 e.currentTarget.style.transform = 'translateY(15%) scale(1.05)';
-                 e.currentTarget.style.filter = 'drop-shadow(0 120px 60px rgba(0,0,0,0.5)) brightness(1.1) contrast(1.15) saturate(1.1)';
+                 e.currentTarget.style.transform = 'scale(1.05)';
+                 e.currentTarget.style.filter = 'drop-shadow(0 70px 40px rgba(0,0,0,0.6)) brightness(1.1) contrast(1.15) saturate(1.1)';
                }}
                onMouseOut={(e) => {
-                 e.currentTarget.style.transform = 'translateY(15%) scale(1)';
-                 e.currentTarget.style.filter = 'drop-shadow(0 100px 50px rgba(0,0,0,0.7)) brightness(1.05) contrast(1.1) saturate(1.1)';
+                 e.currentTarget.style.transform = 'scale(1)';
+                 e.currentTarget.style.filter = 'drop-shadow(0 50px 30px rgba(0,0,0,0.8)) brightness(1.05) contrast(1.1) saturate(1.1)';
                }}
                onClick={() => setActivePreview(imageUrl)}
                />
