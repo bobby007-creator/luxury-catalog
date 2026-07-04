@@ -1,4 +1,4 @@
-import FlipbookWrapper from '@/components/FlipbookWrapper';
+import CinematicCatalog from '@/components/CinematicCatalog';
 import fs from 'fs';
 import path from 'path';
 
@@ -11,8 +11,8 @@ export default async function Home() {
   const cacheBuster = "v2";
 
   return (
-    <main style={{ width: '100vw', height: '100vh', backgroundColor: '#fdfaf6' }}>
-      <FlipbookWrapper catalogData={catalogData} cacheBuster={cacheBuster} />
+    <main style={{ width: '100vw', height: '100vh', backgroundColor: '#0a0a0a' }}>
+      <CinematicCatalog catalogData={catalogData} cacheBuster={cacheBuster} />
     </main>
   );
 }
