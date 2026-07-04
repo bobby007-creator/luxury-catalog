@@ -59,8 +59,8 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
             zIndex: index,
             backgroundColor: '#0a0a0a',
             backgroundImage: `
-              radial-gradient(circle at center, rgba(60, 50, 40, 0.6) 0%, rgba(10, 10, 10, 0.95) 100%),
-              url('/images/brand/catalog-bg.png?v=${cacheBuster}')
+              radial-gradient(circle at center, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%),
+              url('/images/brand/room-bg.png?v=${cacheBuster}')
             `,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
@@ -100,15 +100,22 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
               padding: '10%'
             }}>
                <img src={`${imageUrl}?v=${cacheBuster}`} alt={p.name} style={{
-                 maxWidth: '90%',
-                 maxHeight: '90%',
+                 maxWidth: '95%',
+                 maxHeight: '95%',
                  objectFit: 'contain',
-                 filter: 'drop-shadow(0 30px 40px rgba(0,0,0,0.5))',
-                 transition: 'transform 0.5s ease',
+                 filter: 'drop-shadow(0 100px 50px rgba(0,0,0,0.7)) brightness(1.05) contrast(1.1) saturate(1.1)',
+                 transform: 'translateY(15%) scale(1)', // Move down to simulate resting on the floor
+                 transition: 'transform 0.5s ease, filter 0.5s ease',
                  cursor: 'pointer'
                }} 
-               onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-               onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+               onMouseOver={(e) => {
+                 e.currentTarget.style.transform = 'translateY(15%) scale(1.05)';
+                 e.currentTarget.style.filter = 'drop-shadow(0 120px 60px rgba(0,0,0,0.5)) brightness(1.1) contrast(1.15) saturate(1.1)';
+               }}
+               onMouseOut={(e) => {
+                 e.currentTarget.style.transform = 'translateY(15%) scale(1)';
+                 e.currentTarget.style.filter = 'drop-shadow(0 100px 50px rgba(0,0,0,0.7)) brightness(1.05) contrast(1.1) saturate(1.1)';
+               }}
                onClick={() => setActivePreview(imageUrl)}
                />
             </div>
