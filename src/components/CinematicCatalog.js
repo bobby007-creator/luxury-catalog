@@ -15,7 +15,16 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
   ];
 
   return (
-    <div style={{ backgroundColor: '#0a0a0a', color: '#fff', fontFamily: 'system-ui, sans-serif' }}>
+    <div style={{ 
+      backgroundColor: '#0a0a0a', 
+      color: '#fff', 
+      fontFamily: 'system-ui, sans-serif',
+      height: '100vh',
+      width: '100vw',
+      overflowY: 'scroll',
+      scrollSnapType: 'y mandatory',
+      scrollBehavior: 'smooth'
+    }}>
       
       {slides.map((slide, index) => {
         if (slide.type === 'cover') {
@@ -24,6 +33,8 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
               height: '100vh',
               position: 'sticky',
               top: 0,
+              scrollSnapAlign: 'start',
+              scrollSnapStop: 'always',
               display: 'flex',
               flexDirection: 'column',
               justifyContent: 'center',
@@ -64,6 +75,8 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
             height: '100vh',
             position: 'sticky',
             top: 0,
+            scrollSnapAlign: 'start',
+            scrollSnapStop: 'always',
             zIndex: index,
             backgroundColor: '#0a0a0a',
             backgroundImage: `
