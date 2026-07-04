@@ -57,14 +57,29 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
             position: 'sticky',
             top: 0,
             zIndex: index,
-            backgroundColor: '#111',
-            backgroundImage: 'radial-gradient(circle at 50% 50%, #222 0%, #0a0a0a 100%)',
+            backgroundColor: '#050505',
+            backgroundImage: `
+              radial-gradient(circle at center, rgba(30, 30, 30, 0.8) 0%, rgba(5, 5, 5, 1) 100%),
+              repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.02) 0px, rgba(255, 255, 255, 0.02) 1px, transparent 1px, transparent 10px)
+            `,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             boxShadow: '0 -20px 50px rgba(0,0,0,0.8)',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            borderTop: '2px solid rgba(204, 167, 123, 0.3)', // subtle gold top border
+            boxSizing: 'border-box'
           }}>
+            
+            {/* Elegant Inner Frame */}
+            <div style={{
+              position: 'absolute',
+              top: '20px', left: '20px', right: '20px', bottom: '20px',
+              border: '1px solid rgba(204, 167, 123, 0.15)',
+              borderRadius: '16px',
+              pointerEvents: 'none',
+              zIndex: 0
+            }}></div>
             
             <div style={{
               width: '100%',
