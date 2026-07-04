@@ -132,29 +132,44 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
 
             <div style={{
               position: 'absolute',
-              bottom: '40px',
-              left: '40px',
-              background: 'rgba(255, 255, 255, 0.03)',
-              backdropFilter: 'blur(20px)',
-              WebkitBackdropFilter: 'blur(20px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
-              borderRadius: '24px',
-              padding: '40px',
-              maxWidth: '450px',
-              boxShadow: '0 20px 40px rgba(0,0,0,0.3)'
-            }}>
-              <p style={{ margin: 0, color: '#cca77b', fontSize: '0.9rem', letterSpacing: '3px', textTransform: 'uppercase', fontWeight: 600 }}>{p.category}</p>
-              <h2 style={{ fontSize: '2.5rem', fontWeight: 300, margin: '10px 0', letterSpacing: '1px' }}>{p.name}</h2>
-              <p style={{ fontSize: '1rem', color: '#999', lineHeight: 1.6 }}>{p.description}</p>
+              bottom: '50px',
+              left: '50px',
+              background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.05) 100%)',
+              backdropFilter: 'blur(30px)',
+              WebkitBackdropFilter: 'blur(30px)',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
+              borderTop: '1px solid rgba(255, 255, 255, 0.5)',
+              borderLeft: '1px solid rgba(255, 255, 255, 0.5)',
+              borderRadius: '30px',
+              padding: '45px',
+              maxWidth: '480px',
+              boxShadow: '0 30px 60px rgba(0,0,0,0.4), inset 0 0 20px rgba(255,255,255,0.1)',
+              transition: 'transform 0.3s ease'
+            }}
+            onMouseOver={(e) => e.currentTarget.style.transform = 'translateY(-10px)'}
+            onMouseOut={(e) => e.currentTarget.style.transform = 'translateY(0)'}
+            >
+              <p style={{ margin: 0, color: '#f9d423', fontSize: '0.9rem', letterSpacing: '4px', textTransform: 'uppercase', fontWeight: 700, textShadow: '0 2px 10px rgba(249, 212, 35, 0.5)' }}>{p.category}</p>
+              <h2 style={{ 
+                fontSize: '2.8rem', 
+                fontWeight: 600, 
+                margin: '15px 0', 
+                letterSpacing: '1px',
+                background: 'linear-gradient(to right, #ffffff, #f0e6d2)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                textShadow: '0 5px 15px rgba(0,0,0,0.2)'
+              }}>{p.name}</h2>
+              <p style={{ fontSize: '1.05rem', color: '#f0f0f0', lineHeight: 1.7, fontWeight: 300 }}>{p.description}</p>
               
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginTop: '30px', borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '20px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '25px', marginTop: '35px', borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: '25px' }}>
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1px' }}>Dimensions</span>
-                  <span style={{ fontSize: '0.9rem' }}>{p.dimensions}</span>
+                  <span style={{ display: 'block', fontSize: '0.75rem', color: '#b0b0b0', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '5px' }}>Dimensions</span>
+                  <span style={{ fontSize: '1rem', fontWeight: 500, color: '#fff' }}>{p.dimensions}</span>
                 </div>
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.7rem', color: '#666', textTransform: 'uppercase', letterSpacing: '1px' }}>Starting At</span>
-                  <span style={{ fontSize: '0.9rem' }}>{p.priceRange}</span>
+                  <span style={{ display: 'block', fontSize: '0.75rem', color: '#b0b0b0', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '5px' }}>Starting At</span>
+                  <span style={{ fontSize: '1rem', fontWeight: 500, color: '#fff' }}>{p.priceRange}</span>
                 </div>
               </div>
 
@@ -162,23 +177,30 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
                 onClick={() => setActivePreview(imageUrl)}
                 style={{
                   width: '100%',
-                  marginTop: '30px',
-                  padding: '15px 0',
-                  background: '#fff',
-                  color: '#000',
+                  marginTop: '40px',
+                  padding: '16px 0',
+                  background: 'linear-gradient(135deg, #f9d423 0%, #ff4e50 100%)', // Cool bright gradient
+                  color: '#fff',
                   border: 'none',
                   borderRadius: '30px',
-                  fontSize: '1rem',
-                  fontWeight: 600,
+                  fontSize: '1.1rem',
+                  fontWeight: 700,
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: '10px',
-                  transition: 'background 0.3s'
+                  gap: '12px',
+                  boxShadow: '0 10px 30px rgba(255, 78, 80, 0.4)',
+                  transition: 'all 0.3s ease'
                 }}
-                onMouseOver={(e) => e.currentTarget.style.background = '#e0e0e0'}
-                onMouseOut={(e) => e.currentTarget.style.background = '#fff'}
+                onMouseOver={(e) => {
+                  e.currentTarget.style.transform = 'scale(1.05)';
+                  e.currentTarget.style.boxShadow = '0 15px 40px rgba(255, 78, 80, 0.6)';
+                }}
+                onMouseOut={(e) => {
+                  e.currentTarget.style.transform = 'scale(1)';
+                  e.currentTarget.style.boxShadow = '0 10px 30px rgba(255, 78, 80, 0.4)';
+                }}
               >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
                 View in Room AR
