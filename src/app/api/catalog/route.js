@@ -42,7 +42,7 @@ export async function DELETE(request) {
 export async function PUT(request) {
   try {
     const body = await request.json();
-    const { id, name, category, tagline, description, priceRange, dimensions, colors } = body;
+    const { id, name, category, tagline, description, priceRange, dimensions, colors, placement } = body;
     
     if (!id) {
       return NextResponse.json({ error: 'Product ID is required' }, { status: 400 });
@@ -61,6 +61,7 @@ export async function PUT(request) {
         if (description !== undefined) data.products[productIndex].description = description;
         if (priceRange !== undefined) data.products[productIndex].priceRange = priceRange;
         if (dimensions !== undefined) data.products[productIndex].dimensions = dimensions;
+        if (placement !== undefined) data.products[productIndex].placement = placement;
         
         if (colors && Array.isArray(colors)) {
           if (!data.products[productIndex].options) data.products[productIndex].options = {};

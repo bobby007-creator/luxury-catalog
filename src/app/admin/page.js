@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import styles from "./Admin.module.css";
 
 import PDFExportButton from "./PDFExportButton";
+import CatalogPositioner from "../../components/CatalogPositioner";
 
 export default function AdminPage() {
   const [apiKey, setApiKey] = useState("");
@@ -23,6 +24,7 @@ export default function AdminPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [products, setProducts] = useState([]);
   const [editingProductId, setEditingProductId] = useState(null);
+  const [positioningProduct, setPositioningProduct] = useState(null);
 
   // Brand Settings State
   const [brandName, setBrandName] = useState("");
@@ -301,6 +303,32 @@ export default function AdminPage() {
     setSkipBgRemoval(false);
   };
 
+  const handleSavePosition = async (placementData) => {
+    if (!positioningProduct) return;
+    
+    setStatus("Saving placement...");
+    try {
+      const res = await fetch("/api/catalog", {
+        method: "PUT",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          id: positioningProduct.id,
+          placement: placementData
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setStatus(`Saved position for ${data.product.name}.`);
+        setProducts(prev => prev.map(p => p.id === data.product.id ? data.product : p));
+        setPositioningProduct(null);
+      } else {
+        setStatus(`Error saving position: ${data.error}`);
+      }
+    } catch (err) {
+      setStatus("Failed to save placement.");
+    }
+  };
+
   return (
     <div className={styles.adminContainer}>
       <div className={styles.sidebar}>
@@ -523,6 +551,12 @@ export default function AdminPage() {
                     </div>
                     <div style={{ display: 'flex', gap: '10px' }}>
                       <button 
+                        onClick={() => setPositioningProduct(p)}
+                        style={{ background: '#cca77b', color: '#000', border: 'none', padding: '8px 12px', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}
+                      >
+                        Place in Room
+                      </button>
+                      <button 
                         onClick={() => handleEditProduct(p)}
                         style={{ background: '#f0f0f0', color: '#333', border: '1px solid #ccc', padding: '8px 12px', borderRadius: '4px', cursor: 'pointer' }}
                       >
@@ -713,6 +747,14 @@ export default function AdminPage() {
           </form>
         </div>
       </div>
+      
+      {positioningProduct && (
+        <CatalogPositioner 
+          product={positioningProduct} 
+          onSave={handleSavePosition} 
+          onClose={() => setPositioningProduct(null)} 
+        />
+      )}
     </div>
   );
 }

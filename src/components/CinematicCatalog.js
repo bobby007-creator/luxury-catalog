@@ -50,6 +50,11 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
 
         const p = slide.data;
         const imageUrl = p.image?.startsWith('/') ? p.image : (p.images?.isolated?.startsWith('/') ? p.images.isolated : `/images/products/${p.image || p.images?.isolated}`);
+        
+        // Dynamic placement
+        const pScale = p.placement?.scale || 1;
+        const pX = p.placement?.x || 0;
+        const pY = p.placement?.y !== undefined ? p.placement.y : 15;
 
         return (
           <div key={p.id} style={{
@@ -105,16 +110,16 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
                  objectFit: 'contain',
                  filter: 'drop-shadow(0 50px 30px rgba(0,0,0,0.8)) brightness(1.05) contrast(1.1) saturate(1.1)',
                  transformOrigin: 'bottom center', // Scale from the floor
-                 transform: 'scale(1)',
+                 transform: `translate(${pX}%, ${pY - 15}vh) scale(${pScale})`,
                  transition: 'transform 0.5s ease, filter 0.5s ease',
                  cursor: 'pointer'
                }} 
                onMouseOver={(e) => {
-                 e.currentTarget.style.transform = 'scale(1.05)';
+                 e.currentTarget.style.transform = `translate(${pX}%, ${pY - 15}vh) scale(${pScale * 1.05})`;
                  e.currentTarget.style.filter = 'drop-shadow(0 70px 40px rgba(0,0,0,0.6)) brightness(1.1) contrast(1.15) saturate(1.1)';
                }}
                onMouseOut={(e) => {
-                 e.currentTarget.style.transform = 'scale(1)';
+                 e.currentTarget.style.transform = `translate(${pX}%, ${pY - 15}vh) scale(${pScale})`;
                  e.currentTarget.style.filter = 'drop-shadow(0 50px 30px rgba(0,0,0,0.8)) brightness(1.05) contrast(1.1) saturate(1.1)';
                }}
                onClick={() => setActivePreview(imageUrl)}
