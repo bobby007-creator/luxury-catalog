@@ -6,11 +6,11 @@ import RoomPreviewer from './RoomPreviewer';
 export default function CinematicCatalog({ catalogData, cacheBuster }) {
   const [activePreview, setActivePreview] = useState(null);
 
-  const { cover, products } = catalogData;
+  const { brand, products } = catalogData;
 
   // Add the cover as the first "slide"
   const slides = [
-    { type: 'cover', data: cover },
+    { type: 'cover', data: brand || {} },
     ...products.map(p => ({ type: 'product', data: p }))
   ];
 
@@ -28,16 +28,16 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
               flexDirection: 'column',
               justifyContent: 'center',
               alignItems: 'center',
-              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url(${slide.data.backgroundImage}?v=${cacheBuster})`,
+              backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.8)), url(/images/brand/cover.jpg?v=${cacheBuster})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center',
               zIndex: index,
               boxShadow: '0 20px 50px rgba(0,0,0,0.5)'
             }}>
-              {!slide.data.hideLogo && slide.data.logo && (
-                <img src={`${slide.data.logo}?v=${cacheBuster}`} alt="Logo" style={{ width: '150px', marginBottom: '30px' }} />
+              {!slide.data.hideLogo && (
+                <img src={`/images/brand/logo.png?v=${cacheBuster}`} alt="Logo" style={{ width: '150px', marginBottom: '30px' }} onError={(e) => e.target.style.display = 'none'} />
               )}
-              <h1 style={{ fontSize: '5rem', fontWeight: 300, letterSpacing: '8px', textAlign: 'center', textTransform: 'uppercase', margin: 0 }}>{slide.data.title}</h1>
+              <h1 style={{ fontSize: '5rem', fontWeight: 300, letterSpacing: '8px', textAlign: 'center', textTransform: 'uppercase', margin: 0, padding: '0 20px' }}>{slide.data.name || 'Luxury Catalog'}</h1>
               <p style={{ fontSize: '1.2rem', fontWeight: 300, letterSpacing: '4px', opacity: 0.7, marginTop: '20px' }}>{slide.data.tagline}</p>
               
               <div style={{ position: 'absolute', bottom: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center', opacity: 0.5, animation: 'bounce 2s infinite' }}>
