@@ -59,9 +59,11 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
             zIndex: index,
             backgroundColor: '#0a0a0a',
             backgroundImage: `
-              radial-gradient(circle at center, rgba(60, 50, 40, 0.8) 0%, rgba(10, 10, 10, 1) 100%),
-              repeating-linear-gradient(45deg, rgba(204, 167, 123, 0.05) 0px, rgba(204, 167, 123, 0.05) 2px, transparent 2px, transparent 20px)
+              radial-gradient(circle at center, rgba(60, 50, 40, 0.6) 0%, rgba(10, 10, 10, 0.95) 100%),
+              url('/images/brand/catalog-bg.png?v=${cacheBuster}')
             `,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
