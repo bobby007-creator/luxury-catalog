@@ -57,29 +57,36 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
             position: 'sticky',
             top: 0,
             zIndex: index,
-            backgroundColor: '#050505',
+            backgroundColor: '#0a0a0a',
             backgroundImage: `
-              radial-gradient(circle at center, rgba(30, 30, 30, 0.8) 0%, rgba(5, 5, 5, 1) 100%),
-              repeating-linear-gradient(45deg, rgba(255, 255, 255, 0.02) 0px, rgba(255, 255, 255, 0.02) 1px, transparent 1px, transparent 10px)
+              radial-gradient(circle at center, rgba(60, 50, 40, 0.8) 0%, rgba(10, 10, 10, 1) 100%),
+              repeating-linear-gradient(45deg, rgba(204, 167, 123, 0.05) 0px, rgba(204, 167, 123, 0.05) 2px, transparent 2px, transparent 20px)
             `,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             boxShadow: '0 -20px 50px rgba(0,0,0,0.8)',
             overflow: 'hidden',
-            borderTop: '2px solid rgba(204, 167, 123, 0.3)', // subtle gold top border
+            borderTop: '4px solid rgba(204, 167, 123, 0.8)', // very prominent gold top border
             boxSizing: 'border-box'
           }}>
             
             {/* Elegant Inner Frame */}
             <div style={{
               position: 'absolute',
-              top: '20px', left: '20px', right: '20px', bottom: '20px',
-              border: '1px solid rgba(204, 167, 123, 0.15)',
-              borderRadius: '16px',
+              top: '30px', left: '30px', right: '30px', bottom: '30px',
+              border: '2px solid rgba(204, 167, 123, 0.6)', // much brighter and thicker gold border
+              boxShadow: 'inset 0 0 20px rgba(204, 167, 123, 0.1)',
+              borderRadius: '20px',
               pointerEvents: 'none',
               zIndex: 0
-            }}></div>
+            }}>
+              {/* Corner Accents */}
+              <div style={{ position: 'absolute', top: '-2px', left: '-2px', width: '20px', height: '20px', borderTop: '4px solid #cca77b', borderLeft: '4px solid #cca77b', borderRadius: '20px 0 0 0' }}></div>
+              <div style={{ position: 'absolute', top: '-2px', right: '-2px', width: '20px', height: '20px', borderTop: '4px solid #cca77b', borderRight: '4px solid #cca77b', borderRadius: '0 20px 0 0' }}></div>
+              <div style={{ position: 'absolute', bottom: '-2px', left: '-2px', width: '20px', height: '20px', borderBottom: '4px solid #cca77b', borderLeft: '4px solid #cca77b', borderRadius: '0 0 0 20px' }}></div>
+              <div style={{ position: 'absolute', bottom: '-2px', right: '-2px', width: '20px', height: '20px', borderBottom: '4px solid #cca77b', borderRight: '4px solid #cca77b', borderRadius: '0 0 20px 0' }}></div>
+            </div>
             
             <div style={{
               width: '100%',
