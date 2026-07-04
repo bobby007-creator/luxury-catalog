@@ -4,11 +4,12 @@ export default function CatalogPositioner({ product, onSave, onClose }) {
   const [scale, setScale] = useState(product.placement?.scale || 1);
   const [posX, setPosX] = useState(product.placement?.x || 0);
   const [posY, setPosY] = useState(product.placement?.y || 15);
+  const [rotation, setRotation] = useState(product.placement?.rotation || 0);
 
   const imageUrl = product.image?.startsWith('/') ? product.image : (product.images?.isolated?.startsWith('/') ? product.images.isolated : '/images/products/' + (product.image || product.images?.isolated));
 
   const handleSave = () => {
-    onSave({ scale, x: posX, y: posY });
+    onSave({ scale, x: posX, y: posY, rotation });
   };
 
   return (
@@ -39,6 +40,11 @@ export default function CatalogPositioner({ product, onSave, onClose }) {
           <input type="range" min="-50" max="50" step="1" value={posX} onChange={e => setPosX(parseFloat(e.target.value))} />
         </label>
 
+        <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          Rotation: {rotation}°
+          <input type="range" min="-180" max="180" step="1" value={rotation} onChange={e => setRotation(parseFloat(e.target.value))} />
+        </label>
+
         <button onClick={handleSave} style={{ padding: '10px 20px', background: '#cca77b', color: '#000', border: 'none', borderRadius: '5px', cursor: 'pointer', fontWeight: 'bold' }}>Save Position</button>
         <button onClick={onClose} style={{ padding: '10px 20px', background: '#444', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Cancel</button>
       </div>
@@ -67,7 +73,7 @@ export default function CatalogPositioner({ product, onSave, onClose }) {
              objectFit: 'contain',
              filter: 'drop-shadow(0 50px 30px rgba(0,0,0,0.8)) brightness(1.05) contrast(1.1) saturate(1.1)',
              transformOrigin: 'bottom center',
-             transform: 'translate(' + posX + '%, ' + (posY - 15) + 'vh) scale(' + scale + ')'
+             transform: 'translate(' + posX + '%, ' + (posY - 15) + 'vh) scale(' + scale + ') rotate(' + rotation + 'deg)'
            }} />
         </div>
       </div>
