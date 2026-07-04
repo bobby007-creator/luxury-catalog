@@ -13,6 +13,11 @@ export default function RoomPreviewer({ productImage, onClose }) {
   const [isDragging, setIsDragging] = useState(false);
   const [isPainting, setIsPainting] = useState(false);
   
+  // Touch & Pointer state
+  const [lastPointerPos, setLastPointerPos] = useState(null);
+  const [initialPinchDist, setInitialPinchDist] = useState(null);
+  const [initialPinchScale, setInitialPinchScale] = useState(null);
+  
   const availableTextures = [
     { name: 'Brown Leather', src: 'textures/leather_brown.png' },
     { name: 'Tan Leather', src: 'textures/leather_tan.png' },
@@ -71,7 +76,10 @@ export default function RoomPreviewer({ productImage, onClose }) {
   const handlePointerDown = (e) => {
     if (mode === 'drag') {
       setIsDragging(true);
-      e.target.setPointerCapture(e.pointerId);
+      setLastPointerPos({ x: e.clientX, y: e.clientY });
+      if (e.target.setPointerCapture) {
+        e.target.setPointerCapture(e.pointerId);
+      }
     } else if (mode === 'paint' || mode === 'pick') {
       setIsPainting(true);
       handleCanvasAction(e);
@@ -79,11 +87,17 @@ export default function RoomPreviewer({ productImage, onClose }) {
   };
 
   const handlePointerMove = (e) => {
-    if (mode === 'drag' && isDragging) {
+    if (mode === 'drag' && isDragging && lastPointerPos) {
+      // If we're tracking a touch pinch, don't drag with pointer
+      if (initialPinchDist !== null) return;
+      
+      const dx = e.clientX - lastPointerPos.x;
+      const dy = e.clientY - lastPointerPos.y;
       setPos(prev => ({
-        x: prev.x + e.movementX,
-        y: prev.y + e.movementY
+        x: prev.x + dx,
+        y: prev.y + dy
       }));
+      setLastPointerPos({ x: e.clientX, y: e.clientY });
     } else if (isPainting) {
       handleCanvasAction(e);
     }
@@ -92,6 +106,38 @@ export default function RoomPreviewer({ productImage, onClose }) {
   const handlePointerUp = (e) => {
     setIsDragging(false);
     setIsPainting(false);
+    setLastPointerPos(null);
+  };
+
+  const handleTouchStart = (e) => {
+    if (mode === 'drag' && e.touches.length === 2) {
+      e.preventDefault();
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      setInitialPinchDist(dist);
+      setInitialPinchScale(scale);
+    }
+  };
+
+  const handleTouchMove = (e) => {
+    if (mode === 'drag' && e.touches.length === 2 && initialPinchDist) {
+      e.preventDefault();
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      const newScale = initialPinchScale * (dist / initialPinchDist);
+      setScale(Math.max(0.1, Math.min(newScale, 5))); // clamp between 0.1 and 5
+    }
+  };
+
+  const handleTouchEnd = (e) => {
+    if (e.touches.length < 2) {
+      setInitialPinchDist(null);
+      setInitialPinchScale(null);
+    }
   };
 
   const handleCanvasAction = (e) => {
@@ -218,7 +264,14 @@ export default function RoomPreviewer({ productImage, onClose }) {
             )}
 
             <div className={styles.workspace}>
-              <div className={styles.canvasContainer}>
+              <div 
+                className={styles.canvasContainer}
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+                onTouchCancel={handleTouchEnd}
+                style={{ touchAction: mode === 'drag' ? 'none' : 'auto' }} // Prevent scrolling when dragging/pinching
+              >
                 <canvas 
                   ref={canvasRef} 
                   className={styles.roomCanvas}
