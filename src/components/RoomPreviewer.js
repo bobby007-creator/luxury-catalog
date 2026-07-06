@@ -11,6 +11,10 @@ export default function RoomPreviewer({ productImage, onClose }) {
   const [processedProductImage, setProcessedProductImage] = useState(productImage);
   const [isProcessingImg, setIsProcessingImg] = useState(true);
   
+  // Measurement state
+  const [measurements, setMeasurements] = useState([]);
+  const [currentMeasurement, setCurrentMeasurement] = useState(null);
+
   // Controls
   const [scale, setScale] = useState(1);
   const [rotation, setRotation] = useState(0);
@@ -211,11 +215,26 @@ export default function RoomPreviewer({ productImage, onClose }) {
     } else if (mode === 'paint' || mode === 'pick') {
       setIsPainting(true);
       handleCanvasAction(e);
+    } else if (mode === 'measure') {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      setCurrentMeasurement({ startX: x, startY: y, endX: x, endY: y });
+      if (e.target.setPointerCapture) e.target.setPointerCapture(e.pointerId);
     }
   };
 
   const handlePointerMove = (e) => {
-    if (mode === 'drag' && isDragging && lastPointerPos) {
+    if (mode === 'measure' && currentMeasurement) {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      setCurrentMeasurement(prev => ({ ...prev, endX: x, endY: y }));
+    } else if (mode === 'drag' && isDragging && lastPointerPos) {
       // If we're tracking a touch pinch, don't drag with pointer
       if (initialPinchDist !== null) return;
       
@@ -235,6 +254,17 @@ export default function RoomPreviewer({ productImage, onClose }) {
     setIsDragging(false);
     setIsPainting(false);
     setLastPointerPos(null);
+    if (mode === 'measure' && currentMeasurement) {
+      // Complete measurement
+      const label = window.prompt("Enter measurement (e.g. '120 inches', 'Wall'):", "");
+      if (label && label.trim() !== "") {
+        setMeasurements([...measurements, { ...currentMeasurement, label }]);
+      }
+      setCurrentMeasurement(null);
+    }
+    if (e.target.releasePointerCapture) {
+      e.target.releasePointerCapture(e.pointerId);
+    }
   };
 
   const handleTouchStart = (e) => {
@@ -339,6 +369,13 @@ export default function RoomPreviewer({ productImage, onClose }) {
               onClick={() => setMode('paint')}
             >
               🖌 Paint Eraser
+            </button>
+            <button 
+              className={`${styles.toolBtn} ${mode === 'measure' ? styles.active : ''}`}
+              onClick={() => setMode('measure')}
+              style={{ background: mode === 'measure' ? '#f9d423' : '#444', color: mode === 'measure' ? '#000' : '#fff' }}
+            >
+              📏 Measure
             </button>
             
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -510,12 +547,41 @@ export default function RoomPreviewer({ productImage, onClose }) {
                      left: pos.x + 'px',
                      top: pos.y + 'px',
                      transform: `translate(-50%, -50%) scale(${scale}) rotate(${rotation}deg)`,
-                     opacity: 0.3, // make it ghosted while painting
+                     opacity: 0.3, // make it ghosted while painting or measuring
                      pointerEvents: 'none'
                    }}
                    alt="Product Overlay Ghost"
                  />
                 )}
+
+                {/* SVG Overlay for Measurements */}
+                <svg style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 100 }}>
+                  <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                      <polygon points="0 0, 10 3.5, 0 7" fill="#f9d423" />
+                    </marker>
+                    <marker id="arrowhead-start" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto">
+                      <polygon points="10 0, 0 3.5, 10 7" fill="#f9d423" />
+                    </marker>
+                  </defs>
+                  
+                  {measurements.map((m, i) => {
+                    const midX = (m.startX + m.endX) / 2;
+                    const midY = (m.startY + m.endY) / 2;
+                    return (
+                      <g key={i}>
+                        <line x1={m.startX} y1={m.startY} x2={m.endX} y2={m.endY} stroke="#f9d423" strokeWidth="3" markerEnd="url(#arrowhead)" markerStart="url(#arrowhead-start)" />
+                        <rect x={midX - (m.label.length * 4.5)} y={midY - 12} width={m.label.length * 9} height="24" fill="rgba(0,0,0,0.8)" rx="4" />
+                        <text x={midX} y={midY + 4} fill="#fff" fontSize="14" fontWeight="bold" textAnchor="middle" fontFamily="sans-serif">{m.label}</text>
+                      </g>
+                    );
+                  })}
+
+                  {currentMeasurement && (
+                    <line x1={currentMeasurement.startX} y1={currentMeasurement.startY} x2={currentMeasurement.endX} y2={currentMeasurement.endY} stroke="#f9d423" strokeWidth="3" strokeDasharray="5,5" />
+                  )}
+                </svg>
+
               </div>
             </div>
         </>
