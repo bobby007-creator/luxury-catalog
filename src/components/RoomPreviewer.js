@@ -26,6 +26,8 @@ export default function RoomPreviewer({ productImage, onClose }) {
   const [lastPointerPos, setLastPointerPos] = useState(null);
   const [initialPinchDist, setInitialPinchDist] = useState(null);
   const [initialPinchScale, setInitialPinchScale] = useState(null);
+  const [initialPinchAngle, setInitialPinchAngle] = useState(null);
+  const [initialRotation, setInitialRotation] = useState(null);
   
   const availableTextures = [
     { name: 'Brown Leather', src: 'textures/leather_brown.png' },
@@ -276,6 +278,13 @@ export default function RoomPreviewer({ productImage, onClose }) {
       );
       setInitialPinchDist(dist);
       setInitialPinchScale(scale);
+      
+      const angle = Math.atan2(
+        e.touches[1].clientY - e.touches[0].clientY,
+        e.touches[1].clientX - e.touches[0].clientX
+      ) * (180 / Math.PI);
+      setInitialPinchAngle(angle);
+      setInitialRotation(rotation);
     }
   };
 
@@ -288,6 +297,19 @@ export default function RoomPreviewer({ productImage, onClose }) {
       );
       const newScale = initialPinchScale * (dist / initialPinchDist);
       setScale(Math.max(0.1, Math.min(newScale, 5))); // clamp between 0.1 and 5
+      
+      if (initialPinchAngle !== null && initialRotation !== null) {
+        const angle = Math.atan2(
+          e.touches[1].clientY - e.touches[0].clientY,
+          e.touches[1].clientX - e.touches[0].clientX
+        ) * (180 / Math.PI);
+        
+        let angleDiff = angle - initialPinchAngle;
+        if (angleDiff > 180) angleDiff -= 360;
+        if (angleDiff < -180) angleDiff += 360;
+        
+        setRotation(initialRotation + angleDiff);
+      }
     }
   };
 
@@ -295,6 +317,8 @@ export default function RoomPreviewer({ productImage, onClose }) {
     if (e.touches.length < 2) {
       setInitialPinchDist(null);
       setInitialPinchScale(null);
+      setInitialPinchAngle(null);
+      setInitialRotation(null);
     }
   };
 
