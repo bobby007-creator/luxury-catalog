@@ -5,6 +5,7 @@ import RoomPreviewer from './RoomPreviewer';
 
 export default function CinematicCatalog({ catalogData, cacheBuster }) {
   const [activePreview, setActivePreview] = useState(null);
+  const [isProcessingCustom, setIsProcessingCustom] = useState(false);
 
   const { brand, products } = catalogData;
 
@@ -13,6 +14,37 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
     { type: 'cover', data: brand || {} },
     ...products.map(p => ({ type: 'product', data: p }))
   ];
+
+  const handleCustomTryOn = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setIsProcessingCustom(true);
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+
+      const res = await fetch('/api/remove-bg', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await res.json();
+      
+      if (res.ok && data.success) {
+        // Automatically open room previewer with the newly processed transparent image!
+        setActivePreview(data.imageUrl);
+      } else {
+        alert('Error processing image: ' + (data.error || 'Unknown error'));
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Failed to process custom image.');
+    } finally {
+      setIsProcessingCustom(false);
+      e.target.value = ''; // Reset input
+    }
+  };
 
   return (
     <div style={{ 
@@ -239,6 +271,68 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
           productImage={activePreview}
           onClose={() => setActivePreview(null)}
         />
+      )}
+
+      {/* Floating Action Button for Custom Try-On */}
+      <label style={{
+        position: 'fixed',
+        bottom: '30px',
+        right: '30px',
+        backgroundColor: '#f9d423',
+        color: '#000',
+        padding: '15px 25px',
+        borderRadius: '30px',
+        fontWeight: 'bold',
+        fontSize: '1rem',
+        cursor: 'pointer',
+        boxShadow: '0 10px 20px rgba(0,0,0,0.5)',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        zIndex: 1000,
+        transition: 'transform 0.2s ease',
+      }}
+      onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
+      onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+        Try Custom Sofa
+        <input 
+          type="file" 
+          accept="image/*" 
+          capture="environment"
+          onChange={handleCustomTryOn}
+          style={{ display: 'none' }} 
+        />
+      </label>
+
+      {/* Processing Overlay */}
+      {isProcessingCustom && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'rgba(0,0,0,0.8)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 9999,
+          color: 'white',
+          fontFamily: 'system-ui, sans-serif'
+        }}>
+          <div style={{ 
+            width: '50px', height: '50px', 
+            border: '5px solid rgba(255,255,255,0.2)', 
+            borderTop: '5px solid #f9d423', 
+            borderRadius: '50%', 
+            animation: 'spin 1s linear infinite' 
+          }} />
+          <h2 style={{ marginTop: '20px', letterSpacing: '2px' }}>AI Removing Background...</h2>
+          <p style={{ color: '#ccc' }}>This usually takes about 2-3 seconds.</p>
+          <style>{`
+            @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+          `}</style>
+        </div>
       )}
     </div>
   );
