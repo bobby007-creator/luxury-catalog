@@ -8,6 +8,8 @@ export default function RoomPreviewer({ productImage, onClose }) {
   const [texture, setTexture] = useState(null);
   const [showTextures, setShowTextures] = useState(false);
   const [showColors, setShowColors] = useState(false);
+  const [processedProductImage, setProcessedProductImage] = useState(productImage);
+  const [isProcessingImg, setIsProcessingImg] = useState(true);
   
   // Controls
   const [scale, setScale] = useState(1);
@@ -91,6 +93,67 @@ export default function RoomPreviewer({ productImage, onClose }) {
       drawBackground(imgRef.current);
     }
   }, [bgImage, drawBackground]);
+
+  // Magic White Background Remover
+  useEffect(() => {
+    setIsProcessingImg(true);
+    const img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      
+      try {
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
+        
+        // Check if image already has transparency
+        let hasTransparency = false;
+        for (let i = 0; i < data.length; i += 4) {
+          if (data[i + 3] < 250) {
+            hasTransparency = true;
+            break;
+          }
+        }
+        
+        // If it's a solid square (no transparency), remove the white background!
+        if (!hasTransparency) {
+          for (let i = 0; i < data.length; i += 4) {
+            const r = data[i];
+            const g = data[i + 1];
+            const b = data[i + 2];
+            
+            // If pixel is very close to white
+            if (r > 240 && g > 240 && b > 240) {
+              const brightness = (r + g + b) / 3;
+              if (brightness > 252) {
+                data[i + 3] = 0; // Fully transparent
+              } else {
+                // Soft edge blending
+                data[i + 3] = Math.max(0, 255 - ((brightness - 240) * 17));
+              }
+            }
+          }
+          ctx.putImageData(imageData, 0, 0);
+          setProcessedProductImage(canvas.toDataURL('image/png'));
+        } else {
+          setProcessedProductImage(productImage);
+        }
+      } catch (e) {
+        // Fallback if crossOrigin taints canvas (shouldn't happen for local images)
+        setProcessedProductImage(productImage);
+      }
+      setIsProcessingImg(false);
+    };
+    img.onerror = () => {
+      setProcessedProductImage(productImage);
+      setIsProcessingImg(false);
+    };
+    img.src = productImage;
+  }, [productImage]);
 
   const handlePointerDown = (e) => {
     if (mode === 'drag') {
@@ -350,11 +413,12 @@ export default function RoomPreviewer({ productImage, onClose }) {
                       left: pos.x + 'px',
                       top: pos.y + 'px',
                       transform: `translate(-50%, -50%) scale(${scale}) rotate(${rotation}deg)`,
-                      pointerEvents: 'none' // Let canvas handle pointer events to avoid dragging issues
+                      pointerEvents: 'none', // Let canvas handle pointer events to avoid dragging issues
+                      opacity: isProcessingImg ? 0.5 : 1
                     }}
                   >
                     <img 
-                      src={productImage} 
+                      src={processedProductImage} 
                       style={{ display: 'block', width: '100%', height: 'auto' }}
                       alt="Product Overlay"
                     />
@@ -366,10 +430,10 @@ export default function RoomPreviewer({ productImage, onClose }) {
                         backgroundSize: '150px',
                         backgroundRepeat: 'repeat',
                         mixBlendMode: 'multiply',
-                        WebkitMaskImage: `url("${productImage}")`,
+                        WebkitMaskImage: `url("${processedProductImage}")`,
                         WebkitMaskSize: '100% 100%',
                         WebkitMaskRepeat: 'no-repeat',
-                        maskImage: `url("${productImage}")`,
+                        maskImage: `url("${processedProductImage}")`,
                         maskSize: '100% 100%',
                         maskRepeat: 'no-repeat',
                         opacity: 1
@@ -381,10 +445,10 @@ export default function RoomPreviewer({ productImage, onClose }) {
                         top: 0, left: 0, right: 0, bottom: 0,
                         backgroundColor: color,
                         mixBlendMode: 'multiply',
-                        WebkitMaskImage: `url("${productImage}")`,
+                        WebkitMaskImage: `url("${processedProductImage}")`,
                         WebkitMaskSize: '100% 100%',
                         WebkitMaskRepeat: 'no-repeat',
-                        maskImage: `url("${productImage}")`,
+                        maskImage: `url("${processedProductImage}")`,
                         maskSize: '100% 100%',
                         maskRepeat: 'no-repeat',
                         opacity: texture ? 0.6 : 0.9
@@ -394,7 +458,7 @@ export default function RoomPreviewer({ productImage, onClose }) {
                 )}
                 {mode !== 'drag' && (
                    <img 
-                   src={productImage} 
+                   src={processedProductImage} 
                    className={styles.productOverlay}
                    style={{
                      left: pos.x + 'px',
