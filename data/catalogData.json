@@ -287,6 +287,32 @@
         "fabric": "Premium Finish"
       },
       "priceRange": "demo"
+    },
+    {
+      "id": "prod-1783368365572",
+      "category": "3+1+1 Sofa Sets",
+      "name": "demo",
+      "tagline": "demo",
+      "description": "demo",
+      "images": {
+        "isolated": "/images/products/demo_1783368365518.png",
+        "lifestyle": "/images/products/demo_1783368365518.png"
+      },
+      "dimensions": "demo",
+      "seatingCapacity": "Varies",
+      "bestRoomSize": "demo",
+      "compatibility": {
+        "small": "❌ (Check dimensions)",
+        "medium": "✅ (Recommended)",
+        "large": "⭐ (Perfect Fit)"
+      },
+      "options": {
+        "colors": [
+          "demo"
+        ],
+        "fabric": "Premium Finish"
+      },
+      "priceRange": "demo"
     }
   ],
   "transformations": {
