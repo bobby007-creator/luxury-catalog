@@ -94,7 +94,7 @@ export default function RoomPreviewer({ productImage, onClose }) {
     }
   }, [bgImage, drawBackground]);
 
-  // Magic White Background Remover
+  // Magic White Background Remover & Smart Fill for Line Drawings
   useEffect(() => {
     setIsProcessingImg(true);
     const img = new Image();
@@ -119,7 +119,7 @@ export default function RoomPreviewer({ productImage, onClose }) {
           }
         }
         
-        // If it's a solid square (no transparency), remove the white background!
+        // 1. If it's a solid square (no transparency), remove the white background!
         if (!hasTransparency) {
           for (let i = 0; i < data.length; i += 4) {
             const r = data[i];
@@ -137,13 +137,59 @@ export default function RoomPreviewer({ productImage, onClose }) {
               }
             }
           }
-          ctx.putImageData(imageData, 0, 0);
-          setProcessedProductImage(canvas.toDataURL('image/png'));
-        } else {
-          setProcessedProductImage(productImage);
         }
+
+        // 2. SMART FILL: Fill internal transparent pixels with white!
+        // This fixes line drawings where the body of the sofa was accidentally made transparent
+        const w = canvas.width;
+        const h = canvas.height;
+        const outside = new Uint8Array(w * h);
+        const stack = [];
+        
+        // Add all edge pixels to stack if they are transparent
+        for (let x = 0; x < w; x++) {
+          if (data[(x) * 4 + 3] < 50) { stack.push(x); outside[x] = 1; }
+          if (data[((h-1)*w + x) * 4 + 3] < 50) { stack.push((h-1)*w + x); outside[(h-1)*w + x] = 1; }
+        }
+        for (let y = 0; y < h; y++) {
+          if (data[(y*w) * 4 + 3] < 50) { stack.push(y*w); outside[y*w] = 1; }
+          if (data[(y*w + w - 1) * 4 + 3] < 50) { stack.push(y*w + w - 1); outside[y*w + w - 1] = 1; }
+        }
+        
+        // Flood fill to find all OUTSIDE transparent pixels
+        const dirs = [-1, 1, -w, w];
+        while (stack.length > 0) {
+          const idx = stack.pop();
+          for (let i = 0; i < dirs.length; i++) {
+            const nIdx = idx + dirs[i];
+            if (nIdx >= 0 && nIdx < w * h) {
+               // Prevent wrapping horizontally
+               if (dirs[i] === 1 && nIdx % w === 0) continue;
+               if (dirs[i] === -1 && (idx % w === 0)) continue;
+               
+               if (outside[nIdx] === 0 && data[nIdx * 4 + 3] < 50) {
+                 outside[nIdx] = 1;
+                 stack.push(nIdx);
+               }
+            }
+          }
+        }
+        
+        // Now, any pixel that is transparent (alpha < 50) AND is NOT outside, must be INSIDE!
+        // Fill it with pure white so it becomes part of the product mask
+        for (let i = 0; i < w * h; i++) {
+          if (data[i * 4 + 3] < 50 && outside[i] === 0) {
+             data[i * 4] = 255;
+             data[i * 4 + 1] = 255;
+             data[i * 4 + 2] = 255;
+             data[i * 4 + 3] = 255;
+          }
+        }
+
+        ctx.putImageData(imageData, 0, 0);
+        setProcessedProductImage(canvas.toDataURL('image/png'));
       } catch (e) {
-        // Fallback if crossOrigin taints canvas (shouldn't happen for local images)
+        // Fallback if crossOrigin taints canvas
         setProcessedProductImage(productImage);
       }
       setIsProcessingImg(false);
