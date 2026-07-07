@@ -319,6 +319,26 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
                   
                   <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '0 5px' }} />
 
+                  {/* Custom Fabric Capture */}
+                  <label style={{ 
+                    minWidth: '35px', height: '35px', borderRadius: '50%', cursor: 'pointer', 
+                    display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', 
+                    background: '#f9d423', color: '#000', fontSize: '16px',
+                    boxShadow: '0 4px 6px rgba(0,0,0,0.3)'
+                  }} title="Capture Fabric">
+                    📷
+                    <input 
+                      type="file" 
+                      accept="image/*" 
+                      capture="environment"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) setPStyle({ texture: URL.createObjectURL(file) });
+                      }}
+                      style={{ display: 'none' }} 
+                    />
+                  </label>
+
                   {/* Textures */}
                   {availableTextures.map(tex => (
                     <div 
