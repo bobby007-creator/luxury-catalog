@@ -28,7 +28,12 @@ export default function RoomPreviewer({ productImage, initialColor, initialTextu
   const [initialPinchScale, setInitialPinchScale] = useState(null);
   const [initialPinchAngle, setInitialPinchAngle] = useState(null);
   const [initialRotation, setInitialRotation] = useState(null);
-  
+
+  useEffect(() => {
+    if (initialColor) setColor(initialColor);
+    if (initialTexture) setTexture(initialTexture);
+  }, [initialColor, initialTexture]);
+
   const availableTextures = [
     { name: 'Brown Leather', src: 'textures/leather_brown.png' },
     { name: 'Tan Leather', src: 'textures/leather_tan.png' },
@@ -67,6 +72,15 @@ export default function RoomPreviewer({ productImage, initialColor, initialTextu
         setBgImage(url); // This triggers a re-render
       };
       img.src = url;
+    }
+  };
+
+  const handleCustomFabricUpload = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setTexture(url);
+      setMode('drag'); // Switch to drag so they can position the sofa
     }
   };
 
@@ -479,6 +493,23 @@ export default function RoomPreviewer({ productImage, initialColor, initialTextu
                 >
                   Clear
                 </div>
+
+                {/* Custom Fabric Capture */}
+                <label style={{ 
+                  minWidth: '50px', height: '50px', borderRadius: '5px', cursor: 'pointer', 
+                  display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', 
+                  background: '#f9d423', color: '#000', fontSize: '24px' 
+                }} title="Capture Fabric">
+                  📷
+                  <input 
+                    type="file" 
+                    accept="image/*" 
+                    capture="environment"
+                    onChange={handleCustomFabricUpload}
+                    style={{ display: 'none' }} 
+                  />
+                </label>
+                
                 {availableTextures.map((tex, i) => (
                   <div 
                     key={i}
