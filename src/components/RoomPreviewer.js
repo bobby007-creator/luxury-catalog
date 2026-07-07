@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import styles from './RoomPreviewer.module.css';
 
-export default function RoomPreviewer({ productImage, onClose }) {
+export default function RoomPreviewer({ productImage, initialColor, initialTexture, onClose }) {
   const [bgImage, setBgImage] = useState(null);
   const [mode, setMode] = useState('drag'); // 'drag', 'pick', 'paint'
-  const [color, setColor] = useState('#aaaaaa');
-  const [texture, setTexture] = useState(null);
+  const [color, setColor] = useState(initialColor || '#aaaaaa');
+  const [texture, setTexture] = useState(initialTexture || null);
   const [showTextures, setShowTextures] = useState(false);
   const [showColors, setShowColors] = useState(false);
   const [processedProductImage, setProcessedProductImage] = useState(productImage);

@@ -6,6 +6,32 @@ import RoomPreviewer from './RoomPreviewer';
 export default function CinematicCatalog({ catalogData, cacheBuster }) {
   const [activePreview, setActivePreview] = useState(null);
   const [isProcessingCustom, setIsProcessingCustom] = useState(false);
+  const [productStyles, setProductStyles] = useState({});
+
+  const availableTextures = [
+    { name: 'Brown Leather', src: 'textures/leather_brown.png' },
+    { name: 'Tan Leather', src: 'textures/leather_tan.png' },
+    { name: 'Grey Velvet', src: 'textures/velvet_grey.png' },
+    { name: 'Blue Velvet', src: 'textures/velvet_blue.png' },
+    { name: 'Beige Linen', src: 'textures/linen_beige.png' },
+    { name: 'White Linen', src: 'textures/linen_white.png' },
+  ];
+
+  const presetColors = [
+    { name: 'White', hex: '#ffffff' },
+    { name: 'Ivory', hex: '#fffff0' },
+    { name: 'Cream', hex: '#fffdd0' },
+    { name: 'Beige', hex: '#f5f5dc' },
+    { name: 'Tan', hex: '#d2b48c' },
+    { name: 'Light Grey', hex: '#d3d3d3' },
+    { name: 'Charcoal', hex: '#36454f' },
+    { name: 'Black', hex: '#111111' },
+    { name: 'Navy Blue', hex: '#000080' },
+    { name: 'Emerald', hex: '#046307' },
+    { name: 'Burgundy', hex: '#800020' },
+    { name: 'Gold', hex: '#d4af37' },
+    { name: 'Blush Pink', hex: '#de5d83' },
+  ];
 
   const { brand, products } = catalogData;
 
@@ -33,7 +59,7 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
       
       if (res.ok && data.success) {
         // Automatically open room previewer with the newly processed transparent image!
-        setActivePreview(data.imageUrl);
+        setActivePreview({ url: data.imageUrl, color: null, texture: null });
       } else {
         alert('Error processing image: ' + (data.error || 'Unknown error'));
       }
@@ -101,6 +127,11 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
         const pRot = p.placement?.rotation || 0;
         const pTilt = p.placement?.tilt || 0;
         const customBg = p.placement?.bgUrl || '/images/brand/room-bg.png';
+        const pStyle = productStyles[p.id] || { color: null, texture: null };
+
+        const setPStyle = (updates) => {
+          setProductStyles(prev => ({ ...prev, [p.id]: { ...prev[p.id], ...updates } }));
+        };
 
         return (
           <div key={p.id} style={{
@@ -153,16 +184,16 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
               justifyContent: 'center',
               paddingBottom: '15vh' // Perfect distance from bottom to look like it's on the floor
             }}>
-               <img src={`${imageUrl}?v=${cacheBuster}`} alt={p.name} style={{
+               <div style={{
+                 position: 'relative',
                  maxWidth: '85%',
-                 maxHeight: '55vh', // Keep it proportionally sized to the room
-                 objectFit: 'contain',
-                 filter: 'drop-shadow(0 50px 30px rgba(0,0,0,0.8)) brightness(1.05) contrast(1.1) saturate(1.1)',
+                 height: '55vh', // Keep it proportionally sized to the room
                  transformOrigin: 'bottom center', // Scale from the floor
                  transform: `translate(${pX}%, ${pY - 15}vh) scale(${pScale}) rotate(${pRot}deg) rotateX(${pTilt}deg)`,
                  transition: 'transform 0.5s ease, filter 0.5s ease',
-                 cursor: 'pointer'
-               }} 
+                 cursor: 'pointer',
+                 filter: 'drop-shadow(0 50px 30px rgba(0,0,0,0.8)) brightness(1.05) contrast(1.1) saturate(1.1)',
+               }}
                onMouseOver={(e) => {
                  e.currentTarget.style.transform = `translate(${pX}%, ${pY - 15}vh) scale(${pScale * 1.05}) rotate(${pRot}deg) rotateX(${pTilt}deg)`;
                  e.currentTarget.style.filter = 'drop-shadow(0 70px 40px rgba(0,0,0,0.6)) brightness(1.1) contrast(1.15) saturate(1.1)';
@@ -171,8 +202,45 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
                  e.currentTarget.style.transform = `translate(${pX}%, ${pY - 15}vh) scale(${pScale}) rotate(${pRot}deg) rotateX(${pTilt}deg)`;
                  e.currentTarget.style.filter = 'drop-shadow(0 50px 30px rgba(0,0,0,0.8)) brightness(1.05) contrast(1.1) saturate(1.1)';
                }}
-               onClick={() => setActivePreview(imageUrl)}
-               />
+               onClick={() => setActivePreview({ url: imageUrl, color: pStyle.color, texture: pStyle.texture })}
+               >
+                 <img src={`${imageUrl}?v=${cacheBuster}`} alt={p.name} style={{ display: 'block', height: '100%', width: 'auto', objectFit: 'contain' }} />
+                 
+                 {pStyle.texture && (
+                    <div style={{
+                      position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                      backgroundImage: `url("${pStyle.texture}")`,
+                      backgroundSize: '150px',
+                      backgroundRepeat: 'repeat',
+                      mixBlendMode: 'multiply',
+                      WebkitMaskImage: `url("${imageUrl}?v=${cacheBuster}")`,
+                      WebkitMaskSize: 'contain',
+                      WebkitMaskRepeat: 'no-repeat',
+                      WebkitMaskPosition: 'center',
+                      maskImage: `url("${imageUrl}?v=${cacheBuster}")`,
+                      maskSize: 'contain',
+                      maskRepeat: 'no-repeat',
+                      maskPosition: 'center',
+                      opacity: 1
+                    }} />
+                 )}
+                 {pStyle.color && (
+                    <div style={{
+                      position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+                      backgroundColor: pStyle.color,
+                      mixBlendMode: 'multiply',
+                      WebkitMaskImage: `url("${imageUrl}?v=${cacheBuster}")`,
+                      WebkitMaskSize: 'contain',
+                      WebkitMaskRepeat: 'no-repeat',
+                      WebkitMaskPosition: 'center',
+                      maskImage: `url("${imageUrl}?v=${cacheBuster}")`,
+                      maskSize: 'contain',
+                      maskRepeat: 'no-repeat',
+                      maskPosition: 'center',
+                      opacity: pStyle.texture ? 0.6 : 0.9
+                    }} />
+                 )}
+               </div>
             </div>
 
             <div style={{
@@ -218,8 +286,60 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
                 </div>
               </div>
 
+              {/* LIVE CUSTOMIZER SWATCHES */}
+              <div style={{ marginTop: '25px', borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: '20px' }}>
+                <span style={{ display: 'block', fontSize: '0.75rem', color: '#b0b0b0', textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '10px' }}>Customize: {pStyle.color ? presetColors.find(c => c.hex === pStyle.color)?.name : 'Original'} {pStyle.texture ? '+ Fabric' : ''}</span>
+                
+                <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', paddingBottom: '10px', WebkitOverflowScrolling: 'touch' }}>
+                  {/* Reset Button */}
+                  <div 
+                    onClick={() => setPStyle({ color: null, texture: null })}
+                    style={{ minWidth: '35px', height: '35px', borderRadius: '50%', background: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', border: (!pStyle.color && !pStyle.texture) ? '2px solid white' : '1px solid #555' }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+                  </div>
+                  
+                  {/* Colors */}
+                  {presetColors.map(c => (
+                    <div 
+                      key={c.name}
+                      onClick={() => setPStyle({ color: c.hex })}
+                      title={c.name}
+                      style={{
+                        minWidth: '35px', height: '35px', borderRadius: '50%',
+                        backgroundColor: c.hex,
+                        cursor: 'pointer',
+                        border: pStyle.color === c.hex ? '2px solid white' : '1px solid rgba(255,255,255,0.2)',
+                        boxShadow: '0 4px 6px rgba(0,0,0,0.3)',
+                        transition: 'transform 0.2s',
+                        transform: pStyle.color === c.hex ? 'scale(1.1)' : 'scale(1)'
+                      }}
+                    />
+                  ))}
+                  
+                  <div style={{ width: '1px', background: 'rgba(255,255,255,0.2)', margin: '0 5px' }} />
+
+                  {/* Textures */}
+                  {availableTextures.map(tex => (
+                    <div 
+                      key={tex.name}
+                      onClick={() => setPStyle({ texture: tex.src })}
+                      title={tex.name}
+                      style={{
+                        minWidth: '35px', height: '35px', borderRadius: '50%',
+                        backgroundImage: `url(${tex.src})`, backgroundSize: 'cover',
+                        cursor: 'pointer',
+                        border: pStyle.texture === tex.src ? '2px solid white' : '1px solid rgba(255,255,255,0.2)',
+                        transition: 'transform 0.2s',
+                        transform: pStyle.texture === tex.src ? 'scale(1.1)' : 'scale(1)'
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+
               <button 
-                onClick={() => setActivePreview(imageUrl)}
+                onClick={() => setActivePreview({ url: imageUrl, color: pStyle.color, texture: pStyle.texture })}
                 style={{
                   width: '100%',
                   marginTop: '40px',
@@ -268,7 +388,9 @@ export default function CinematicCatalog({ catalogData, cacheBuster }) {
       {/* Room Previewer Modal */}
       {activePreview && (
         <RoomPreviewer 
-          productImage={activePreview}
+          productImage={activePreview.url}
+          initialColor={activePreview.color}
+          initialTexture={activePreview.texture}
           onClose={() => setActivePreview(null)}
         />
       )}
